@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const passport = require("passport");
 require("dotenv").config();
 const userRoute = require("./routes/api/user.js");
 const app = express();
@@ -8,6 +9,8 @@ const port = 5000;
 
 //Uses bodyparser to parse incoming request bodies and make info available under req.body
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(passport.initialize());
 
 //Binds and listens to port for connections
 app.listen(port, () => {

@@ -1,8 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const passport = require("passport");
 const router = express.Router();
 const userSchema = require("../../schemas/users.js");
+
+require("./../../auth/jwtStrategy")(passport);
 
 const saltRounds = process.env.SALT_ROUNDS;
 
@@ -63,7 +67,19 @@ router.post("/login", (req, res) => {
         if (data !== true) {
           return res.send("Password is incorrect.");
         } else {
-          return res.send(response);
+          jwt.sign(
+            { id: response._id, name: response.name },
+            process.env.SECRET_KEY,
+            {
+              expiresIn: "1h"
+            },
+            (err, token) => {
+              if (err) {
+                return res.send(`Could not generate token or send it - ${err}`);
+              }
+              return res.send({ token: "Bearer " + token });
+            }
+          );
         }
       });
     })
@@ -71,4 +87,12 @@ router.post("/login", (req, res) => {
       res.send(`There was an error - ${err}`);
     });
 });
+
+router.get(
+  "/test-auth",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.send(req.user);
+  }
+);
 module.exports = router;
