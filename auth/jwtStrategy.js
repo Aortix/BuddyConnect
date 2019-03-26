@@ -1,6 +1,5 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
-const passport = require("passport");
 const mongoose = require("mongoose");
 const User = require("./../schemas/users");
 
@@ -9,6 +8,7 @@ let opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.SECRET_KEY;
 
+//Strategy for passport.js that uses Jwt tokens
 module.exports = strategy = passport =>
   passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
@@ -17,7 +17,7 @@ module.exports = strategy = passport =>
           return done(err, false);
         }
         if (user) {
-          return done(null, user);
+          return done(null, jwt_payload);
         } else {
           return done(null, false);
           // or you could create a new account

@@ -8,7 +8,7 @@ const userSchema = require("../../schemas/users.js");
 
 require("./../../auth/jwtStrategy")(passport);
 
-const saltRounds = process.env.SALT_ROUNDS;
+const saltRounds = 12;
 
 router.get("/test", (req, res) => {
   res.send("Router for Users works!");
@@ -18,33 +18,32 @@ router.get("/test", (req, res) => {
 //Create a new user - Hash password and store necessary information in DB
 router.post("/sign-up", (req, res) => {
   if (req.body.password === req.body.password2) {
-    bcrypt
-      .hash(req.body.password, saltRounds)
-      .then(hash => {
-        const newUser = new userSchema({
-          name: req.body.name,
-          email: req.body.email,
-          password: hash,
-          password2: hash
-        });
-        newUser.save(err => {
-          if (err) {
-            res.send("User not saved to mongo" + err);
-          } else {
-            res.send(newUser);
-          }
-        });
-      })
-      .catch(err => {
-        res.send(err);
+    bcrypt.hash(req.body.password, saltRounds, (err, salt) => {
+      if (err) {
+        return res.send(err);
+      }
+      const newUser = new userSchema({
+        name: req.body.name,
+        email: req.body.email,
+        password: salt,
+        password2: salt
       });
+      newUser.save((err, data) => {
+        if (err) {
+          res.send("User not saved to mongo" + err);
+        } else {
+          res.send(data);
+        }
+      });
+    });
   } else {
     res.send("Passwords must match!");
   }
 });
 
 //Public route
-//Login - Login using an email and password, compares password in database and creates a token to be stored in user's localstorage if login is successful
+/*Login - Login using an email and password, compares password to one in database and creates a token to be stored 
+in user's localstorage if login is successful*/
 router.post("/login", (req, res) => {
   userSchema
     .findOne({ email: req.body.email }, (err, response) => {
@@ -68,7 +67,7 @@ router.post("/login", (req, res) => {
           return res.send("Password is incorrect.");
         } else {
           jwt.sign(
-            { id: response._id, name: response.name },
+            { id: response._id, name: response.name, avatar: response.avatar },
             process.env.SECRET_KEY,
             {
               expiresIn: "1h"
@@ -88,8 +87,10 @@ router.post("/login", (req, res) => {
     });
 });
 
+//Private Route
+//Gets the current user that is logged in
 router.get(
-  "/test-auth",
+  "/current-user",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.send(req.user);
