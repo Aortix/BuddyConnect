@@ -6,10 +6,10 @@ const userSchema = require("../../schemas/users.js");
 const postSchema = require("../../schemas/posts.js");
 const commentSchema = require("../../schemas/comments.js");
 
-require("./../../auth/jwtStrategy")(passport);
+require("../../auth/jwtStrategy")(passport);
 
 //Private route
-//Shows home page for the signed in user with posts as the default
+//Shows all posts that are available - for use with global tab
 router.get(
   "/posts",
   passport.authenticate("jwt", { session: false }),
@@ -29,14 +29,11 @@ router.get(
   "/find-post",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let query = {
-      name: "Rebecca",
-      content: "And here is something else..."
-    };
+    let query = { _id: req.user.id };
 
-    postSchema.findOneAndUpdate(
+    userSchema.findOneAndUpdate(
       query,
-      { $push: { comments: "Hello again!" } },
+      { $push: { friends: "Hello again!" } },
       (err, post) => {
         if (err) {
           res.send(err);
@@ -53,17 +50,32 @@ router.post(
   "/create-post",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    let query = { _id: req.user.id };
+    const newComment = new commentSchema({});
     const newPost = new postSchema({
-      userId: req.user.id,
-      name: req.user.name,
-      avatar: req.user.avatar,
-      content: req.body.content
+      post: req.body.post,
+      comments: [newComment]
     });
-    newPost.save(err => {
+    newComment.save(err => {
       if (err) {
         res.send(`Error saving post - ${err}`);
       } else {
-        res.send(newPost);
+        newPost.save((err, data) => {
+          if (err) {
+            res.send(err);
+          } else {
+            userSchema.findOneAndUpdate(
+              query,
+              { $push: { userPosts: data } },
+              (err, post) => {
+                if (err) {
+                  return res.send(err);
+                }
+                return res.send(post);
+              }
+            );
+          }
+        });
       }
     });
   }
@@ -77,24 +89,30 @@ router.post(
   (req, res) => {
     const newComment = new commentSchema({
       userId: req.user.id,
-      name: req.user.name,
-      avatar: req.user.avatar,
-      comment: req.body.comment
+      userName: req.user.name,
+      userAvatar: req.user.avatar,
+      userComment: req.body.comment
     });
 
     let query = {
-      name: req.body.mainPosterName,
-      content: req.body.mainPosterContent
+      post: req.body.mainPosterContent
     };
 
     postSchema.findOneAndUpdate(
       query,
       { $push: { comments: newComment } },
-      (err, post) => {
+      err => {
         if (err) {
-          res.send(err);
+          return res.send(err);
+        } else {
+          newComment.save((err, data) => {
+            if (err) {
+              res.send(err);
+            } else {
+              res.send(data);
+            }
+          });
         }
-        return res.send(post);
       }
     );
   }

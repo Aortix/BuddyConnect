@@ -5,14 +5,13 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const router = express.Router();
 const userSchema = require("../../schemas/users.js");
+const postSchema = require("../../schemas/posts.js");
+const profileSchema = require("../../schemas/profiles.js");
+const commentsSchema = require("../../schemas/comments.js");
 
 require("./../../auth/jwtStrategy")(passport);
 
 const saltRounds = 12;
-
-router.get("/test", (req, res) => {
-  res.send("Router for Users works!");
-});
 
 //Public Route
 //Create a new user - Hash password and store necessary information in DB
@@ -22,17 +21,46 @@ router.post("/sign-up", (req, res) => {
       if (err) {
         return res.send(err);
       }
+
+      //Creating initial user schema requires these other initial schema declarations in order to have everything connected by ref
+      const newProfile = new profileSchema({});
+      const newComment = new commentsSchema({});
+      const newPost = new postSchema({
+        comments: [newComment]
+      });
       const newUser = new userSchema({
         name: req.body.name,
         email: req.body.email,
         password: salt,
-        password2: salt
+        password2: salt,
+        profile: newProfile,
+        userPosts: newPost
       });
-      newUser.save((err, data) => {
+
+      //Adjust later and use promises or async/await instead.
+      newProfile.save(err => {
         if (err) {
-          res.send("User not saved to mongo" + err);
+          res.send(err);
         } else {
-          res.send(data);
+          newComment.save(err => {
+            if (err) {
+              res.send(err);
+            } else {
+              newPost.save(err => {
+                if (err) {
+                  res.send(err);
+                } else {
+                  newUser.save((err, data) => {
+                    if (err) {
+                      res.send(err);
+                    } else {
+                      res.send(data);
+                    }
+                  });
+                }
+              });
+            }
+          });
         }
       });
     });

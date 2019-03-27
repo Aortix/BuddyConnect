@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 
 const userRoute = require("./routes/api/user.js");
-const homeRoute = require("./routes/api/home.js");
+const postRoute = require("./routes/api/post.js");
 const profileRoute = require("./routes/api/profile.js");
 
 const app = express();
@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 
 //Route to make calls to user
 app.use("/api/user", userRoute);
-app.use("/api/home", homeRoute);
+app.use("/api/post", postRoute);
 app.use("/api/profile", profileRoute);
 
 //Connecting to mongodb database
