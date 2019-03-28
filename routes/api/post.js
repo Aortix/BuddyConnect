@@ -11,14 +11,14 @@ require("../../auth/jwtStrategy")(passport);
 //Private route
 //Shows all posts that are available - for use with global tab
 router.get(
-  "/posts",
+  "/global-posts",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     postSchema.find({}, (err, posts) => {
       if (err) {
-        res.send(`There was an error finding the posts - ${err}`);
+        return res.send(`There was an error finding the posts - ${err}`);
       }
-      res.send(posts);
+      return res.send(posts);
     });
   }
 );
@@ -26,21 +26,28 @@ router.get(
 //Private Route
 //Just testing finding a specific post with an array field and updating it
 router.get(
-  "/find-post",
+  "/friends-posts",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let query = { _id: req.user.id };
-
-    userSchema.findOneAndUpdate(
-      query,
-      { $push: { friends: "Hello again!" } },
-      (err, post) => {
-        if (err) {
-          res.send(err);
-        }
-        return res.send(post);
+    userSchema.findById(req.user.id, (err, response) => {
+      if (err) {
+        return res.send(err);
+      } else {
+        response.friends.forEach(friends => {
+          userSchema.findById(friends, (err, response) => {
+            if (err) {
+              return res.send(err);
+            } else {
+              response.populate("userPosts").exec(
+                response.userPosts.map(posts => {
+                  return res.send(posts);
+                })
+              );
+            }
+          });
+        });
       }
-    );
+    });
   }
 );
 
@@ -58,11 +65,11 @@ router.post(
     });
     newComment.save(err => {
       if (err) {
-        res.send(`Error saving post - ${err}`);
+        return res.send(`Error saving post - ${err}`);
       } else {
         newPost.save((err, data) => {
           if (err) {
-            res.send(err);
+            return res.send(err);
           } else {
             userSchema.findOneAndUpdate(
               query,
@@ -71,7 +78,7 @@ router.post(
                 if (err) {
                   return res.send(err);
                 }
-                return res.send(post);
+                return res.send(data);
               }
             );
           }
@@ -107,12 +114,107 @@ router.post(
         } else {
           newComment.save((err, data) => {
             if (err) {
-              res.send(err);
+              return res.send(err);
             } else {
-              res.send(data);
+              return res.send(data);
             }
           });
         }
+      }
+    );
+  }
+);
+
+router.put(
+  "/update-post",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    query = { post: req.body.post };
+    postSchema.findOneAndUpdate(
+      query,
+      { post: req.body.post },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Post has been updated!");
+      }
+    );
+  }
+);
+
+router.put(
+  "/update-comment",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    query = { userComment: req.body.userComment };
+    commentSchema.findOneAndUpdate(
+      query,
+      { userComment: req.body.userComment },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Comment has been updated!");
+      }
+    );
+  }
+);
+
+router.delete(
+  "/delete-post",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let arrayOfComments = postSchema.findOne(
+      { post: req.body.post },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return Array.from(...response.comments);
+      }
+    );
+
+    arrayOfComments.forEach(comment => {
+      commentSchema.findByIdAndDelete(comment, (err, response) => {
+        if (err) {
+          return res.send(err);
+        } else {
+          return "Comments deleted";
+        }
+      });
+    });
+
+    let postId = postSchema.findOne(
+      { post: req.body.post },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return response._id;
+      }
+    );
+
+    postSchema.findByIdAndDelete(postId, (err, response) => {
+      if (err) {
+        return res.send(err);
+      }
+      return res.send("Post and comments deleted!");
+    });
+  }
+);
+
+router.delete(
+  "/delete-comment",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    commentSchema.findOneAndDelete(
+      { userComment: req.body.userComment },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Comment deleted!");
       }
     );
   }

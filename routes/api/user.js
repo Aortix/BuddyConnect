@@ -40,21 +40,21 @@ router.post("/sign-up", (req, res) => {
       //Adjust later and use promises or async/await instead.
       newProfile.save(err => {
         if (err) {
-          res.send(err);
+          return res.send(err);
         } else {
           newComment.save(err => {
             if (err) {
-              res.send(err);
+              return res.send(err);
             } else {
               newPost.save(err => {
                 if (err) {
-                  res.send(err);
+                  return res.send(err);
                 } else {
                   newUser.save((err, data) => {
                     if (err) {
-                      res.send(err);
+                      return res.send(err);
                     } else {
-                      res.send(data);
+                      return res.send("New User has been created.\n" + data);
                     }
                   });
                 }
@@ -65,7 +65,7 @@ router.post("/sign-up", (req, res) => {
       });
     });
   } else {
-    res.send("Passwords must match!");
+    return res.send("Passwords must match!");
   }
 });
 
@@ -94,8 +94,13 @@ router.post("/login", (req, res) => {
         if (data !== true) {
           return res.send("Password is incorrect.");
         } else {
+          let query = {
+            id: response._id,
+            name: response.name,
+            p_id: response.profile
+          };
           jwt.sign(
-            { id: response._id, name: response.name, avatar: response.avatar },
+            query,
             process.env.SECRET_KEY,
             {
               expiresIn: "1h"
@@ -111,9 +116,204 @@ router.post("/login", (req, res) => {
       });
     })
     .catch(err => {
-      res.send(`There was an error - ${err}`);
+      return res.send(`There was an error - ${err}`);
     });
 });
+
+//Private Route
+//Updating the current user's name
+router.put(
+  "/update-name",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    userSchema.findByIdAndUpdate(
+      req.user.id,
+      { name: req.body.name },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Users name has been changed.\n" + response);
+      }
+    );
+  }
+);
+
+//Private Route
+//Updating the current user's email
+router.put(
+  "/update-email",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    userSchema.findByIdAndUpdate(
+      req.user.id,
+      { email: req.body.email },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Users email has been changed.\n" + response);
+      }
+    );
+  }
+);
+
+//Private Route
+//Updating the current user's password
+router.put(
+  "/update-password",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    if (req.body.newPassword === req.body.newPassword2) {
+      userSchema
+        .findById(req.user.id, (err, user) => {
+          if (err) {
+            return res.send(err);
+          } else if (user === null || user === undefined || user === 0) {
+            return res.send("User not found.");
+          } else {
+            return user;
+          }
+        })
+        .then(user => {
+          bcrypt.compare(
+            req.body.currentPassword,
+            user.password,
+            (err, response) => {
+              if (err) {
+                return res.send(err);
+              }
+              if (response !== true) {
+                return res.send("Password is incorrect!");
+              } else {
+                bcrypt.hash(req.body.newPassword, saltRounds, (err, salt) => {
+                  if (err) {
+                    return res.send(err);
+                  } else {
+                    userSchema.findByIdAndUpdate(
+                      req.user.id,
+                      { password: salt, password2: salt },
+                      (err, response) => {
+                        if (err) {
+                          return res.send(err);
+                        } else {
+                          return res.send("Password Changed!");
+                        }
+                      }
+                    );
+                  }
+                });
+              }
+            }
+          );
+        })
+        .catch(err => {
+          return res.send(`Caught an error -> ${err}`);
+        });
+    } else {
+      return res.send("New password does not match in both entries!");
+    }
+  }
+);
+
+//Private Route
+//Adds a friend to your friends list
+router.put(
+  "/add-friend",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    userSchema.findByIdAndUpdate(
+      req.user.id,
+      { $push: { friends: req.body.friend } },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        } else {
+          return res.send("Friend has been added.");
+        }
+      }
+    );
+  }
+);
+
+router.delete(
+  "/delete-friend",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    userSchema.findByIdAndUpdate(
+      req.user.id,
+      { $pull: { friends: req.body.friendId } },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        } else {
+          return res.send("Friend was deleted!");
+        }
+      }
+    );
+  }
+);
+
+//Private Route
+//Removes user account and profile; still deciding on whether or not to remove posts and comments from the past...
+router.delete(
+  "/delete-user",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    /* Going to come back to this...
+    userSchema.findById(req.user.id, (err, user) => {
+      if (err) {
+        return res.send(err);
+      } else {
+        let userPostsIds = Array.from(...user.userPosts);
+        let userCommentsIds = [];
+        userPostsIds.forEach((postIds, index) => {
+          postSchema.findById(postIds, (err, posts) => {
+            if (err) {
+              return res.send(err);
+            } else {
+              userCommentsIds += posts.comments[index];
+              return console.log(postIds, posts, userCommentsIds);
+            }
+          });
+        });
+        userCommentsIds.forEach(comments => {
+          commentsSchema.findById(comments, (err, comment) => {
+            if (err) {
+              return res.send(err);
+            } else {
+              return console.log(comment);
+            }
+          });
+        });
+      }
+    });
+
+    /*let profileId = userSchema.findById(req.user.id, (err, response) => {
+      if (err) {
+        return res.send(err);
+      }
+      return response.profile;
+    });
+
+    profileSchema.findByIdAndDelete(profileId, (err, response) => {
+      if (err) {
+        return res.send(err);
+      }
+
+      //should redirect to login page
+      return res.send(response);
+    });
+
+    userSchema.findByIdAndDelete(req.user.id, (err, response) => {
+      if (err) {
+        return res.send(err);
+      }
+
+      return res.send(response);
+    }); */
+  }
+);
 
 //Private Route
 //Gets the current user that is logged in
@@ -121,7 +321,7 @@ router.get(
   "/current-user",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.send(req.user);
+    return res.send(req.user);
   }
 );
 module.exports = router;

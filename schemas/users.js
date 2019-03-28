@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   dateRegistered: { type: Date, default: Date.now(), required: true },
+  dateUpdated: { type: Date, default: Date.now(), required: false },
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
