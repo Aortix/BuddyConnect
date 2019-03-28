@@ -23,18 +23,17 @@ router.post("/sign-up", (req, res) => {
       }
 
       //Creating initial user schema requires these other initial schema declarations in order to have everything connected by ref
-      const newProfile = new profileSchema({});
       const newComment = new commentsSchema({});
       const newPost = new postSchema({
         comments: [newComment]
       });
+      const newProfile = new profileSchema({ userPosts: [newPost] });
       const newUser = new userSchema({
         name: req.body.name,
         email: req.body.email,
         password: salt,
         password2: salt,
-        profile: newProfile,
-        userPosts: newPost
+        profile: newProfile
       });
 
       //Adjust later and use promises or async/await instead.
@@ -96,14 +95,14 @@ router.post("/login", (req, res) => {
         } else {
           let query = {
             id: response._id,
-            name: response.name,
-            p_id: response.profile
+            p_id: response.profile,
+            name: response.name
           };
           jwt.sign(
             query,
             process.env.SECRET_KEY,
             {
-              expiresIn: "1h"
+              expiresIn: "4h"
             },
             (err, token) => {
               if (err) {
@@ -219,12 +218,12 @@ router.put(
 //Private Route
 //Adds a friend to your friends list
 router.put(
-  "/add-friend",
+  "/add-friend/:profileId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userSchema.findByIdAndUpdate(
       req.user.id,
-      { $push: { friends: req.body.friend } },
+      { $push: { friends: req.params.profileId } },
       (err, response) => {
         if (err) {
           return res.send(err);
@@ -236,13 +235,15 @@ router.put(
   }
 );
 
-router.delete(
-  "/delete-friend",
+//Private Route
+//Deleting a friend using their profileId as a param
+router.put(
+  "/delete-friend/:profileId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userSchema.findByIdAndUpdate(
       req.user.id,
-      { $pull: { friends: req.body.friendId } },
+      { $pull: { friends: req.params.profileId } },
       (err, response) => {
         if (err) {
           return res.send(err);
@@ -255,12 +256,37 @@ router.delete(
 );
 
 //Private Route
+//Gets the current user that is logged in
+router.get(
+  "/current-user",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    userSchema
+      .findById(req.user.id)
+      .populate("profile")
+      .populate({ path: "profile", populate: { path: "userPosts" } })
+      .populate({
+        path: "profile",
+        populate: { path: "userPosts", populate: { path: "comments" } }
+      })
+      .exec((err, response) => {
+        if (err) {
+          return res.send(err);
+        } else {
+          return res.send(response);
+        }
+      });
+  }
+);
+
+//Private Route
 //Removes user account and profile; still deciding on whether or not to remove posts and comments from the past...
+//Will come back to this...
 router.delete(
   "/delete-user",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    /* Going to come back to this...
+    /*
     userSchema.findById(req.user.id, (err, user) => {
       if (err) {
         return res.send(err);
@@ -312,16 +338,6 @@ router.delete(
 
       return res.send(response);
     }); */
-  }
-);
-
-//Private Route
-//Gets the current user that is logged in
-router.get(
-  "/current-user",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    return res.send(req.user);
   }
 );
 module.exports = router;

@@ -11,10 +11,10 @@ require("./../../auth/jwtStrategy")(passport);
 //Private Route
 //Used to get a user's profile information
 router.get(
-  "/profile",
+  "/:profileId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findOne({ name: req.params.name }, (err, data) => {
+    profileSchema.findById(req.params.profileId, (err, data) => {
       if (err) {
         return res.send(err);
       }
@@ -29,9 +29,8 @@ router.put(
   "/update-header",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let query = { _id: req.user.p_id };
-    profileSchema.findOneAndUpdate(
-      query,
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
       { header: req.body.header },
       (err, response) => {
         if (err) {
@@ -49,9 +48,8 @@ router.put(
   "/update-avatar",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let query = { _id: req.user.p_id };
-    profileSchema.findOneAndUpdate(
-      query,
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
       { avatar: req.body.avatar },
       (err, response) => {
         if (err) {
@@ -69,9 +67,8 @@ router.put(
   "/update-song",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let query = { _id: req.user.p_id };
-    profileSchema.findOneAndUpdate(
-      query,
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
       { song: req.body.song },
       (err, response) => {
         if (err) {
@@ -89,9 +86,8 @@ router.put(
   "/update-aboutMe",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let query = { _id: req.user.p_id };
-    profileSchema.findOneAndUpdate(
-      query,
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
       { aboutMe: req.body.aboutMe },
       (err, response) => {
         if (err) {
@@ -109,9 +105,8 @@ router.put(
   "/update-interests",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let query = { _id: req.user.p_id };
-    profileSchema.findOneAndUpdate(
-      query,
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
       { interests: req.body.interests },
       (err, response) => {
         if (err) {
@@ -123,4 +118,98 @@ router.put(
   }
 );
 
+//Private Route
+//Used to reset the user's header back to default
+router.put(
+  "/reset-header",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
+      { header: null },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Header Reset!");
+      }
+    );
+  }
+);
+
+//Private Route
+//Used to reset the user's avatar back to default
+router.put(
+  "/reset-avatar",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
+      { avatar: null },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Avatar Reset!");
+      }
+    );
+  }
+);
+
+//Private Route
+//Used to reset the user's song back to default
+router.put(
+  "/reset-song",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
+      { song: null },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Song Reset!");
+      }
+    );
+  }
+);
+
+//Private Route
+//Used to reset the user's about me section back to default
+router.put(
+  "/reset-aboutMe",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
+      { aboutMe: null },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("About me Reset!");
+      }
+    );
+  }
+);
+
+//Private Route
+//Used to reset the user's interests back to default
+router.put(
+  "/reset-interests",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findByIdAndUpdate(
+      req.user.p_id,
+      { interests: null },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Interests Reset!");
+      }
+    );
+  }
+);
 module.exports = router;

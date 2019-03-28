@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const profileSchema = require("./profiles");
-const postSchema = require("./posts");
 
 const Schema = mongoose.Schema;
 
@@ -16,14 +15,7 @@ const UserSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: profileSchema,
     required: true
-  },
-  userPosts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: postSchema,
-      required: true
-    }
-  ]
+  }
 });
 
 const users = mongoose.model("user", UserSchema);

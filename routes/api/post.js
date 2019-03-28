@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const router = express.Router();
 const userSchema = require("../../schemas/users.js");
+const profileSchema = require("../../schemas/profiles.js");
 const postSchema = require("../../schemas/posts.js");
 const commentSchema = require("../../schemas/comments.js");
 
@@ -34,17 +35,17 @@ router.get(
         return res.send(err);
       } else {
         response.friends.forEach(friends => {
-          userSchema.findById(friends, (err, response) => {
-            if (err) {
-              return res.send(err);
-            } else {
-              response.populate("userPosts").exec(
-                response.userPosts.map(posts => {
-                  return res.send(posts);
-                })
-              );
-            }
-          });
+          profileSchema
+            .findById(friends)
+            .populate("userPosts")
+            .populate({ path: "userPosts", populate: { path: "comments" } })
+            .exec((err, response) => {
+              if (err) {
+                return res.send(err);
+              } else {
+                return res.send(response);
+              }
+            });
         });
       }
     });
@@ -57,7 +58,7 @@ router.post(
   "/create-post",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let query = { _id: req.user.id };
+    let query = { _id: req.user.p_id };
     const newComment = new commentSchema({});
     const newPost = new postSchema({
       post: req.body.post,
@@ -71,7 +72,7 @@ router.post(
           if (err) {
             return res.send(err);
           } else {
-            userSchema.findOneAndUpdate(
+            profileSchema.findOneAndUpdate(
               query,
               { $push: { userPosts: data } },
               (err, post) => {
@@ -125,11 +126,13 @@ router.post(
   }
 );
 
+//Private Route
+//Used to update a user's post
 router.put(
   "/update-post",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    query = { post: req.body.post };
+    query = { post: req.body.initialPost };
     postSchema.findOneAndUpdate(
       query,
       { post: req.body.post },
@@ -143,11 +146,13 @@ router.put(
   }
 );
 
+//Private Route
+//Used to update a user's comment
 router.put(
   "/update-comment",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    query = { userComment: req.body.userComment };
+    query = { userComment: req.body.initialComment };
     commentSchema.findOneAndUpdate(
       query,
       { userComment: req.body.userComment },
@@ -161,49 +166,50 @@ router.put(
   }
 );
 
+//Private Route
+//Used to delete a user's post
 router.delete(
   "/delete-post",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let arrayOfComments = postSchema.findOne(
-      { post: req.body.post },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return Array.from(...response.comments);
-      }
-    );
-
-    arrayOfComments.forEach(comment => {
-      commentSchema.findByIdAndDelete(comment, (err, response) => {
-        if (err) {
-          return res.send(err);
-        } else {
-          return "Comments deleted";
-        }
-      });
-    });
-
-    let postId = postSchema.findOne(
-      { post: req.body.post },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return response._id;
-      }
-    );
-
-    postSchema.findByIdAndDelete(postId, (err, response) => {
+    postSchema.findOne({ post: req.body.post }, (err, response) => {
       if (err) {
         return res.send(err);
       }
-      return res.send("Post and comments deleted!");
+      let arrayOfCommentIds = response.comments;
+      arrayOfCommentIds.forEach(comment => {
+        commentSchema.findByIdAndDelete(comment, (err, response) => {
+          console.log(response);
+          if (err) {
+            return res.send(err);
+          } else {
+            return console.log(`Comment deleted - ${response}`);
+          }
+        });
+      });
+      postSchema.findByIdAndDelete(response._id, (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return console.log("Posts and comments deleted!");
+      });
+      profileSchema.findByIdAndUpdate(
+        req.user.p_id,
+        { $pull: { userPosts: response._id } },
+        (err, response) => {
+          if (err) {
+            return res.send(err);
+          } else {
+            return res.send(response);
+          }
+        }
+      );
     });
   }
 );
 
+//Private Route
+//Used to delete a user's comment on a post
 router.delete(
   "/delete-comment",
   passport.authenticate("jwt", { session: false }),
@@ -214,7 +220,21 @@ router.delete(
         if (err) {
           return res.send(err);
         }
-        return res.send("Comment deleted!");
+        console.log("Comment deleted!");
+        let query = { post: req.body.post };
+        postSchema.findOneAndUpdate(
+          query,
+          { $pull: { comments: response._id } },
+          (err, response) => {
+            if (err) {
+              return res.send(err);
+            } else {
+              return res.send(
+                "Comment deleted along with embedded comment in post!"
+              );
+            }
+          }
+        );
       }
     );
   }
