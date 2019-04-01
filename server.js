@@ -13,8 +13,17 @@ const app = express();
 const port = 5000;
 
 //Uses bodyparser to parse incoming request bodies and make info available under req.body
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 //Initializes passport for express
 app.use(passport.initialize());
