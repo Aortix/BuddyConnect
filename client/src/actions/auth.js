@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOGIN_INFORMATION, AUTHENTICATED } from "./../actions/types";
+import { LOGIN_INFORMATION, AUTHENTICATED, LOGOUT } from "./../actions/types";
 
 export const authSignUp = (
   name,
@@ -41,7 +41,10 @@ export const authLogin = (email, password) => dispatch => {
         }
       });
       window.localStorage.setItem("token", data.data.token);
-      console.log("Token should be in localstorage if login was successful.");
+      console.log("Token should be in localstorage.");
+    })
+    .then(data => {
+      dispatch(authCheck());
     })
     .catch(err => {
       return err;
@@ -49,30 +52,49 @@ export const authLogin = (email, password) => dispatch => {
 };
 
 export const authCheck = () => dispatch => {
-  const requestBody = {
-    token: localStorage.getItem("token")
-  };
+  //Grab the token
+  let token = window.localStorage.getItem("token");
+  //Run a series of test to validate the token, if one fails then return null (will update with more tests)
+  if (token === undefined || token === null || token === "undefined") {
+    return null;
+  } else {
+    //Create form to be sent to backend
+    const requestBody = {
+      token: token
+    };
 
-  const config = {
-    headers: {
-      Authorization: localStorage.getItem("token")
-    }
-  };
-  axios
-    .post("http://localhost:5000/api/user/verify-user", requestBody, config)
-    .then(data => {
-      console.log("returned true!");
-      dispatch({
-        type: AUTHENTICATED,
-        payload: { authenticated: true }
+    //Configure headers for backend
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    };
+
+    //Make the call to this route on the backend to ensure token corresponds to a user
+    axios
+      .post("http://localhost:5000/api/user/verify-user", requestBody, config)
+      .then(data => {
+        //Authenticate the user in redux state
+        dispatch({
+          type: AUTHENTICATED,
+          payload: 1
+        });
+      })
+      .catch(err => {
+        //Unauthenticate the user in redux state
+        dispatch({
+          type: AUTHENTICATED,
+          payload: 0
+        });
+        console.log(err);
       });
-    })
-    .catch(err => {
-      console.log("returned false");
-      dispatch({
-        type: AUTHENTICATED,
-        payload: { authenticated: false }
-      });
-      console.log(err);
-    });
+  }
+};
+
+export const authLogout = () => dispatch => {
+  window.localStorage.removeItem("token");
+  dispatch({
+    type: LOGOUT,
+    payload: false
+  });
 };

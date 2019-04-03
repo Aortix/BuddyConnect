@@ -1,4 +1,4 @@
-import { LOGIN_INFORMATION, AUTHENTICATED } from "./../actions/types";
+import { LOGIN_INFORMATION, AUTHENTICATED, LOGOUT } from "./../actions/types";
 
 const initialState = {
   email: "",
@@ -10,12 +10,17 @@ export const authReducer = (state = initialState, action) => {
     case LOGIN_INFORMATION:
       return {
         ...state,
-        email: action.payload.email
+        email: action.payload
       };
     case AUTHENTICATED:
       return {
         ...state,
-        authenticated: action.payload.authenticated
+        authenticated: action.payload === 1 ? true : false
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        authenticated: action.payload
       };
     default:
       return state;
