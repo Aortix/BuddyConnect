@@ -1,24 +1,37 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "./App.css";
 
 //Actions
-import authLogin from "./actions/authLogin";
+import { authLogin, authSignUp, authCheck } from "./actions/auth";
 
 //Components
 import Login from "./components/Login/Login";
+import SignUp from "./components/SignUp/SignUp";
+import Header from "./components/Header/Header";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 class App extends Component {
   state = {
+    name: "",
     email: "",
-    password: ""
+    password: "",
+    confirm_password: ""
   };
 
   handleLoginSubmit = event => {
     event.preventDefault();
-    this.props.onFormSubmit(
-      event.target.email.value,
-      event.target.password.value
+    this.props.onLoginSubmit(this.state.email, this.state.password);
+  };
+
+  handleSignUpSubmit = event => {
+    event.preventDefault();
+    this.props.onSignUpSubmit(
+      this.state.name,
+      this.state.email,
+      this.state.password,
+      this.state.confirm_password
     );
   };
 
@@ -26,35 +39,70 @@ class App extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-    console.log(this.state.email, this.state.password);
   };
 
   render() {
     return (
-      <div className="App">
-        <Login
-          handleLoginSubmit={this.handleLoginSubmit}
-          handleChange={this.handleChange}
-          email={this.state.email}
-          password={this.state.password}
-        />
-        <p>
-          {this.props.email} {this.props.password} {this.props.token}
-        </p>
-      </div>
+      <Router>
+        <div className="App">
+          <Route path="/" component={Header} />
+          <Route
+            exact
+            path="/dashboard"
+            render={props => (
+              <Dashboard
+                authCheck={this.props.authCheck}
+                authenticated={this.props.authenticated}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/sign-up"
+            render={() => (
+              <SignUp
+                handleSignUpSubmit={this.handleSignUpSubmit}
+                handleChange={this.handleChange}
+                name={this.state.name}
+                email={this.state.email}
+                password={this.state.password}
+                confirm_password={this.state.confirm_password}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/login"
+            render={() => (
+              <Login
+                handleLoginSubmit={this.handleLoginSubmit}
+                handleChange={this.handleChange}
+                email={this.state.email}
+                password={this.state.password}
+              />
+            )}
+          />
+        </div>
+      </Router>
     );
   }
 }
 
 const mapStateToProps = state => ({
   email: state.authReducer.email,
-  password: state.authReducer.password,
-  token: state.authReducer.token
+  authenticated: state.authReducer.authenticated
 });
 
 const mapDispatchToProps = dispatch => ({
-  onFormSubmit: (email, password) => {
+  onSignUpSubmit: (name, email, password, confirm_password) => {
+    dispatch(authSignUp(name, email, password, confirm_password));
+  },
+  onLoginSubmit: (email, password) => {
     dispatch(authLogin(email, password));
+  },
+  authCheck: () => {
+    dispatch(authCheck());
   }
 });
 

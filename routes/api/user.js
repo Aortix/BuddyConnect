@@ -279,6 +279,24 @@ router.get(
   }
 );
 
+router.post(
+  "/verify-user",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    jwt.verify(
+      req.body.token.substring(7, req.body.token.length),
+      process.env.SECRET_KEY,
+      (err, decoded) => {
+        if (err) {
+          return res.send(err);
+        } else {
+          return res.send(decoded);
+        }
+      }
+    );
+  }
+);
+
 //Private Route
 //Removes user account and profile; still deciding on whether or not to remove posts and comments from the past...
 //Will come back to this...
