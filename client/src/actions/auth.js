@@ -37,7 +37,7 @@ export const authLogin = (email, password) => dispatch => {
       dispatch({
         type: LOGIN_INFORMATION,
         payload: {
-          email: data.email
+          email: email
         }
       });
       window.localStorage.setItem("token", data.data.token);

@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react";
 
 export default function PostTabs() {
   return (
-    <div>
-      
+    <div className="PostTabs-Container">
+      <button>Posts</button>
+      <button>Global</button>
     </div>
-  )
+  );
 }

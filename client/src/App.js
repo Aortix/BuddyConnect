@@ -5,6 +5,7 @@ import "./App.css";
 
 //Actions
 import { authLogin, authSignUp, authCheck, authLogout } from "./actions/auth";
+import { getAllPosts } from "./actions/posts";
 
 //Components
 import Login from "./components/Login/Login";
@@ -16,6 +17,15 @@ import Dashboard from "./components/Dashboard/Dashboard";
 class App extends Component {
   componentDidMount = () => {
     this.props.authCheck();
+  };
+
+  componentDidUpdate = prevProps => {
+    if (
+      prevProps.authenticated !== this.props.authenticated &&
+      this.props.authenticated !== false
+    ) {
+      this.props.getAllPosts();
+    }
   };
 
   state = {
@@ -56,7 +66,17 @@ class App extends Component {
               <Header authLogout={this.props.authLogout} {...props} />
             )}
           />
-          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          <PrivateRoute
+            exact
+            path="/dashboard"
+            component={props => (
+              <Dashboard
+                getAllPosts={this.props.getAllPosts}
+                posts={this.props.posts}
+                {...props}
+              />
+            )}
+          />
           <Route
             exact
             path="/sign-up"
@@ -97,7 +117,8 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   email: state.authReducer.email,
-  authenticated: state.authReducer.authenticated
+  authenticated: state.authReducer.authenticated,
+  posts: state.postsReducer.all_posts
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -112,6 +133,9 @@ const mapDispatchToProps = dispatch => ({
   },
   authLogout: () => {
     dispatch(authLogout());
+  },
+  getAllPosts: () => {
+    dispatch(getAllPosts());
   }
 });
 
