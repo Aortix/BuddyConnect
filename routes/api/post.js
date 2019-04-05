@@ -15,12 +15,15 @@ router.get(
   "/global-posts",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    postSchema.find({}, (err, posts) => {
-      if (err) {
-        return res.send(`There was an error finding the posts - ${err}`);
-      }
-      return res.send(posts);
-    });
+    postSchema
+      .find({})
+      .populate("comments")
+      .exec((err, posts) => {
+        if (err) {
+          return res.send(`There was an error finding the posts - ${err}`);
+        }
+        return res.send(posts);
+      });
   }
 );
 

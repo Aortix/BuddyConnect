@@ -8,7 +8,15 @@ export default class Post extends Component {
       return (
         <div>
           {this.props.posts.map(post => {
-            return <p key={post._id}>{post.post}</p>;
+            return (
+              <div key={post._id}>
+                {post.post}
+                {post.comments.map(comments => {
+                  return <div key={comments._id}>{comments.userComment}</div>;
+                })}
+                <br />
+              </div>
+            );
           })}
         </div>
       );
