@@ -13,6 +13,7 @@ import SignUp from "./components/SignUp/SignUp";
 import PrivateRoute from "./components/Private_Route/Private_Route";
 import Header from "./components/Header/Header";
 import Dashboard from "./components/Dashboard/Dashboard";
+import Profile from "./components/Profile/Profile";
 
 class App extends Component {
   componentDidMount = () => {
@@ -76,6 +77,10 @@ class App extends Component {
                 {...props}
               />
             )}
+          />
+          <PrivateRoute
+            path="/profile/:profileId"
+            component={props => <Profile {...props} />}
           />
           <Route
             exact

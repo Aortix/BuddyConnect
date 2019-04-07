@@ -1,21 +1,26 @@
 const mongoose = require("mongoose");
+const profileSchema = require("./profiles");
 
 const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema({
   datePosted: { type: Date, default: Date.now(), required: true },
-  userId: { type: String, default: "Initial Comment. Ignore.", required: true },
-  userName: {
+  commenterP_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: profileSchema,
+    required: true
+  },
+  commenterName: {
     type: String,
     default: "Initial Comment. Ignore.",
     required: true
   },
-  userAvatar: {
+  commenterAvatar: {
     type: String,
     default: "Initial Comment. Ignore.",
     required: true
   },
-  userComment: {
+  commenterComment: {
     type: String,
     default: "Initial Comment. Ignore.",
     required: true

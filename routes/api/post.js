@@ -61,23 +61,23 @@ router.post(
   "/create-post",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let query = { _id: req.user.p_id };
-    const newComment = new commentSchema({});
-    const newPost = new postSchema({
-      post: req.body.post,
-      comments: [newComment]
-    });
-    newComment.save(err => {
+    profileSchema.findOne({ user: req.user.id }, (err, response) => {
       if (err) {
-        return res.send(`Error saving post - ${err}`);
+        return res.send(err);
       } else {
+        //const newComment = new commentSchema({});
+        const newPost = new postSchema({
+          p_id: response._id,
+          post: req.body.post
+        });
+
         newPost.save((err, data) => {
           if (err) {
             return res.send(err);
           } else {
-            profileSchema.findOneAndUpdate(
-              query,
-              { $push: { userPosts: data } },
+            profileSchema.findByIdAndUpdate(
+              response._id,
+              { $push: { posts: data } },
               (err, post) => {
                 if (err) {
                   return res.send(err);
@@ -98,34 +98,46 @@ router.post(
   "/create-comment",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const newComment = new commentSchema({
-      userId: req.user.id,
-      userName: req.user.name,
-      userAvatar: req.user.avatar,
-      userComment: req.body.comment
-    });
+    profileSchema.findOne({ user: req.user.id }, (err, response) => {
+      if (err) {
+        return res.send(err);
+      } else {
+        userSchema.findById(req.user.id, (err, response2) => {
+          if (err) {
+            return res.send(err);
+          } else {
+            const newComment = new commentSchema({
+              commenterP_id: response._id,
+              commenterName: response2.name,
+              commenterAvatar: response2.avatar,
+              commenterComment: req.body.comment
+            });
 
-    let query = {
-      post: req.body.mainPosterContent
-    };
+            let query = {
+              post: req.body.post
+            };
 
-    postSchema.findOneAndUpdate(
-      query,
-      { $push: { comments: newComment } },
-      err => {
-        if (err) {
-          return res.send(err);
-        } else {
-          newComment.save((err, data) => {
-            if (err) {
-              return res.send(err);
-            } else {
-              return res.send(data);
-            }
-          });
-        }
+            postSchema.findOneAndUpdate(
+              query,
+              { $push: { comments: newComment } },
+              err => {
+                if (err) {
+                  return res.send(err);
+                } else {
+                  newComment.save((err, data) => {
+                    if (err) {
+                      return res.send(err);
+                    } else {
+                      return res.send(data);
+                    }
+                  });
+                }
+              }
+            );
+          }
+        });
       }
-    );
+    });
   }
 );
 

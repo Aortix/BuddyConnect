@@ -23,41 +23,33 @@ router.post("/sign-up", (req, res) => {
       }
 
       //Creating initial user schema requires these other initial schema declarations in order to have everything connected by ref
-      const newComment = new commentsSchema({});
-      const newPost = new postSchema({
+      //const newComment = new commentsSchema({});
+      /*const newPost = new postSchema({
         comments: [newComment]
-      });
-      const newProfile = new profileSchema({ userPosts: [newPost] });
+      });*/
       const newUser = new userSchema({
         name: req.body.name,
         email: req.body.email,
         password: salt,
-        password2: salt,
-        profile: newProfile
+        password2: salt
+      });
+
+      const newProfile = new profileSchema({
+        user: newUser /*posts: [newPost]*/
       });
 
       //Adjust later and use promises or async/await instead.
-      newProfile.save(err => {
+      newUser.save(err => {
         if (err) {
           return res.send(err);
         } else {
-          newComment.save(err => {
+          newProfile.save((err, data) => {
             if (err) {
               return res.send(err);
             } else {
-              newPost.save(err => {
-                if (err) {
-                  return res.send(err);
-                } else {
-                  newUser.save((err, data) => {
-                    if (err) {
-                      return res.send(err);
-                    } else {
-                      return res.send("New User has been created.\n" + data);
-                    }
-                  });
-                }
-              });
+              return res.send(
+                "New User and Profile have been created.\n" + data
+              );
             }
           });
         }
@@ -95,7 +87,6 @@ router.post("/login", (req, res) => {
         } else {
           let query = {
             id: response._id,
-            p_id: response.profile,
             name: response.name
           };
           jwt.sign(
@@ -121,7 +112,7 @@ router.post("/login", (req, res) => {
 
 //Private Route
 //Updating the current user's name
-router.put(
+/*router.put(
   "/update-name",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
@@ -136,7 +127,7 @@ router.put(
       }
     );
   }
-);
+);*/
 
 //Private Route
 //Updating the current user's email
@@ -216,46 +207,6 @@ router.put(
 );
 
 //Private Route
-//Adds a friend to your friends list
-router.put(
-  "/add-friend/:profileId",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    userSchema.findByIdAndUpdate(
-      req.user.id,
-      { $push: { friends: req.params.profileId } },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        } else {
-          return res.send("Friend has been added.");
-        }
-      }
-    );
-  }
-);
-
-//Private Route
-//Deleting a friend using their profileId as a param
-router.put(
-  "/delete-friend/:profileId",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    userSchema.findByIdAndUpdate(
-      req.user.id,
-      { $pull: { friends: req.params.profileId } },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        } else {
-          return res.send("Friend was deleted!");
-        }
-      }
-    );
-  }
-);
-
-//Private Route
 //Gets the current user that is logged in
 router.get(
   "/current-user",
@@ -263,12 +214,12 @@ router.get(
   (req, res) => {
     userSchema
       .findById(req.user.id)
-      .populate("profile")
+      /*.populate("profile")
       .populate({ path: "profile", populate: { path: "userPosts" } })
       .populate({
         path: "profile",
         populate: { path: "userPosts", populate: { path: "comments" } }
-      })
+      })*/
       .exec((err, response) => {
         if (err) {
           return res.send(err);

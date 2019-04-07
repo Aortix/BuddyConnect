@@ -2,12 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-const HeaderAuth = props => {
+export const HeaderAuth = props => {
   if (props.authenticated === true) {
     return (
       <div>
         <span>
-          <Link to="/profile">Profile </Link>
+          <Link to="/profile/1">Profile </Link>
         </span>
         <span>
           <Link to="/login" onClick={props.authLogout}>

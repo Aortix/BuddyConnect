@@ -24,13 +24,53 @@ router.get(
 );
 
 //Private Route
+//Adds a friend to your friends list
+router.put(
+  "/add-friend/:profileId",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
+      { $push: { friends: req.params.profileId } },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        } else {
+          return res.send("Friend has been added.");
+        }
+      }
+    );
+  }
+);
+
+//Private Route
+//Deleting a friend using their profileId as a param
+router.put(
+  "/delete-friend/:profileId",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
+      { $pull: { friends: req.params.profileId } },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        } else {
+          return res.send("Friend was deleted!");
+        }
+      }
+    );
+  }
+);
+
+//Private Route
 //Used to update the user's header
 router.put(
   "/update-header",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
       { header: req.body.header },
       (err, response) => {
         if (err) {
@@ -44,12 +84,12 @@ router.put(
 
 //Private Route
 //Used to update the user's avatar
-router.put(
+/*router.put(
   "/update-avatar",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
+    profileSchema.findOneAndUpdate(
+      {user: req.user.id},
       { avatar: req.body.avatar },
       (err, response) => {
         if (err) {
@@ -59,7 +99,7 @@ router.put(
       }
     );
   }
-);
+);*/
 
 //Private Route
 //Used to update the user's song
@@ -67,8 +107,8 @@ router.put(
   "/update-song",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
       { song: req.body.song },
       (err, response) => {
         if (err) {
@@ -86,8 +126,8 @@ router.put(
   "/update-aboutMe",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
       { aboutMe: req.body.aboutMe },
       (err, response) => {
         if (err) {
@@ -105,8 +145,8 @@ router.put(
   "/update-interests",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
       { interests: req.body.interests },
       (err, response) => {
         if (err) {
@@ -124,9 +164,9 @@ router.put(
   "/reset-header",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
-      { header: null },
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
+      { header: "Standard" },
       (err, response) => {
         if (err) {
           return res.send(err);
@@ -139,12 +179,12 @@ router.put(
 
 //Private Route
 //Used to reset the user's avatar back to default
-router.put(
+/*router.put(
   "/reset-avatar",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
+    profileSchema.findOneAndUpdate(
+      {user: req.user.id},
       { avatar: null },
       (err, response) => {
         if (err) {
@@ -154,7 +194,7 @@ router.put(
       }
     );
   }
-);
+);*/
 
 //Private Route
 //Used to reset the user's song back to default
@@ -162,9 +202,9 @@ router.put(
   "/reset-song",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
-      { song: null },
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
+      { song: "Standard" },
       (err, response) => {
         if (err) {
           return res.send(err);
@@ -181,9 +221,9 @@ router.put(
   "/reset-aboutMe",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
-      { aboutMe: null },
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
+      { aboutMe: "Standard" },
       (err, response) => {
         if (err) {
           return res.send(err);
@@ -200,9 +240,9 @@ router.put(
   "/reset-interests",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    profileSchema.findByIdAndUpdate(
-      req.user.p_id,
-      { interests: null },
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
+      { interests: "Standard" },
       (err, response) => {
         if (err) {
           return res.send(err);
