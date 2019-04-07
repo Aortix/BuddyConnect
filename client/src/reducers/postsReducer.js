@@ -1,9 +1,9 @@
 import { GET_GLOBAL_POSTS } from "./../actions/types";
 
 const initialState = {
-  all_posts: null,
+  global_posts: null,
   friends_posts: null,
-  my_posts: null
+  profile_posts: null
 };
 
 export const postsReducer = (state = initialState, action) => {
@@ -11,7 +11,7 @@ export const postsReducer = (state = initialState, action) => {
     case GET_GLOBAL_POSTS:
       return {
         ...state,
-        all_posts: action.payload
+        global_posts: action.payload
       };
     default:
       return state;

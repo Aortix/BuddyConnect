@@ -123,7 +123,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   email: state.authReducer.email,
   authenticated: state.authReducer.authenticated,
-  posts: state.postsReducer.all_posts
+  posts: state.postsReducer.global_posts
 });
 
 const mapDispatchToProps = dispatch => ({
