@@ -1,9 +1,10 @@
-import { GET_GLOBAL_POSTS } from "./../actions/types";
+import { GET_GLOBAL_POSTS, CHANGE_CURRENT_POST } from "./../actions/types";
 
 const initialState = {
   global_posts: null,
   friends_posts: null,
-  profile_posts: null
+  profile_posts: null,
+  current_post: ""
 };
 
 export const postsReducer = (state = initialState, action) => {
@@ -12,6 +13,11 @@ export const postsReducer = (state = initialState, action) => {
       return {
         ...state,
         global_posts: action.payload
+      };
+    case CHANGE_CURRENT_POST:
+      return {
+        ...state,
+        current_post: action.payload
       };
     default:
       return state;

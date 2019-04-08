@@ -5,7 +5,13 @@ import "./App.css";
 
 //Actions
 import { authLogin, authSignUp, authCheck, authLogout } from "./actions/auth";
-import { getAllPosts } from "./actions/posts";
+import {
+  getAllPosts,
+  changeAddComment,
+  createPost,
+  createComment,
+  changePostId
+} from "./actions/posts";
 
 //Components
 import Login from "./components/Login/Login";
@@ -74,6 +80,11 @@ class App extends Component {
               <Dashboard
                 getAllPosts={this.props.getAllPosts}
                 posts={this.props.posts}
+                changeAddComment={this.props.changeAddComment}
+                createPost={this.props.createPost}
+                createComment={this.props.createComment}
+                changePostId={this.props.changePostId}
+                current_post={this.props.current_post}
                 {...props}
               />
             )}
@@ -123,7 +134,8 @@ class App extends Component {
 const mapStateToProps = state => ({
   email: state.authReducer.email,
   authenticated: state.authReducer.authenticated,
-  posts: state.postsReducer.global_posts
+  posts: state.postsReducer.global_posts,
+  current_post: state.postsReducer.current_post
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -141,6 +153,18 @@ const mapDispatchToProps = dispatch => ({
   },
   getAllPosts: () => {
     dispatch(getAllPosts());
+  },
+  changeAddComment: id => {
+    dispatch(changeAddComment(id));
+  },
+  createPost: postText => {
+    dispatch(createPost(postText));
+  },
+  createComment: (commentText, postId) => {
+    dispatch(createComment(commentText, postId));
+  },
+  changePostId: postId => {
+    dispatch(changePostId(postId));
   }
 });
 

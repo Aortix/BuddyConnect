@@ -112,13 +112,8 @@ router.post(
               commenterAvatar: response2.avatar,
               commenterComment: req.body.comment
             });
-
-            let query = {
-              post: req.body.post
-            };
-
-            postSchema.findOneAndUpdate(
-              query,
+            postSchema.findByIdAndUpdate(
+              req.body.post,
               { $push: { comments: newComment } },
               err => {
                 if (err) {
@@ -128,12 +123,36 @@ router.post(
                     if (err) {
                       return res.send(err);
                     } else {
+                      console.log("Comment was added!");
                       return res.send(data);
                     }
                   });
                 }
               }
             );
+          }
+        });
+      }
+    });
+  }
+);
+
+//Private Route
+//Create a comment on a post using the comment schema
+router.put(
+  "/click-add_comment-button",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    postSchema.findById(req.body.postId, (err, dataToUpdate) => {
+      if (err) {
+        return res.send(err);
+      } else {
+        dataToUpdate.addComment = !dataToUpdate.addComment;
+        dataToUpdate.save((err, updatedData) => {
+          if (err) {
+            return res.send(err);
+          } else {
+            return res.send("Add comment button clicked");
           }
         });
       }

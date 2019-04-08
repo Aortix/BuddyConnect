@@ -5,11 +5,16 @@ import CreatePost from "./../CreatePost/CreatePost";
 class Dashboard extends Component {
   state = {
     location: "posts",
-    postText: ""
+    postText: "",
+    commentText: ""
   };
 
   componentDidUpdate = prevProps => {
     if (this.props.posts !== prevProps.posts) this.props.getAllPosts();
+  };
+
+  changePostId = postId => {
+    this.props.changePostId(postId);
   };
 
   changeLocation = e => {
@@ -20,10 +25,20 @@ class Dashboard extends Component {
     this.setState({ postText: e.target.value });
   };
 
+  changeCommentText = e => {
+    this.setState({ commentText: e.target.value });
+  };
+
   submitPostForm = e => {
     e.preventDefault();
-    console.log(this.state.postText);
-    this.setState({ postText: "" });
+    this.props.createPost(this.state.postText);
+    this.setState({ postText: "", commentText: "" });
+  };
+
+  submitCommentForm = e => {
+    e.preventDefault();
+    this.props.createComment(this.state.commentText, this.props.current_post);
+    this.setState({ postText: "", commentText: "" });
   };
 
   render() {
@@ -45,9 +60,11 @@ class Dashboard extends Component {
         <Post
           posts={this.props.posts}
           location={this.state.location}
-          submitPostForm={this.submitPostForm}
-          postText={this.state.postText}
-          changePostText={this.changePostText}
+          submitCommentForm={this.submitCommentForm}
+          commentText={this.state.commentText}
+          changeCommentText={this.changeCommentText}
+          changeAddComment={this.props.changeAddComment}
+          changePostId={this.changePostId}
         />
       </div>
     );

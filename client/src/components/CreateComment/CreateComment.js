@@ -2,15 +2,15 @@ import React from "react";
 
 export default function CreateComment(props) {
   return (
-    <div>
+    <div className="CreateComment-container">
       <form>
         <textarea
-          onChange={props.changePostText}
-          value={props.postText}
+          onChange={props.changeCommentText}
+          value={props.commentText}
           placeholder="Create Comments Here..."
         />
         <br />
-        <input type="submit" value="Submit" onClick={props.submitPostForm} />
+        <input type="submit" value="Submit" onClick={props.submitCommentForm} />
       </form>
     </div>
   );

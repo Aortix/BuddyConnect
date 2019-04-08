@@ -2,6 +2,14 @@ import React, { Component } from "react";
 import CreateComment from "./../CreateComment/CreateComment";
 
 export default class Post extends Component {
+  state = {
+    commentClicked: ""
+  };
+
+  buttonClicked = () => {
+    this.setState({ commentClicked: !this.state.commentClicked });
+  };
+
   render() {
     if (this.props.posts === null) {
       return null;
@@ -14,14 +22,41 @@ export default class Post extends Component {
                 <div key={post._id}>
                   {post.post}
                   {post.comments.map(comments => {
-                    return <div key={comments._id}>{comments.userComment}</div>;
+                    return (
+                      <div key={comments._id}>
+                        <strong>{comments.commenterName}</strong>
+                        <br />
+                        {comments.commenterComment}
+                      </div>
+                    );
                   })}
                   <br />
-                  <CreateComment
-                    submitPostForm={this.props.submitPostForm}
-                    postText={this.props.postText}
-                    changePostText={this.props.changePostText}
-                  />
+                  {post.addComment === false ? (
+                    <button
+                      onClick={() => {
+                        this.props.changeAddComment(post._id);
+                        this.props.changePostId(post._id);
+                      }}
+                    >
+                      Add Comment
+                    </button>
+                  ) : (
+                    <div>
+                      <button
+                        onClick={() => this.props.changeAddComment(post._id)}
+                      >
+                        Close Comment.
+                      </button>
+                      <CreateComment
+                        submitCommentForm={this.props.submitCommentForm}
+                        commentText={this.props.commentText}
+                        changeCommentText={this.props.changeCommentText}
+                        commentClicked={this.state.commentClicked}
+                        buttonClicked={this.buttonClicked}
+                        postId={post._id}
+                      />
+                    </div>
+                  )}
                   <br />
                 </div>
               );
