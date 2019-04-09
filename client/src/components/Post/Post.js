@@ -20,11 +20,13 @@ export default class Post extends Component {
             {this.props.posts.map(post => {
               return (
                 <div key={post._id}>
+                <strong>{post.name}</strong>
+                <br />
                   {post.post}
                   {post.comments.map(comments => {
                     return (
                       <div key={comments._id}>
-                        <strong>{comments.commenterName}</strong>
+                        <em>{comments.commenterName}</em>
                         <br />
                         {comments.commenterComment}
                       </div>

@@ -65,9 +65,10 @@ router.post(
       if (err) {
         return res.send(err);
       } else {
-        //const newComment = new commentSchema({});
         const newPost = new postSchema({
           p_id: response._id,
+          name: response.name,
+          avatar: response.avatar,
           post: req.body.post
         });
 

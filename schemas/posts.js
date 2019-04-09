@@ -11,6 +11,8 @@ const PostSchema = new Schema({
     ref: profileSchema,
     required: true
   },
+  name: {type: String, required: true},
+  avatar: {type: String, default: "Standard", required: true},
   post: { type: String, default: "Initial Post. Ignore.", required: true },
   comments: [
     {

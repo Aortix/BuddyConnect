@@ -22,11 +22,6 @@ router.post("/sign-up", (req, res) => {
         return res.send(err);
       }
 
-      //Creating initial user schema requires these other initial schema declarations in order to have everything connected by ref
-      //const newComment = new commentsSchema({});
-      /*const newPost = new postSchema({
-        comments: [newComment]
-      });*/
       const newUser = new userSchema({
         name: req.body.name,
         email: req.body.email,
@@ -35,7 +30,8 @@ router.post("/sign-up", (req, res) => {
       });
 
       const newProfile = new profileSchema({
-        user: newUser /*posts: [newPost]*/
+        name: req.body.name,
+        user: newUser
       });
 
       //Adjust later and use promises or async/await instead.
