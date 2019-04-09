@@ -7,6 +7,7 @@ import "./App.css";
 import { authLogin, authSignUp, authCheck, authLogout } from "./actions/auth";
 import {
   getAllPosts,
+  getFriendsPosts,
   changeAddComment,
   createPost,
   createComment,
@@ -23,6 +24,7 @@ import Profile from "./components/Profile/Profile";
 
 class App extends Component {
   componentDidMount = () => {
+    console.log("App component mounted!");
     this.props.authCheck();
   };
 
@@ -31,7 +33,9 @@ class App extends Component {
       prevProps.authenticated !== this.props.authenticated &&
       this.props.authenticated !== false
     ) {
+      console.log("App component did update!");
       this.props.getAllPosts();
+      this.props.getFriendsPosts();
     }
   };
 
@@ -79,7 +83,9 @@ class App extends Component {
             component={props => (
               <Dashboard
                 getAllPosts={this.props.getAllPosts}
-                posts={this.props.posts}
+                getFriendsPosts={this.props.getFriendsPosts}
+                globalPosts={this.props.globalPosts}
+                friendsPosts={this.props.friendsPosts}
                 changeAddComment={this.props.changeAddComment}
                 createPost={this.props.createPost}
                 createComment={this.props.createComment}
@@ -134,7 +140,8 @@ class App extends Component {
 const mapStateToProps = state => ({
   email: state.authReducer.email,
   authenticated: state.authReducer.authenticated,
-  posts: state.postsReducer.global_posts,
+  globalPosts: state.postsReducer.global_posts,
+  friendsPosts: state.postsReducer.friends_posts,
   current_post: state.postsReducer.current_post
 });
 
@@ -153,6 +160,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getAllPosts: () => {
     dispatch(getAllPosts());
+  },
+  getFriendsPosts: () => {
+    dispatch(getFriendsPosts());
   },
   changeAddComment: id => {
     dispatch(changeAddComment(id));

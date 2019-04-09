@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+import PrivateRoute from "./../Private_Route/Private_Route.js";
 import Post from "./../Post/Post";
 import CreatePost from "./../CreatePost/CreatePost";
 
@@ -9,24 +12,25 @@ class Dashboard extends Component {
     commentText: ""
   };
 
-  componentDidUpdate = prevProps => {
-    if (this.props.posts !== prevProps.posts) this.props.getAllPosts();
-  };
+  /*componentDidUpdate = prevProps => {
+    if (this.props.globalPosts !== prevProps.globalPosts)
+      console.log("Dashboard component did update for global posts!");
+    this.props.getAllPosts();
+    if (this.props.friendsPosts !== prevProps.friendsPosts)
+      console.log("Dashboard component did update for friends posts!");
+    this.props.getFriendsPosts();
+  };*/
 
   changePostId = postId => {
     this.props.changePostId(postId);
   };
 
   changeLocation = e => {
-    this.setState({ location: e.target.value });
+    this.props.history.push("/dashboard/" + e.target.value);
   };
 
   changePostText = e => {
     this.setState({ postText: e.target.value });
-  };
-
-  changeCommentText = e => {
-    this.setState({ commentText: e.target.value });
   };
 
   submitPostForm = e => {
@@ -35,38 +39,61 @@ class Dashboard extends Component {
     this.setState({ postText: "", commentText: "" });
   };
 
-  submitCommentForm = e => {
-    e.preventDefault();
-    this.props.createComment(this.state.commentText, this.props.current_post);
-    this.setState({ postText: "", commentText: "" });
-  };
-
   render() {
     return (
-      <div>
-        <button onClick={this.changeLocation} value="posts">
-          Posts
-        </button>
-        <button onClick={this.changeLocation} value="global">
-          Global
-        </button>
-        <CreatePost
-          submitPostForm={this.submitPostForm}
-          postText={this.state.postText}
-          changePostText={this.changePostText}
-        />
-        <h2>Dashboard for authorized users.</h2>
-        <h3>Posts Here:</h3>
-        <Post
-          posts={this.props.posts}
-          location={this.state.location}
-          submitCommentForm={this.submitCommentForm}
-          commentText={this.state.commentText}
-          changeCommentText={this.changeCommentText}
-          changeAddComment={this.props.changeAddComment}
-          changePostId={this.changePostId}
-        />
-      </div>
+      <Router>
+        <div>
+          <Link to="/dashboard/posts">
+            <button value="posts">Posts</button>
+          </Link>
+          <Link to="/dashboard/global">
+            <button value="global">Global</button>
+          </Link>
+          <CreatePost
+            submitPostForm={this.submitPostForm}
+            postText={this.state.postText}
+            changePostText={this.changePostText}
+          />
+          <h2>Dashboard for authorized users.</h2>
+          <h3>Posts Here:</h3>
+          <PrivateRoute
+            exact
+            path="/dashboard/posts"
+            component={props => (
+              <Post
+                friendsPosts={this.props.friendsPosts}
+                location={this.state.location}
+                submitCommentForm={this.submitCommentForm}
+                commentText={this.state.commentText}
+                changeCommentText={this.changeCommentText}
+                changeAddComment={this.props.changeAddComment}
+                changePostId={this.changePostId}
+                createComment={this.props.createComment}
+                current_post={this.props.current_post}
+                {...props}
+              />
+            )}
+          />
+          <PrivateRoute
+            exact
+            path="/dashboard/global"
+            component={props => (
+              <Post
+                globalPosts={this.props.globalPosts}
+                location={this.state.location}
+                submitCommentForm={this.submitCommentForm}
+                commentText={this.state.commentText}
+                changeCommentText={this.changeCommentText}
+                changeAddComment={this.props.changeAddComment}
+                changePostId={this.changePostId}
+                createComment={this.props.createComment}
+                current_post={this.props.current_post}
+                {...props}
+              />
+            )}
+          />
+        </div>
+      </Router>
     );
   }
 }

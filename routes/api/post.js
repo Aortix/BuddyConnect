@@ -33,23 +33,27 @@ router.get(
   "/friends-posts",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    userSchema.findById(req.user.id, (err, response) => {
+    let returnArray = [];
+    profileSchema.findOne({ user: req.user.id }, (err, response) => {
       if (err) {
         return res.send(err);
       } else {
         response.friends.forEach(friends => {
-          profileSchema
-            .findById(friends)
-            .populate("userPosts")
-            .populate({ path: "userPosts", populate: { path: "comments" } })
-            .exec((err, response) => {
-              if (err) {
-                return res.send(err);
-              } else {
-                return res.send(response);
-              }
-            });
+          returnArray.push(friends);
         });
+        postSchema
+          .find({})
+          .populate("comments")
+          .exec((err, response3) => {
+            if (err) {
+              return res.send(err);
+            } else {
+              let newArray = response3.filter(posts => {
+                return returnArray.includes(posts.p_id.toString());
+              });
+              return res.send(newArray);
+            }
+          });
       }
     });
   }
