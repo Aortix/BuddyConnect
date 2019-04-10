@@ -21,6 +21,11 @@ class Dashboard extends Component {
     this.props.getFriendsPosts();
   };*/
 
+  changePage = pageId => {
+    this.props.getProfile(pageId);
+    this.props.history.push(`/profile/${pageId}`);
+  };
+
   changePostId = postId => {
     this.props.changePostId(postId);
   };
@@ -70,6 +75,10 @@ class Dashboard extends Component {
                 changePostId={this.changePostId}
                 createComment={this.props.createComment}
                 current_post={this.props.current_post}
+                getProfile={this.props.getProfile}
+                current_profile={this.props.current_profile}
+                profile_data={this.props.profile_data}
+                changePage={this.changePage}
                 {...props}
               />
             )}
@@ -88,6 +97,10 @@ class Dashboard extends Component {
                 changePostId={this.changePostId}
                 createComment={this.props.createComment}
                 current_post={this.props.current_post}
+                getProfile={this.props.getProfile}
+                current_profile={this.props.current_profile}
+                profile_data={this.props.profile_data}
+                changePage={this.changePage}
                 {...props}
               />
             )}

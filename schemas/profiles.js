@@ -7,12 +7,12 @@ const Schema = mongoose.Schema;
 const ProfileSchema = new Schema({
   dateUpdated: { type: Date, default: Date.now(), required: false },
   user: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: userSchema,
     required: true
   },
-  name: {type: String, required: true},
-  avatar: {type: String, default: "Standard", required: true},
+  name: { type: String, required: true },
+  avatar: { type: String, default: "Standard", required: true },
   header: { type: String, default: "Standard", required: false },
   song: { type: String, default: "Standard", required: false },
   aboutMe: { type: String, default: "Nothing here yet.", required: false },

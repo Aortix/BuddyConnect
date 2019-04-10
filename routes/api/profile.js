@@ -23,6 +23,20 @@ router.get(
   }
 );
 
+router.get(
+  "/my/profile",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findOne({ user: req.user.id }, (err, data) => {
+      if (err) {
+        return res.send(err);
+      } else {
+        return res.send(data);
+      }
+    });
+  }
+);
+
 //Private Route
 //Adds a friend to your friends list
 router.put(

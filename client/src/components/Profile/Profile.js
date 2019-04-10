@@ -10,19 +10,21 @@ import Post from "./../Post/Post";
 import Avatar from "./../Avatar/Avatar";
 import Name from "./Name/Name";
 
-export default class Profile extends Component {
+class Profile extends Component {
+  componentDidUpdate = prevProps => {
+    if (this.props.current_profile !== this.props.match.params.profileId) {
+      console.log("Profile component updated.");
+    }
+  };
+
   render() {
     return (
       <div className="Profile-container">
+        <p>{this.props.current_profile}</p>
         <h1>Profile</h1>
-        <Song />
-        <HeaderImage />
-        <Avatar />
-        <Name />
-        <AboutMe />
-        <Friends />
-        <Interests />
       </div>
     );
   }
 }
+
+export default Profile;

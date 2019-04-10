@@ -13,6 +13,7 @@ import {
   createComment,
   changePostId
 } from "./actions/posts";
+import { getProfile, getMyProfile } from "./actions/profile";
 
 //Components
 import Login from "./components/Login/Login";
@@ -36,6 +37,7 @@ class App extends Component {
       console.log("App component did update!");
       this.props.getAllPosts();
       this.props.getFriendsPosts();
+      this.props.getMyProfile();
     }
   };
 
@@ -67,6 +69,8 @@ class App extends Component {
     });
   };
 
+  changePage = () => {};
+
   render() {
     return (
       <Router>
@@ -74,7 +78,14 @@ class App extends Component {
           <Route
             path="/"
             render={props => (
-              <Header authLogout={this.props.authLogout} {...props} />
+              <Header
+                getMyProfile={this.props.getMyProfile}
+                getProfile={this.props.getProfile}
+                my_profile={this.props.my_profile}
+                authLogout={this.props.authLogout}
+                changePage={this.changePage}
+                {...props}
+              />
             )}
           />
           <PrivateRoute
@@ -91,13 +102,23 @@ class App extends Component {
                 createComment={this.props.createComment}
                 changePostId={this.props.changePostId}
                 current_post={this.props.current_post}
+                getProfile={this.props.getProfile}
+                current_profile={this.props.current_profile}
+                profile_data={this.props.profile_data}
                 {...props}
               />
             )}
           />
           <PrivateRoute
             path="/profile/:profileId"
-            component={props => <Profile {...props} />}
+            component={props => (
+              <Profile
+                my_profile={this.props.my_profile}
+                current_profile={this.props.current_profile}
+                getProfile={this.props.getProfile}
+                {...props}
+              />
+            )}
           />
           <Route
             exact
@@ -142,7 +163,10 @@ const mapStateToProps = state => ({
   authenticated: state.authReducer.authenticated,
   globalPosts: state.postsReducer.global_posts,
   friendsPosts: state.postsReducer.friends_posts,
-  current_post: state.postsReducer.current_post
+  current_post: state.postsReducer.current_post,
+  current_profile: state.profileReducer.current_profile,
+  my_profile: state.profileReducer.my_profile,
+  profile_data: state.profileReducer.profile_data
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -175,6 +199,12 @@ const mapDispatchToProps = dispatch => ({
   },
   changePostId: postId => {
     dispatch(changePostId(postId));
+  },
+  getProfile: profileId => {
+    dispatch(getProfile(profileId));
+  },
+  getMyProfile: () => {
+    dispatch(getMyProfile());
   }
 });
 

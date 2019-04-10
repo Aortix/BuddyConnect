@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CreateComment from "./../CreateComment/CreateComment";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 class Post extends Component {
   state = {
@@ -24,13 +25,25 @@ class Post extends Component {
           {this.props.globalPosts.map(post => {
             return (
               <div key={post._id}>
-                <strong>{post.name}</strong>
+                <strong
+                  onClick={() => {
+                    this.props.changePage(post.p_id);
+                  }}
+                >
+                  {post.name}
+                </strong>
                 <br />
                 {post.post}
                 {post.comments.map(comments => {
                   return (
                     <div key={comments._id}>
-                      <em>{comments.commenterName}</em>
+                      <em
+                        onClick={() => {
+                          this.props.changePage(comments.p_id);
+                        }}
+                      >
+                        {comments.commenterName}
+                      </em>
                       <br />
                       {comments.commenterComment}
                     </div>

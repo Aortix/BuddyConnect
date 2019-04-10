@@ -51,6 +51,14 @@ export const authLogin = (email, password) => dispatch => {
     });
 };
 
+export const authLogout = () => dispatch => {
+  window.localStorage.removeItem("token");
+  dispatch({
+    type: LOGOUT,
+    payload: false
+  });
+};
+
 export const authCheck = () => dispatch => {
   //Grab the token
   let token = window.localStorage.getItem("token");
@@ -73,7 +81,7 @@ export const authCheck = () => dispatch => {
     //Make the call to this route on the backend to ensure token corresponds to a user
     axios
       .post("http://localhost:5000/api/user/verify-user", requestBody, config)
-      .then(data => {
+      .then(() => {
         //Authenticate the user in redux state
         dispatch({
           type: AUTHENTICATED,
@@ -89,12 +97,4 @@ export const authCheck = () => dispatch => {
         console.log(err);
       });
   }
-};
-
-export const authLogout = () => dispatch => {
-  window.localStorage.removeItem("token");
-  dispatch({
-    type: LOGOUT,
-    payload: false
-  });
 };
