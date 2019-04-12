@@ -10,11 +10,10 @@ export default function Header(props) {
     <div className="Header-container">
       <Title />
       <HeaderAuth
-        my_profile={props.my_profile}
-        getProfile={props.getProfile}
-        getMyProfile={props.getMyProfile}
+        myProfile={props.myProfile}
+        getAndStoreAProfile={props.getAndStoreAProfile}
+        getAndStoreMyProfile={props.getAndStoreMyProfile}
         authLogout={props.authLogout}
-        changePage={props.changePage}
         {...props}
       />
     </div>

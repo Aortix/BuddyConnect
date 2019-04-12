@@ -1,12 +1,12 @@
 import axios from "axios";
 import {
-  GET_GLOBAL_POSTS,
+  GET_ALL_POSTS,
   GET_FRIENDS_POSTS,
-  CHANGE_CURRENT_POST,
-  CHANGE_ADD_BUTTON
+  GET_PROFILE_POSTS,
+  CHANGE_CURRENT_FOCUSED_POST
 } from "./types";
 
-export const getAllPosts = () => dispatch => {
+export const getAndStoreAllPosts = () => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -20,7 +20,7 @@ export const getAllPosts = () => dispatch => {
       .get("http://localhost:5000/api/post/global-posts", config)
       .then(data => {
         console.log("Calling global posts");
-        dispatch({ type: GET_GLOBAL_POSTS, payload: data.data });
+        dispatch({ type: GET_ALL_POSTS, payload: data.data });
       })
       .catch(err => {
         return console.log(err);
@@ -28,7 +28,7 @@ export const getAllPosts = () => dispatch => {
   }
 };
 
-export const getFriendsPosts = () => dispatch => {
+export const getAndStoreFriendsPosts = () => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -50,33 +50,30 @@ export const getFriendsPosts = () => dispatch => {
   }
 };
 
-export const changeAddComment = postId => dispatch => {
-  //Can make more specific to only open panel on friends posts vs global posts
-  /*let token = window.localStorage.getItem("token");
-  const config = {
-    headers: {
-      Authorization: token
-    }
-  };
-
-  let requestBody = {
-    postId: postId
-  };
-  axios
-    .put(
-      "http://localhost:5000/api/post/click-add_comment-button",
-      requestBody,
-      config
-    )*/
-  dispatch({ type: CHANGE_ADD_BUTTON, payload: postId })
-    .then(data => {
-      console.log(data);
-      dispatch(getAllPosts());
-      dispatch(getFriendsPosts());
-    })
-    .catch(err => {
-      return console.log(err);
-    });
+export const getAndStoreProfilePosts = profileId => dispatch => {
+  let token = window.localStorage.getItem("token");
+  if (token === undefined || token === null || token === "undefined") {
+    return null;
+  } else {
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    };
+    axios
+      .post(
+        "http://localhost:5000/api/post/profile-posts",
+        { profileId: profileId },
+        config
+      )
+      .then(data => {
+        console.log("Calling profile posts!");
+        dispatch({ type: GET_PROFILE_POSTS, payload: data.data });
+      })
+      .catch(err => {
+        return console.log(err);
+      });
+  }
 };
 
 export const createPost = postText => dispatch => {
@@ -93,19 +90,18 @@ export const createPost = postText => dispatch => {
   axios
     .post("http://localhost:5000/api/post/create-post", requestBody, config)
     .then(data => {
-      console.log(data);
-      dispatch(getAllPosts());
+      dispatch(getAndStoreAllPosts());
     })
     .catch(err => {
       return console.log(err);
     });
 };
 
-export const changePostId = postId => dispatch => {
-  dispatch({ type: CHANGE_CURRENT_POST, payload: postId });
+export const changeCurrentFocusedPost = postId => dispatch => {
+  dispatch({ type: CHANGE_CURRENT_FOCUSED_POST, payload: postId });
 };
 
-export const createComment = (commentText, postId) => dispatch => {
+export const createComment = (commentText, postId, profileId) => dispatch => {
   let token = window.localStorage.getItem("token");
   const config = {
     headers: {
@@ -120,9 +116,9 @@ export const createComment = (commentText, postId) => dispatch => {
   axios
     .post("http://localhost:5000/api/post/create-comment", requestBody, config)
     .then(data => {
-      console.log(data);
-      dispatch(getAllPosts());
-      dispatch(getFriendsPosts());
+      dispatch(getAndStoreAllPosts());
+      dispatch(getAndStoreFriendsPosts());
+      dispatch(getAndStoreProfilePosts(profileId));
     })
     .catch(err => {
       return console.log(err);

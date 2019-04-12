@@ -11,6 +11,9 @@ class SignUp extends Component {
     if (this.props.authenticated === true) {
       this.props.history.push("/dashboard");
     }
+    if (this.props.userSignedUp === 1) {
+      this.props.history.push("/login");
+    }
   };
 
   render() {
@@ -45,9 +48,9 @@ class SignUp extends Component {
           Confirm Password: <br />
           <input
             type="password"
-            name="confirm_password"
+            name="confirmPassword"
             onChange={this.props.handleChange}
-            value={this.props.confirm_password}
+            value={this.props.confirmPassword}
           />
           <br /> <br />
           <input

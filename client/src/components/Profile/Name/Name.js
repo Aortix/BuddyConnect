@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function Name() {
-  return <div>Name</div>;
+export default function Name(props) {
+  return <div>{props.currentName}</div>;
 }

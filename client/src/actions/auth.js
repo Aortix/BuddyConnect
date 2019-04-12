@@ -1,24 +1,29 @@
 import axios from "axios";
-import { LOGIN_INFORMATION, AUTHENTICATED, LOGOUT } from "./../actions/types";
+import {
+  LOGIN,
+  AUTHENTICATED,
+  LOGOUT,
+  USER_SIGNED_UP
+} from "./../actions/types";
 
 export const authSignUp = (
   name,
   email,
   password,
-  confirm_password
+  confirmPassword
 ) => dispatch => {
   const requestBody = {
     name,
     email,
     password,
-    password2: confirm_password
+    password2: confirmPassword
   };
   console.log(requestBody);
   axios
     .post("http://localhost:5000/api/user/sign-up", requestBody)
-    .then(data => {
-      console.log(data);
+    .then(() => {
       console.log("User should have been added.");
+      dispatch({ type: USER_SIGNED_UP, payload: 1 });
     })
     .catch(err => {
       return err;
@@ -33,9 +38,8 @@ export const authLogin = (email, password) => dispatch => {
   axios
     .post("http://localhost:5000/api/user/login", requestBody)
     .then(data => {
-      console.log(data);
       dispatch({
-        type: LOGIN_INFORMATION,
+        type: LOGIN,
         payload: {
           email: email
         }
@@ -43,7 +47,7 @@ export const authLogin = (email, password) => dispatch => {
       window.localStorage.setItem("token", data.data.token);
       console.log("Token should be in localstorage.");
     })
-    .then(data => {
+    .then(() => {
       dispatch(authCheck());
     })
     .catch(err => {
@@ -57,6 +61,7 @@ export const authLogout = () => dispatch => {
     type: LOGOUT,
     payload: false
   });
+  dispatch({ type: USER_SIGNED_UP, payload: 1 });
 };
 
 export const authCheck = () => dispatch => {

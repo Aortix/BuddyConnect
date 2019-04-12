@@ -16,7 +16,13 @@ const ProfileSchema = new Schema({
   header: { type: String, default: "Standard", required: false },
   song: { type: String, default: "Standard", required: false },
   aboutMe: { type: String, default: "Nothing here yet.", required: false },
-  friends: { type: Array, default: [], required: false },
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "profiles",
+      required: false
+    }
+  ],
   interests: { type: String, default: "Nothing here yet.", required: false },
   posts: [
     {

@@ -1,32 +1,38 @@
 import {
-  GET_GLOBAL_POSTS,
-  CHANGE_CURRENT_POST,
-  GET_FRIENDS_POSTS
+  GET_ALL_POSTS,
+  GET_FRIENDS_POSTS,
+  GET_PROFILE_POSTS,
+  CHANGE_CURRENT_FOCUSED_POST
 } from "./../actions/types";
 
 const initialState = {
-  global_posts: null,
-  friends_posts: null,
-  profile_posts: null,
-  current_post: ""
+  allPosts: null,
+  friendsPosts: null,
+  profilePosts: null,
+  currentPost: ""
 };
 
 export const postsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_GLOBAL_POSTS:
+    case GET_ALL_POSTS:
       return {
         ...state,
-        global_posts: action.payload
+        allPosts: action.payload
       };
     case GET_FRIENDS_POSTS:
       return {
         ...state,
-        friends_posts: action.payload
+        friendsPosts: action.payload
       };
-    case CHANGE_CURRENT_POST:
+    case GET_PROFILE_POSTS:
       return {
         ...state,
-        current_post: action.payload
+        profilePosts: action.payload
+      };
+    case CHANGE_CURRENT_FOCUSED_POST:
+      return {
+        ...state,
+        currentPost: action.payload
       };
     default:
       return state;

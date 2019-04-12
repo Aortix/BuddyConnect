@@ -1,9 +1,5 @@
-import React from 'react'
+import React from "react";
 
-export default function Song() {
-  return (
-    <div>
-      
-    </div>
-  )
+export default function Song(props) {
+  return <div>{props.currentSong}</div>;
 }

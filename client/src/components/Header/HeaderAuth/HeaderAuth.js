@@ -9,8 +9,8 @@ export const HeaderAuth = props => {
         <span
           onClick={() => {
             {
-              props.getProfile(props.my_profile);
-              props.history.push(`/profile/${props.my_profile}`);
+              props.getAndStoreAProfile(props.myProfile);
+              props.history.push(`/profile/${props.myProfile}`);
             }
           }}
         >

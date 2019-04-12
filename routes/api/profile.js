@@ -1,10 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
-const router = express.Router();
 const userSchema = require("../../schemas/users.js");
 const postSchema = require("../../schemas/posts.js");
 const profileSchema = require("../../schemas/profiles.js");
+const router = express.Router();
 
 require("./../../auth/jwtStrategy")(passport);
 
@@ -74,6 +74,31 @@ router.put(
         }
       }
     );
+  }
+);
+
+router.post(
+  "/friends/friend-thumbnails",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let returnArray = [];
+    profileSchema
+      .findById(req.body.profileId)
+      .populate({ path: "friends", model: profileSchema })
+      .exec((err, response) => {
+        if (err) {
+          return res.send(err);
+        } else {
+          response.friends.forEach(friend => {
+            returnArray.push({
+              name: friend.name,
+              avatar: friend.avatar,
+              profileId: friend._id
+            });
+          });
+          return res.send(returnArray);
+        }
+      });
   }
 );
 

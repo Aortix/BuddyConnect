@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function AboutMe() {
-  return <div />;
+export default function AboutMe(props) {
+  return <div>{props.currentAboutMe}</div>;
 }

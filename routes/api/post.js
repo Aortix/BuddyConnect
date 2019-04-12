@@ -39,7 +39,7 @@ router.get(
         return res.send(err);
       } else {
         response.friends.forEach(friends => {
-          returnArray.push(friends);
+          returnArray.push(friends.toString());
         });
         postSchema
           .find({})
@@ -50,6 +50,36 @@ router.get(
             } else {
               let newArray = response3.filter(posts => {
                 return returnArray.includes(posts.p_id.toString());
+              });
+              return res.send(newArray);
+            }
+          });
+      }
+    });
+  }
+);
+
+router.post(
+  "/profile-posts",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let returnArray = [];
+    profileSchema.findById(req.body.profileId).exec((err, profile) => {
+      if (err) {
+        return res.send(`There was an error finding the posts - ${err}`);
+      } else {
+        profile.posts.forEach(posts => {
+          returnArray.push(posts.toString());
+        });
+        postSchema
+          .find({})
+          .populate("comments")
+          .exec((err, response) => {
+            if (err) {
+              return res.send(err);
+            } else {
+              let newArray = response.filter(posts => {
+                return returnArray.includes(posts._id.toString());
               });
               return res.send(newArray);
             }

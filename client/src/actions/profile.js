@@ -1,7 +1,11 @@
-import { GET_PROFILE, GET_MY_PROFILE } from "./types";
+import {
+  GET_AND_STORE_A_PROFILE,
+  GET_AND_STORE_MY_PROFILE,
+  GET_FRIEND_THUMBNAIL
+} from "./types";
 import axios from "axios";
 
-export const getProfile = profileId => dispatch => {
+export const getAndStoreAProfile = profileId => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -14,10 +18,12 @@ export const getProfile = profileId => dispatch => {
     axios
       .get(`http://localhost:5000/api/profile/${profileId}`, config)
       .then(data => {
-        console.log("Get profile should be called!");
         dispatch({
-          type: GET_PROFILE,
-          payload: { current_profile: data.data._id, profile_data: data.data }
+          type: GET_AND_STORE_A_PROFILE,
+          payload: {
+            currentProfile: data.data._id,
+            currentProfileData: data.data
+          }
         });
       })
       .catch(err => {
@@ -26,7 +32,7 @@ export const getProfile = profileId => dispatch => {
   }
 };
 
-export const getMyProfile = () => dispatch => {
+export const getAndStoreMyProfile = () => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -39,8 +45,33 @@ export const getMyProfile = () => dispatch => {
     axios
       .get("http://localhost:5000/api/profile/my/profile", config)
       .then(data => {
-        console.log(data.data._id);
-        dispatch({ type: GET_MY_PROFILE, payload: data.data._id });
+        dispatch({ type: GET_AND_STORE_MY_PROFILE, payload: data.data._id });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+};
+
+export const showFriends = profileId => dispatch => {
+  let token = window.localStorage.getItem("token");
+  if (token === undefined || token === null || token === "undefined") {
+    return null;
+  } else {
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    };
+    axios
+      .post(
+        "http://localhost:5000/api/profile/friends/friend-thumbnails",
+        { profileId: profileId },
+        config
+      )
+      .then(data => {
+        console.log("Getting your friends!");
+        dispatch({ type: GET_FRIEND_THUMBNAIL, payload: data.data });
       })
       .catch(err => {
         console.log(err);
