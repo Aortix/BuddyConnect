@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 export const HeaderAuth = props => {
@@ -8,10 +7,7 @@ export const HeaderAuth = props => {
       <div>
         <span
           onClick={() => {
-            {
-              props.getAndStoreAProfile(props.myProfile);
-              props.history.push(`/profile/${props.myProfile}`);
-            }
+            props.changeLocation(props.myProfile);
           }}
         >
           Profile{" "}
@@ -37,8 +33,4 @@ export const HeaderAuth = props => {
   }
 };
 
-const mapStateToProps = state => ({
-  authenticated: state.authReducer.authenticated
-});
-
-export default connect(mapStateToProps)(HeaderAuth);
+export default HeaderAuth;

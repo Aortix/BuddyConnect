@@ -40,17 +40,17 @@ router.get(
 //Private Route
 //Adds a friend to your friends list
 router.put(
-  "/add-friend/:profileId",
+  "/add-friend",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
       { user: req.user.id },
-      { $push: { friends: req.params.profileId } },
+      { $push: { friends: req.body.profileId } },
       (err, response) => {
         if (err) {
           return res.send(err);
         } else {
-          return res.send("Friend has been added.");
+          return res.send(response);
         }
       }
     );
@@ -74,6 +74,28 @@ router.put(
         }
       }
     );
+  }
+);
+
+router.post(
+  "/friends/check-for-friend",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findOne({ user: req.user.id }, (err, response) => {
+      let returnArray = [];
+      if (err) {
+        return res.send(err);
+      } else {
+        response.friends.forEach(friends => {
+          returnArray.push(friends.toString());
+        });
+        if (returnArray.includes(req.body.profileId) === true) {
+          return res.send(true);
+        } else {
+          return res.send(false);
+        }
+      }
+    });
   }
 );
 

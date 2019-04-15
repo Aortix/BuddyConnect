@@ -1,14 +1,19 @@
 import {
   GET_AND_STORE_A_PROFILE,
   GET_AND_STORE_MY_PROFILE,
-  GET_FRIEND_THUMBNAIL
+  GET_FRIEND_THUMBNAIL,
+  ADD_FRIEND,
+  CHECK_FOR_FRIEND,
+  REVERSE_ADDED_FRIEND
 } from "./../actions/types";
 
 const initialState = {
   myProfile: null,
   currentProfile: null,
   currentProfileData: null,
-  friendThumbnails: null
+  friendThumbnails: null,
+  isAFriend: 0,
+  addedFriend: 0
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -22,12 +27,30 @@ export const profileReducer = (state = initialState, action) => {
     case GET_AND_STORE_MY_PROFILE:
       return {
         ...state,
-        myProfile: action.payload
+        currentProfile: action.payload._id,
+        currentProfileData: action.payload,
+        myProfile: action.payload._id
       };
     case GET_FRIEND_THUMBNAIL:
       return {
         ...state,
         friendThumbnails: action.payload
+      };
+    case ADD_FRIEND:
+      return {
+        ...state,
+        isAFriend: action.payload,
+        addedFriend: 1
+      };
+    case CHECK_FOR_FRIEND:
+      return {
+        ...state,
+        isAFriend: action.payload
+      };
+    case REVERSE_ADDED_FRIEND:
+      return {
+        ...state,
+        addedFriend: 0
       };
     default:
       return state;

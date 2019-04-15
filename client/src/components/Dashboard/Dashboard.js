@@ -6,21 +6,6 @@ import Post from "./../Post/Post";
 import CreatePost from "./../CreatePost/CreatePost";
 
 class Dashboard extends Component {
-  state = {
-    postText: "",
-    commentText: ""
-  };
-
-  changePostText = e => {
-    this.setState({ postText: e.target.value });
-  };
-
-  submitPostForm = e => {
-    e.preventDefault();
-    this.props.createPost(this.state.postText);
-    this.setState({ postText: "", commentText: "" });
-  };
-
   render() {
     return (
       <Router>
@@ -32,9 +17,8 @@ class Dashboard extends Component {
             <button value="global">Global</button>
           </Link>
           <CreatePost
-            submitPostForm={this.submitPostForm}
-            postText={this.state.postText}
-            changePostText={this.changePostText}
+            createPost={this.props.createPost}
+            currentProfile={this.props.currentProfile}
           />
           <h2>Dashboard for authorized users.</h2>
           <h3>Posts Here:</h3>
@@ -44,12 +28,13 @@ class Dashboard extends Component {
             component={props => (
               <Post
                 posts={this.props.friendsPosts}
+                getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
+                currentProfile={this.props.currentProfile}
                 changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
-                createComment={this.props.createComment}
-                currentPost={this.props.currentPost}
-                getAndStoreAProfile={this.props.getAndStoreAProfile}
-                location={this.props.location}
                 changeLocation={this.props.changeLocation}
+                currentPost={this.props.currentPost}
+                createComment={this.props.createComment}
+                getAndStoreAProfile={this.props.getAndStoreAProfile}
                 {...props}
               />
             )}
@@ -60,12 +45,13 @@ class Dashboard extends Component {
             component={props => (
               <Post
                 posts={this.props.allPosts}
+                getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
+                currentProfile={this.props.currentProfile}
                 changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
-                createComment={this.props.createComment}
-                currentPost={this.props.currentPost}
-                getAndStoreAProfile={this.props.getAndStoreAProfile}
-                location={this.props.location}
                 changeLocation={this.props.changeLocation}
+                currentPost={this.props.currentPost}
+                createComment={this.props.createComment}
+                getAndStoreAProfile={this.props.getAndStoreAProfile}
                 {...props}
               />
             )}

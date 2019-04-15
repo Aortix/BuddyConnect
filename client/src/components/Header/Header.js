@@ -11,9 +11,9 @@ export default function Header(props) {
       <Title />
       <HeaderAuth
         myProfile={props.myProfile}
-        getAndStoreAProfile={props.getAndStoreAProfile}
-        getAndStoreMyProfile={props.getAndStoreMyProfile}
         authLogout={props.authLogout}
+        changeLocation={props.changeLocation}
+        authenticated={props.authenticated}
         {...props}
       />
     </div>

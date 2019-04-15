@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Route,
-  withRouter,
-  Redirect
-} from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import "./App.css";
 
 //Actions
@@ -21,7 +16,10 @@ import {
 import {
   getAndStoreAProfile,
   getAndStoreMyProfile,
-  showFriends
+  showFriends,
+  addFriend,
+  checkForFriend,
+  reverseAddedFriend
 } from "./actions/profile";
 
 //Components
@@ -35,29 +33,44 @@ import { USER_SIGNED_UP } from "./actions/types";
 
 class App extends Component {
   componentDidMount = () => {
+    //Check to see if the user is already logged in (checks through a JSON token in localstorage)
     console.log("App component mounted!");
     this.props.authCheck();
+
+    //Makes sure that the user is redirected to the login page if they go to the standard "/"
     if (window.location.pathname === "/") {
       return this.props.history.push("/login");
     }
   };
 
   componentDidUpdate = prevProps => {
+    //If the user does have a token in localstorage, this will grab all the posts along with their friends
+    //posts from the database, while also getting their specific profile
     if (
       prevProps.authenticated !== this.props.authenticated &&
       this.props.authenticated !== false
     ) {
-      console.log("App component did update!");
+      console.log("App component updated!");
       this.props.getAndStoreAllPosts();
       this.props.getAndStoreFriendsPosts();
-      //this.props.getAndStoreProfilePosts();
       this.props.getAndStoreMyProfile();
     }
+
+    //This will grab the necessary friend information and profile posts for the current user
     if (prevProps.currentProfile !== this.props.currentProfile) {
-      console.log("App component is calling show friend!");
+      console.log("App component is getting friends and profile posts!");
       this.props.showFriends(this.props.currentProfile);
       this.props.getAndStoreProfilePosts(this.props.currentProfile);
+      this.props.checkForFriend(this.props.currentProfile);
     }
+
+    if (this.props.addedFriend === 1) {
+      this.props.getAndStoreFriendsPosts();
+      this.props.reverseAddedFriend();
+    }
+
+    //This is if the User signs up, logs in, and then logs out within the same session; the information that was
+    //inputed in the signup/login field before will now be blank instead of being filled with the previous information.
     if (this.props.userSignedUp === 1) {
       this.setState({
         name: "",
@@ -65,8 +78,17 @@ class App extends Component {
         password: "",
         confirmPassword: ""
       });
+
+      //resets userSignedUp back to 0
       this.props.userHasSignedUp();
     }
+  };
+
+  //Function for when a user clicks on a post or comment username, and thus will be redirected to
+  //that user's profile
+  changeLocation = profileId => {
+    this.props.history.push(`/profile/${profileId}`);
+    this.props.getAndStoreAProfile(profileId);
   };
 
   state = {
@@ -97,11 +119,6 @@ class App extends Component {
     });
   };
 
-  changeLocation = profileId => {
-    this.props.history.push(`/profile/${profileId}`);
-    this.props.getAndStoreAProfile(profileId);
-  };
-
   render() {
     return (
       <div className="App">
@@ -109,11 +126,10 @@ class App extends Component {
           path="/"
           render={props => (
             <Header
-              getAndStoreMyProfile={this.props.getAndStoreMyProfile}
-              getAndStoreAProfile={this.props.getAndStoreAProfile}
               myProfile={this.props.myProfile}
               authLogout={this.props.authLogout}
               changeLocation={this.changeLocation}
+              authenticated={this.props.authenticated}
               {...props}
             />
           )}
@@ -123,18 +139,15 @@ class App extends Component {
           path="/dashboard"
           component={props => (
             <Dashboard
-              getAndStoreAllPosts={this.props.getAndStoreAllPosts}
-              getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
-              allPosts={this.props.allPosts}
-              friendsPosts={this.props.friendsPosts}
               createPost={this.props.createPost}
-              createComment={this.props.createComment}
-              changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
-              currentPost={this.props.currentPost}
-              getAndStoreAProfile={this.props.getAndStoreAProfile}
               currentProfile={this.props.currentProfile}
-              currentProfileData={this.props.currentProfileData}
+              friendsPosts={this.props.friendsPosts}
+              allPosts={this.props.allPosts}
+              getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
+              changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
               changeLocation={this.changeLocation}
+              currentPost={this.props.currentPost}
+              createComment={this.props.createComment}
               {...props}
             />
           )}
@@ -144,17 +157,23 @@ class App extends Component {
           path="/profile/:profileId"
           component={props => (
             <Profile
-              myProfile={this.props.myProfile}
               profilePosts={this.props.profilePosts}
-              changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
-              createComment={this.props.createComment}
-              currentPost={this.props.currentPost}
+              getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
               currentProfile={this.props.currentProfile}
-              getAndStoreAProfile={this.props.getAndStoreAProfile}
               currentProfileData={this.props.currentProfileData}
-              showFriends={this.props.showFriends}
+              createPost={this.props.createPost}
               friendThumbnails={this.props.friendThumbnails}
+              showFriends={this.props.showFriends}
+              changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
               changeLocation={this.changeLocation}
+              getAndStoreAProfile={this.props.getAndStoreAProfile}
+              currentPost={this.props.currentPost}
+              createComment={this.props.createComment}
+              isAFriend={this.props.isAFriend}
+              checkForFriend={this.props.checkForFriend}
+              addFriend={this.props.addFriend}
+              getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
+              myProfile={this.props.myProfile}
               {...props}
             />
           )}
@@ -208,7 +227,9 @@ const mapStateToProps = state => ({
   currentProfile: state.profileReducer.currentProfile,
   myProfile: state.profileReducer.myProfile,
   currentProfileData: state.profileReducer.currentProfileData,
-  friendThumbnails: state.profileReducer.friendThumbnails
+  friendThumbnails: state.profileReducer.friendThumbnails,
+  isAFriend: state.profileReducer.isAFriend,
+  addedFriend: state.profileReducer.addedFriend
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -233,8 +254,8 @@ const mapDispatchToProps = dispatch => ({
   getAndStoreProfilePosts: profileId => {
     dispatch(getAndStoreProfilePosts(profileId));
   },
-  createPost: postText => {
-    dispatch(createPost(postText));
+  createPost: (postText, profileId) => {
+    dispatch(createPost(postText, profileId));
   },
   createComment: (commentText, postId, profileId) => {
     dispatch(createComment(commentText, postId, profileId));
@@ -253,6 +274,15 @@ const mapDispatchToProps = dispatch => ({
   },
   userHasSignedUp: () => {
     dispatch({ type: USER_SIGNED_UP, payload: 0 });
+  },
+  addFriend: profileId => {
+    dispatch(addFriend(profileId));
+  },
+  checkForFriend: profileId => {
+    dispatch(checkForFriend(profileId));
+  },
+  reverseAddedFriend: () => {
+    dispatch(reverseAddedFriend());
   }
 });
 

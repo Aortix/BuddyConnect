@@ -76,7 +76,7 @@ export const getAndStoreProfilePosts = profileId => dispatch => {
   }
 };
 
-export const createPost = postText => dispatch => {
+export const createPost = (postText, profileId) => dispatch => {
   let token = window.localStorage.getItem("token");
   const config = {
     headers: {
@@ -91,6 +91,8 @@ export const createPost = postText => dispatch => {
     .post("http://localhost:5000/api/post/create-post", requestBody, config)
     .then(data => {
       dispatch(getAndStoreAllPosts());
+      dispatch(getAndStoreFriendsPosts());
+      dispatch(getAndStoreProfilePosts(profileId));
     })
     .catch(err => {
       return console.log(err);

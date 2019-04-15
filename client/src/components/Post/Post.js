@@ -1,19 +1,13 @@
 import React, { Component } from "react";
 import CreateComment from "./../CreateComment/CreateComment";
-import { Redirect } from "react-router-dom";
 
 class Post extends Component {
-  componentDidMount = () => {
-    console.log("Post component mounted!");
-  };
   state = {
-    profileClick: false,
-    currentProfile: ""
+    profileClick: false
   };
 
   changeToProfilePage = pageId => {
     this.props.getAndStoreAProfile(pageId);
-    this.setState({ profileClick: true, currentProfile: pageId });
   };
 
   changeCurrentFocusedPost = postId => {
@@ -30,11 +24,7 @@ class Post extends Component {
             <div key={post._id}>
               <strong
                 onClick={() => {
-                  //this.changeToProfilePage(post.p_id);
-                  {
-                    //this.props.getAndStoreAProfile(post.p_id);
-                    this.props.changeLocation(post.p_id);
-                  }
+                  this.props.changeLocation(post.p_id);
                 }}
               >
                 {post.name}
@@ -46,11 +36,7 @@ class Post extends Component {
                   <div key={comments._id}>
                     <em
                       onClick={() => {
-                        //this.changeToProfilePage(comments.commenterP_id);
-                        {
-                          //this.props.getAndStoreAProfile(comments.commenterP_id);
-                          this.props.changeLocation(comments.commenterP_id);
-                        }
+                        this.props.changeLocation(comments.commenterP_id);
                       }}
                     >
                       {comments.commenterName}
@@ -79,10 +65,11 @@ class Post extends Component {
                     Close Comment.
                   </button>
                   <CreateComment
-                    createComment={this.props.createComment}
-                    changeCurrentFocusedPost={this.changeCurrentFocusedPost}
-                    currentPost={this.props.currentPost}
                     currentProfile={this.props.currentProfile}
+                    currentPost={this.props.currentPost}
+                    changeCurrentFocusedPost={this.changeCurrentFocusedPost}
+                    getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
+                    createComment={this.props.createComment}
                   />
                 </div>
               )}

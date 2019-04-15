@@ -11,13 +11,23 @@ class CreateComment extends Component {
 
   submitCommentForm = e => {
     e.preventDefault();
-    this.props.createComment(
-      this.state.commentText,
-      this.props.currentPost,
-      this.props.currentProfile
-    );
-    this.props.changeCurrentFocusedPost("");
-    this.setState({ commentText: "" });
+    if (this.props.currentProfile == null) {
+      this.props.createComment(
+        this.state.commentText,
+        this.props.currentPost,
+        this.props.myProfile
+      );
+      this.props.changeCurrentFocusedPost("");
+      this.setState({ commentText: "" });
+    } else {
+      this.props.createComment(
+        this.state.commentText,
+        this.props.currentPost,
+        this.props.currentProfile
+      );
+      this.props.changeCurrentFocusedPost("");
+      this.setState({ commentText: "" });
+    }
   };
 
   render() {
