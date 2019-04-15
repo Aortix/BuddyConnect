@@ -19,6 +19,9 @@ class Dashboard extends Component {
           <CreatePost
             createPost={this.props.createPost}
             currentProfile={this.props.currentProfile}
+            createPostOnDifferentProfile={
+              this.props.createPostOnDifferentProfile
+            }
           />
           <h2>Dashboard for authorized users.</h2>
           <h3>Posts Here:</h3>

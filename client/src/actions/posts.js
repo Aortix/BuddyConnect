@@ -99,6 +99,37 @@ export const createPost = (postText, profileId) => dispatch => {
     });
 };
 
+export const createPostOnDifferentProfile = (
+  postText,
+  profileId
+) => dispatch => {
+  let token = window.localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: token
+    }
+  };
+
+  let requestBody = {
+    post: postText,
+    profileId: profileId
+  };
+  axios
+    .post(
+      "http://localhost:5000/api/post/create-post-on-different-profile",
+      requestBody,
+      config
+    )
+    .then(data => {
+      dispatch(getAndStoreAllPosts());
+      dispatch(getAndStoreFriendsPosts());
+      dispatch(getAndStoreProfilePosts(profileId));
+    })
+    .catch(err => {
+      return console.log(err);
+    });
+};
+
 export const changeCurrentFocusedPost = postId => dispatch => {
   dispatch({ type: CHANGE_CURRENT_FOCUSED_POST, payload: postId });
 };

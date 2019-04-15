@@ -127,6 +127,44 @@ router.post(
   }
 );
 
+//Private route
+//Creating a post ON SOMEONE ELSES PROFILE using the post schema
+router.post(
+  "/create-post-on-different-profile",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findOne({ user: req.user.id }, (err, response) => {
+      if (err) {
+        return res.send(err);
+      } else {
+        const newPost = new postSchema({
+          p_id: response._id,
+          name: response.name,
+          avatar: response.avatar,
+          post: req.body.post
+        });
+
+        newPost.save((err, data) => {
+          if (err) {
+            return res.send(err);
+          } else {
+            profileSchema.findByIdAndUpdate(
+              req.body.profileId,
+              { $push: { posts: data } },
+              (err, post) => {
+                if (err) {
+                  return res.send(err);
+                }
+                return res.send(data);
+              }
+            );
+          }
+        });
+      }
+    });
+  }
+);
+
 //Private Route
 //Create a comment on a post using the comment schema
 router.post(

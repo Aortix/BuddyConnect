@@ -39,6 +39,7 @@ class Profile extends Component {
           <CreatePost
             createPost={this.props.createPost}
             currentProfile={this.props.currentProfile}
+            createPostOnDifferentProfile={this.props.createPostOnDifferentProfile}
           />
           <Post
             posts={this.props.profilePosts}

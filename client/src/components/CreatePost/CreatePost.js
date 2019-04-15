@@ -10,9 +10,18 @@ class CreatePost extends Component {
   };
 
   submitPostForm = e => {
+    const regex = /profile\/\w+/;
     e.preventDefault();
-    this.props.createPost(this.state.postText, this.props.currentProfile);
-    this.setState({ postText: "" });
+    if (regex.test(window.location.pathname) === true) {
+      this.props.createPostOnDifferentProfile(
+        this.state.postText,
+        this.props.currentProfile
+      );
+      this.setState({ postText: "" });
+    } else {
+      this.props.createPost(this.state.postText, this.props.currentProfile);
+      this.setState({ postText: "" });
+    }
   };
   render() {
     return (

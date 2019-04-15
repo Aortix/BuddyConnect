@@ -10,6 +10,7 @@ import {
   getAndStoreFriendsPosts,
   getAndStoreProfilePosts,
   createPost,
+  createPostOnDifferentProfile,
   createComment,
   changeCurrentFocusedPost
 } from "./actions/posts";
@@ -148,6 +149,9 @@ class App extends Component {
               changeLocation={this.changeLocation}
               currentPost={this.props.currentPost}
               createComment={this.props.createComment}
+              createPostOnDifferentProfile={
+                this.props.createPostOnDifferentProfile
+              }
               {...props}
             />
           )}
@@ -174,6 +178,9 @@ class App extends Component {
               addFriend={this.props.addFriend}
               getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
               myProfile={this.props.myProfile}
+              createPostOnDifferentProfile={
+                this.props.createPostOnDifferentProfile
+              }
               {...props}
             />
           )}
@@ -256,6 +263,9 @@ const mapDispatchToProps = dispatch => ({
   },
   createPost: (postText, profileId) => {
     dispatch(createPost(postText, profileId));
+  },
+  createPostOnDifferentProfile: (postText, profileId) => {
+    dispatch(createPostOnDifferentProfile(postText, profileId));
   },
   createComment: (commentText, postId, profileId) => {
     dispatch(createComment(commentText, postId, profileId));
