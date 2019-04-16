@@ -1,11 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ElementDropdownImage from "./../../../images/elementDropdownImage.svg";
 
 export default function Title() {
   return (
-    <div className="SideBar-container">
+    <div className="Title-container">
+      <span
+        onClick={() => {
+          document
+            .getElementById("SideBar")
+            .classList.toggle("SideBar-container-visible");
+        }}
+      >
+        <img src={ElementDropdownImage} alt="Dropdown" />
+      </span>
       <Link to="/dashboard">
-        <h1>BuddyConnect</h1>
+        <span className="Title">BuddyConnect</span>
       </Link>
     </div>
   );

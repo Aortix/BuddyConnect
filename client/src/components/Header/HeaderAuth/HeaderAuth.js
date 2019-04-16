@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./../Header.css";
 
 export const HeaderAuth = props => {
   if (props.authenticated === true) {
     return (
-      <div>
+      <div className="HeaderAuth-container">
         <span
           onClick={() => {
             props.changeLocation(props.myProfile);
@@ -21,11 +22,11 @@ export const HeaderAuth = props => {
     );
   } else {
     return (
-      <div>
+      <div className="HeaderAuth-container">
         <span>
           <Link to="/login">Login </Link>
         </span>
-        <span>
+        <span className="sign-up-text">
           <Link to="/sign-up">Sign Up</Link>
         </span>
       </div>

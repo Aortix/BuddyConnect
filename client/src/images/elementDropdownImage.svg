@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="49" height="46" viewBox="0 0 49 46">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="49" height="46" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Symbol_1_6" data-name="Symbol 1 – 6" transform="translate(-1855 -23)">
+    <g id="Repeat_Grid_4" data-name="Repeat Grid 4" transform="translate(1855 23)" clip-path="url(#clip-path)">
+      <g transform="translate(-302 -17)">
+        <g id="Rectangle_8" data-name="Rectangle 8" transform="translate(302 17)" fill="#282828" stroke="#707070" stroke-width="1">
+          <rect width="49" height="9" stroke="none"/>
+          <rect x="0.5" y="0.5" width="48" height="8" fill="none"/>
+        </g>
+      </g>
+      <g transform="translate(-302 -4)">
+        <g id="Rectangle_8-2" data-name="Rectangle 8" transform="translate(302 17)" fill="#282828" stroke="#707070" stroke-width="1">
+          <rect width="49" height="9" stroke="none"/>
+          <rect x="0.5" y="0.5" width="48" height="8" fill="none"/>
+        </g>
+      </g>
+      <g transform="translate(-302 9)">
+        <g id="Rectangle_8-3" data-name="Rectangle 8" transform="translate(302 17)" fill="#282828" stroke="#707070" stroke-width="1">
+          <rect width="49" height="9" stroke="none"/>
+          <rect x="0.5" y="0.5" width="48" height="8" fill="none"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

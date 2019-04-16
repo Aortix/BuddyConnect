@@ -31,6 +31,8 @@ import Header from "./components/Header/Header";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Profile from "./components/Profile/Profile";
 import { USER_SIGNED_UP } from "./actions/types";
+import SideBar from "./components/SideBar/SideBar";
+import Footer from "./components/Footer/Footer";
 
 class App extends Component {
   componentDidMount = () => {
@@ -123,101 +125,115 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Route
-          path="/"
-          render={props => (
-            <Header
-              myProfile={this.props.myProfile}
-              authLogout={this.props.authLogout}
-              changeLocation={this.changeLocation}
-              authenticated={this.props.authenticated}
-              {...props}
-            />
-          )}
-        />
-        <PrivateRoute
-          exact
-          path="/dashboard"
-          component={props => (
-            <Dashboard
-              createPost={this.props.createPost}
-              currentProfile={this.props.currentProfile}
-              friendsPosts={this.props.friendsPosts}
-              allPosts={this.props.allPosts}
-              getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
-              changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
-              changeLocation={this.changeLocation}
-              currentPost={this.props.currentPost}
-              createComment={this.props.createComment}
-              createPostOnDifferentProfile={
-                this.props.createPostOnDifferentProfile
-              }
-              {...props}
-            />
-          )}
-        />
-        <PrivateRoute
-          exact
-          path="/profile/:profileId"
-          component={props => (
-            <Profile
-              profilePosts={this.props.profilePosts}
-              getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
-              currentProfile={this.props.currentProfile}
-              currentProfileData={this.props.currentProfileData}
-              createPost={this.props.createPost}
-              friendThumbnails={this.props.friendThumbnails}
-              showFriends={this.props.showFriends}
-              changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
-              changeLocation={this.changeLocation}
-              getAndStoreAProfile={this.props.getAndStoreAProfile}
-              currentPost={this.props.currentPost}
-              createComment={this.props.createComment}
-              isAFriend={this.props.isAFriend}
-              checkForFriend={this.props.checkForFriend}
-              addFriend={this.props.addFriend}
-              getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
-              myProfile={this.props.myProfile}
-              createPostOnDifferentProfile={
-                this.props.createPostOnDifferentProfile
-              }
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/sign-up"
-          render={props => (
-            <SignUp
-              handleSignUpSubmit={this.handleSignUpSubmit}
-              handleChange={this.handleChange}
-              name={this.state.name}
-              email={this.state.email}
-              password={this.state.password}
-              confirmPassword={this.state.confirmPassword}
-              authCheck={this.props.authCheck}
-              authenticated={this.props.authenticated}
-              userSignedUp={this.props.userSignedUp}
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/login"
-          render={props => (
-            <Login
-              handleLoginSubmit={this.handleLoginSubmit}
-              handleChange={this.handleChange}
-              email={this.state.email}
-              password={this.state.password}
-              authCheck={this.props.authCheck}
-              authenticated={this.props.authenticated}
-              {...props}
-            />
-          )}
-        />
+        <div className="App-minus-footer">
+          <Route
+            path="/"
+            render={props => (
+              <Header
+                myProfile={this.props.myProfile}
+                authLogout={this.props.authLogout}
+                changeLocation={this.changeLocation}
+                authenticated={this.props.authenticated}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path="/"
+            render={props => (
+              <SideBar
+                authenticated={this.props.authenticated}
+                myProfile={this.props.myProfile}
+                authLogout={this.props.authLogout}
+                {...props}
+              />
+            )}
+          />
+          <PrivateRoute
+            exact
+            path="/dashboard"
+            component={props => (
+              <Dashboard
+                createPost={this.props.createPost}
+                currentProfile={this.props.currentProfile}
+                friendsPosts={this.props.friendsPosts}
+                allPosts={this.props.allPosts}
+                getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
+                changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
+                changeLocation={this.changeLocation}
+                currentPost={this.props.currentPost}
+                createComment={this.props.createComment}
+                createPostOnDifferentProfile={
+                  this.props.createPostOnDifferentProfile
+                }
+                {...props}
+              />
+            )}
+          />
+          <PrivateRoute
+            exact
+            path="/profile/:profileId"
+            component={props => (
+              <Profile
+                profilePosts={this.props.profilePosts}
+                getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
+                currentProfile={this.props.currentProfile}
+                currentProfileData={this.props.currentProfileData}
+                createPost={this.props.createPost}
+                friendThumbnails={this.props.friendThumbnails}
+                showFriends={this.props.showFriends}
+                changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
+                changeLocation={this.changeLocation}
+                getAndStoreAProfile={this.props.getAndStoreAProfile}
+                currentPost={this.props.currentPost}
+                createComment={this.props.createComment}
+                isAFriend={this.props.isAFriend}
+                checkForFriend={this.props.checkForFriend}
+                addFriend={this.props.addFriend}
+                getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
+                myProfile={this.props.myProfile}
+                createPostOnDifferentProfile={
+                  this.props.createPostOnDifferentProfile
+                }
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/sign-up"
+            render={props => (
+              <SignUp
+                handleSignUpSubmit={this.handleSignUpSubmit}
+                handleChange={this.handleChange}
+                name={this.state.name}
+                email={this.state.email}
+                password={this.state.password}
+                confirmPassword={this.state.confirmPassword}
+                authCheck={this.props.authCheck}
+                authenticated={this.props.authenticated}
+                userSignedUp={this.props.userSignedUp}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/login"
+            render={props => (
+              <Login
+                handleLoginSubmit={this.handleLoginSubmit}
+                handleChange={this.handleChange}
+                email={this.state.email}
+                password={this.state.password}
+                authCheck={this.props.authCheck}
+                authenticated={this.props.authenticated}
+                {...props}
+              />
+            )}
+          />
+        </div>
+        <Route path="/" render={props => <Footer {...props} />} />
       </div>
     );
   }

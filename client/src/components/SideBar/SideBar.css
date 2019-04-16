@@ -1,0 +1,24 @@
+.SideBar-container {
+  visibility: hidden;
+  position: absolute;
+  border: 1px solid black;
+  width: 25%;
+  height: calc(100% - 40px);
+  background-color: var(--main-overlay-color);
+  z-index: 2;
+  font-size: 1.4rem;
+}
+
+.SideBar-container-visible {
+  visibility: visible;
+}
+
+.SideBar-container ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.SideBar-container ul li {
+  padding-bottom: 8px;
+}
