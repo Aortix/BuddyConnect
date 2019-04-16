@@ -1,0 +1,39 @@
+.SignUp-container {
+  font-size: 1.1rem;
+}
+
+.SignUp-container h1 {
+  margin-bottom: 15px;
+}
+
+.SignUp-container p {
+  margin: 0;
+  padding: 0;
+}
+
+.SignUp-container input {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 1px solid black;
+  background-color: var(--main-bg-color);
+}
+
+.SignUp-container input:last-child {
+  margin-top: 0px;
+  margin-bottom: 15px;
+  font-size: 1.6rem;
+  font-weight: 500;
+  border: 1px solid black;
+  height: 50px;
+  box-shadow: 0.25px 0.25px;
+}
+
+.SignUp-container input:last-child:hover {
+  background-color: white;
+  cursor: pointer;
+}
+
+.SignUp-container input:focus {
+  outline: none;
+}

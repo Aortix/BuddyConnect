@@ -5,17 +5,42 @@ import PrivateRoute from "./../Private_Route/Private_Route.js";
 import Post from "./../Post/Post";
 import CreatePost from "./../CreatePost/CreatePost";
 
+import "./Dashboard.css";
+
 class Dashboard extends Component {
   render() {
     return (
       <Router>
-        <div>
-          <Link to="/dashboard">
-            <button value="posts">Posts</button>
-          </Link>
-          <Link to="/dashboard/global">
-            <button value="global">Global</button>
-          </Link>
+        <div className="Dashboard-container">
+          <div className="post-buttons-container">
+            <Link to="/dashboard">
+              <button
+                id="posts-button"
+                value="posts"
+                onClick={() => {
+                  document
+                    .getElementById("global-button")
+                    .classList.toggle("post-buttons");
+                }}
+              >
+                Posts
+              </button>
+            </Link>
+            <Link to="/dashboard/global">
+              <button
+                className="global-button-hidden"
+                id="global-button"
+                value="global"
+                onClick={() => {
+                  document
+                    .getElementById("posts-button")
+                    .classList.toggle("post-buttons-hidden");
+                }}
+              >
+                Global
+              </button>
+            </Link>
+          </div>
           <CreatePost
             createPost={this.props.createPost}
             currentProfile={this.props.currentProfile}
@@ -23,8 +48,6 @@ class Dashboard extends Component {
               this.props.createPostOnDifferentProfile
             }
           />
-          <h2>Dashboard for authorized users.</h2>
-          <h3>Posts Here:</h3>
           <PrivateRoute
             exact
             path="/dashboard"

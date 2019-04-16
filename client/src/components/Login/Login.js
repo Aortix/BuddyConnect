@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
+import "./Login.css";
 
 class Login extends Component {
   componentDidMount = () => {
@@ -18,32 +21,32 @@ class Login extends Component {
       <div className="Login-container">
         <h1>Login</h1>
         <form onSubmit={this.props.handleLoginSubmit}>
-          <label>
-            Email: <br />
-            <input
-              type="email"
-              name="email"
-              onChange={this.props.handleChange}
-              value={this.props.email}
-            />
-            <br />
-          </label>
-          <label>
-            Password: <br />
-            <input
-              type="password"
-              name="password"
-              onChange={this.props.handleChange}
-              value={this.props.password}
-            />
-          </label>
+          Email: <br />
+          <input
+            type="email"
+            name="email"
+            onChange={this.props.handleChange}
+            value={this.props.email}
+          />
+          <br />
+          Password: <br />
+          <input
+            type="password"
+            name="password"
+            onChange={this.props.handleChange}
+            value={this.props.password}
+          />
           <br /> <br />
           <input
             type="submit"
-            value="Submit"
+            name="Submit"
+            value="GO"
             onClick={this.props.handleLoginSubmit}
           />
         </form>
+        <Link to="/sign-up">
+          <p>Need to create an account? Click here.</p>
+        </Link>
       </div>
     );
   }

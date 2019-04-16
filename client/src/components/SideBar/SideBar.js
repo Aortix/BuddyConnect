@@ -8,10 +8,26 @@ export default function SideBar(props) {
       <div className="SideBar-container" id="SideBar">
         <ul>
           <Link to="/login">
-            <li>Login</li>
+            <li
+              onClick={() => {
+                document
+                  .getElementById("SideBar")
+                  .classList.toggle("SideBar-container-visible");
+              }}
+            >
+              Login
+            </li>
           </Link>
           <Link to="/sign-up">
-            <li>Sign Up</li>
+            <li
+              onClick={() => {
+                document
+                  .getElementById("SideBar")
+                  .classList.toggle("SideBar-container-visible");
+              }}
+            >
+              Sign Up
+            </li>
           </Link>
         </ul>
       </div>
@@ -21,16 +37,49 @@ export default function SideBar(props) {
       <div className="SideBar-container" id="SideBar">
         <ul>
           <Link to="/dashboard">
-            <li>Dashboard</li>
+            <li
+              onClick={() => {
+                document
+                  .getElementById("SideBar")
+                  .classList.toggle("SideBar-container-visible");
+              }}
+            >
+              Dashboard
+            </li>
           </Link>
           <Link to={`/profile/${props.myProfile}`}>
-            <li>Profile</li>
+            <li
+              onClick={() => {
+                document
+                  .getElementById("SideBar")
+                  .classList.toggle("SideBar-container-visible");
+              }}
+            >
+              Profile
+            </li>
           </Link>
           <Link to="/settings">
-            <li>Settings</li>
+            <li
+              onClick={() => {
+                document
+                  .getElementById("SideBar")
+                  .classList.toggle("SideBar-container-visible");
+              }}
+            >
+              Settings
+            </li>
           </Link>
           <Link to="/login">
-            <li onClick={props.authLogout}>Sign Out</li>
+            <li
+              onClick={() => {
+                props.authLogout();
+                document
+                  .getElementById("SideBar")
+                  .classList.toggle("SideBar-container-visible");
+              }}
+            >
+              Sign Out
+            </li>
           </Link>
         </ul>
       </div>

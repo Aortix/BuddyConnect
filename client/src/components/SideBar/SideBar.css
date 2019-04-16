@@ -1,9 +1,9 @@
 .SideBar-container {
   visibility: hidden;
   position: absolute;
-  border: 1px solid black;
+  border-right: 1px solid black;
   width: 25%;
-  height: calc(100% - 40px);
+  height: calc(100% - 80px);
   background-color: var(--main-overlay-color);
   z-index: 2;
   font-size: 1.4rem;

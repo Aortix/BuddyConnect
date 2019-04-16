@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import CreateComment from "./../CreateComment/CreateComment";
 
+import "./Post.css";
+
 class Post extends Component {
   state = {
     profileClick: false
@@ -18,52 +20,60 @@ class Post extends Component {
     return this.props.posts === null ? (
       <h1>Loading</h1>
     ) : (
-      <div>
+      <div className="Post-container">
         {this.props.posts.map(post => {
           return (
             <div key={post._id}>
-              <strong
-                onClick={() => {
-                  this.props.changeLocation(post.p_id);
-                }}
-              >
-                {post.name}
-              </strong>
-              <br />
-              {post.post}
+              <div className="Post-specifics">
+                <h3
+                  onClick={() => {
+                    this.props.changeLocation(post.p_id);
+                  }}
+                >
+                  {post.name}
+                </h3>
+                <br />
+                <p>{post.post}</p>
+              </div>
               {post.comments.map(comments => {
                 return (
-                  <div key={comments._id}>
-                    <em
+                  <div className="comment-specifics" key={comments._id}>
+                    <h4
                       onClick={() => {
                         this.props.changeLocation(comments.commenterP_id);
                       }}
                     >
                       {comments.commenterName}
-                    </em>
+                    </h4>
                     <br />
-                    {comments.commenterComment}
+                    <p>{comments.commenterComment}</p>
                   </div>
                 );
               })}
-              <br />
+
               {post._id !== this.props.currentPost ? (
-                <button
-                  onClick={() => {
-                    this.changeCurrentFocusedPost(post._id);
-                  }}
-                >
-                  Add Comment
-                </button>
-              ) : (
-                <div>
+                <div className="add-comment-button-container">
                   <button
+                    className="add-comment-button"
                     onClick={() => {
-                      this.changeCurrentFocusedPost("");
+                      this.changeCurrentFocusedPost(post._id);
                     }}
                   >
-                    Close Comment.
+                    Add Comment
                   </button>
+                </div>
+              ) : (
+                <div>
+                  <div className="add-comment-button-container">
+                    <button
+                      className="add-comment-button"
+                      onClick={() => {
+                        this.changeCurrentFocusedPost("");
+                      }}
+                    >
+                      Close Comment
+                    </button>
+                  </div>
                   <CreateComment
                     currentProfile={this.props.currentProfile}
                     currentPost={this.props.currentPost}

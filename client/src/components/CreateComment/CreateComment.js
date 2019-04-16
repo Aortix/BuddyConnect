@@ -1,6 +1,31 @@
 import React, { Component } from "react";
 
+import "./CreateComment.css";
+import textareaExpand from "./../../utilities/textareaExpand";
+
 class CreateComment extends Component {
+  componentDidMount = () => {
+    document.addEventListener(
+      "input",
+      event => {
+        if (event.target.tagName.toLowerCase() !== "textarea") return;
+        textareaExpand(event.target);
+      },
+      false
+    );
+  };
+
+  componentWillUnmount = () => {
+    document.removeEventListener(
+      "input",
+      event => {
+        if (event.target.tagName.toLowerCase() !== "textarea") return;
+        textareaExpand(event.target);
+      },
+      false
+    );
+  };
+
   state = {
     commentText: ""
   };
@@ -39,7 +64,6 @@ class CreateComment extends Component {
             value={this.state.commentText}
             placeholder="Create Comments Here..."
           />
-          <br />
           <input
             type="submit"
             value="Submit"

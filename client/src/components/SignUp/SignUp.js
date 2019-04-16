@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
+import "./SignUp.css";
 
 class SignUp extends Component {
   componentDidMount = () => {
@@ -57,8 +60,12 @@ class SignUp extends Component {
             type="submit"
             name="Submit"
             onClick={this.props.handleSignUpSubmit}
+            value="CREATE ACCOUNT"
           />
         </form>
+        <Link to="/login">
+          <p>Already have an account? Login here.</p>
+        </Link>
       </div>
     );
   }

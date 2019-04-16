@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import "./CreatePost.css";
+
 class CreatePost extends Component {
   state = {
     postText: ""
@@ -25,15 +27,17 @@ class CreatePost extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="CreatePost-container">
         <form>
-          <textarea
-            onChange={this.changePostText}
-            value={this.state.postText}
-            placeholder="Create Posts Here..."
-          />
-          <br />
-          <input type="submit" value="Submit" onClick={this.submitPostForm} />
+          <div className="create-post-form">
+            <textarea
+              onChange={this.changePostText}
+              value={this.state.postText}
+              placeholder="What's on your mind today?"
+            />
+            <br />
+            <input type="submit" value="Submit" onClick={this.submitPostForm} />
+          </div>
         </form>
       </div>
     );
