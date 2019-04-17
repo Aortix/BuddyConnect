@@ -6,7 +6,10 @@ class Friends extends Component {
       return null;
     } else {
       return (
-        <div>
+        <div
+          className={`Friends-container ${this.props.className}`}
+          id={this.props.id}
+        >
           {this.props.friendThumbnails.map(friends => {
             return (
               <div key={friends.profileId}>

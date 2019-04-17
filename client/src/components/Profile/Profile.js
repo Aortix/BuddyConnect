@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import "./Profile.css";
+
 //components
 import Song from "./Song/Song";
 import AddFriend from "./AddFriend/AddFriend";
@@ -43,7 +45,194 @@ class Profile extends Component {
               this.props.createPostOnDifferentProfile
             }
           />
+          <ul className="profile-tabs-container">
+            <li
+              className="profile-individual-tabs visibility"
+              id="posts-tab"
+              onClick={() => {
+                let tabs = Array.from(
+                  document.getElementsByClassName("profile-individual-tabs")
+                );
+                tabs.forEach(tab => {
+                  tab.classList.toggle("show-profile-tabs");
+                });
+                document
+                  .getElementById("posts-tab")
+                  .classList.toggle("visibility");
+                /////////////////////////////////////////////
+                if (
+                  document
+                    .getElementById("Post-component")
+                    .classList.contains("component-shown-until-hidden") === true
+                ) {
+                } else {
+                  document
+                    .getElementById("Post-component")
+                    .classList.add("component-shown-until-hidden");
+                  document
+                    .getElementById("AboutMe-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                  document
+                    .getElementById("Interests-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                  document
+                    .getElementById("Friends-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                }
+              }}
+            >
+              Posts
+            </li>
+            <li
+              className="profile-individual-tabs"
+              id="about-me-tab"
+              onClick={() => {
+                let tabs = Array.from(
+                  document.getElementsByClassName("profile-individual-tabs")
+                );
+                tabs.forEach(tab => {
+                  tab.classList.toggle("show-profile-tabs");
+                });
+                document
+                  .getElementById("about-me-tab")
+                  .classList.toggle("visibility");
+                ////////////////////////////////////////////
+                if (
+                  document
+                    .getElementById("AboutMe-component")
+                    .classList.contains("component-shown-until-hidden") === true
+                ) {
+                } else {
+                  document
+                    .getElementById("AboutMe-component")
+                    .classList.add("component-shown-until-hidden");
+                  document
+                    .getElementById("Post-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                  document
+                    .getElementById("Interests-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                  document
+                    .getElementById("Friends-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                }
+              }}
+            >
+              About Me
+            </li>
+            <li
+              className="profile-individual-tabs"
+              id="interests-tab"
+              onClick={() => {
+                let tabs = Array.from(
+                  document.getElementsByClassName("profile-individual-tabs")
+                );
+                tabs.forEach(tab => {
+                  tab.classList.toggle("show-profile-tabs");
+                });
+                document
+                  .getElementById("interests-tab")
+                  .classList.toggle("visibility");
+                ///////////////////////////////////////////
+                if (
+                  document
+                    .getElementById("Interests-component")
+                    .classList.contains("component-shown-until-hidden") === true
+                ) {
+                } else {
+                  document
+                    .getElementById("Interests-component")
+                    .classList.add("component-shown-until-hidden");
+                  document
+                    .getElementById("Post-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                  document
+                    .getElementById("AboutMe-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                  document
+                    .getElementById("Friends-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                }
+              }}
+            >
+              Interests
+            </li>
+            <li
+              className="profile-individual-tabs"
+              id="friends-tab"
+              onClick={() => {
+                let tabs = Array.from(
+                  document.getElementsByClassName("profile-individual-tabs")
+                );
+                tabs.forEach(tab => {
+                  tab.classList.toggle("show-profile-tabs");
+                });
+                document
+                  .getElementById("friends-tab")
+                  .classList.toggle("visibility");
+                ////////////////////////////////
+                if (
+                  document
+                    .getElementById("Friends-component")
+                    .classList.contains("component-shown-until-hidden") === true
+                ) {
+                } else {
+                  document
+                    .getElementById("Friends-component")
+                    .classList.add("component-shown-until-hidden");
+                  document
+                    .getElementById("Post-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                  document
+                    .getElementById("Interests-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                  document
+                    .getElementById("AboutMe-component")
+                    .classList.replace(
+                      "component-shown-until-hidden",
+                      "component-hidden-until-shown"
+                    );
+                }
+              }}
+            >
+              Friends
+            </li>
+          </ul>
           <Post
+            id={`Post-component`}
             posts={this.props.profilePosts}
             getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
             currentProfile={this.props.currentProfile}
@@ -53,15 +242,23 @@ class Profile extends Component {
             createComment={this.props.createComment}
             getAndStoreAProfile={this.props.getAndStoreAProfile}
           />
-          <AboutMe currentAboutMe={this.props.currentProfileData.aboutMe} />
+          <AboutMe
+            className={`component-hidden-until-shown`}
+            id={`AboutMe-component`}
+            currentAboutMe={this.props.currentProfileData.aboutMe}
+          />
+          <Interests
+            className={`component-hidden-until-shown`}
+            id={`Interests-component`}
+            currentInterests={this.props.currentProfileData.interests}
+          />
           <Friends
+            className={`component-hidden-until-shown`}
+            id={`Friends-component`}
             friendThumbnails={this.props.friendThumbnails}
             showFriends={this.props.showFriends}
             currentFriends={this.props.currentProfileData.friends}
             currentProfile={this.props.currentProfile}
-          />
-          <Interests
-            currentInterests={this.props.currentProfileData.interests}
           />
         </div>
       );

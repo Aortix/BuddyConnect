@@ -20,7 +20,7 @@ class Post extends Component {
     return this.props.posts === null ? (
       <h1>Loading</h1>
     ) : (
-      <div className="Post-container">
+      <div className={`Post-container`} id={`${this.props.id}`}>
         {this.props.posts.map(post => {
           return (
             <div key={post._id}>

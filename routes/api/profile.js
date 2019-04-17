@@ -127,7 +127,7 @@ router.post(
 //Private Route
 //Used to update the user's header
 router.put(
-  "/update-header",
+  "/update/update-header",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
@@ -145,12 +145,12 @@ router.put(
 
 //Private Route
 //Used to update the user's avatar
-/*router.put(
-  "/update-avatar",
+router.put(
+  "/update/update-avatar",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
-      {user: req.user.id},
+      { user: req.user.id },
       { avatar: req.body.avatar },
       (err, response) => {
         if (err) {
@@ -160,12 +160,31 @@ router.put(
       }
     );
   }
-);*/
+);
+
+//Private Route
+//Used to update the user's name
+router.put(
+  "/update/update-name",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
+      { name: req.body.name },
+      (err, response) => {
+        if (err) {
+          return res.send(err);
+        }
+        return res.send("Name Updated!");
+      }
+    );
+  }
+);
 
 //Private Route
 //Used to update the user's song
 router.put(
-  "/update-song",
+  "/update/update-song",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
@@ -184,7 +203,7 @@ router.put(
 //Private Route
 //Used to update the user's about me section
 router.put(
-  "/update-aboutMe",
+  "/update/update-aboutMe",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
@@ -203,7 +222,7 @@ router.put(
 //Private Route
 //Used to update the user's interests section
 router.put(
-  "/update-interests",
+  "/update/update-interests",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
@@ -222,7 +241,7 @@ router.put(
 //Private Route
 //Used to reset the user's header back to default
 router.put(
-  "/reset-header",
+  "/update/reset-header",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
@@ -241,7 +260,7 @@ router.put(
 //Private Route
 //Used to reset the user's avatar back to default
 /*router.put(
-  "/reset-avatar",
+  "/update/reset-avatar",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
@@ -260,7 +279,7 @@ router.put(
 //Private Route
 //Used to reset the user's song back to default
 router.put(
-  "/reset-song",
+  "/update/reset-song",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
@@ -279,7 +298,7 @@ router.put(
 //Private Route
 //Used to reset the user's about me section back to default
 router.put(
-  "/reset-aboutMe",
+  "/update/reset-aboutMe",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
@@ -298,7 +317,7 @@ router.put(
 //Private Route
 //Used to reset the user's interests back to default
 router.put(
-  "/reset-interests",
+  "/update/reset-interests",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(

@@ -1,0 +1,44 @@
+.Profile-container {
+  position: relative;
+}
+
+.profile-tabs-container {
+  display: inline-block;
+  padding: 0;
+}
+
+.profile-tabs-container li {
+  border: 1px solid black;
+  list-style-type: none;
+  margin: 0 auto;
+}
+
+.profile-individual-tabs {
+  visibility: hidden;
+  position: absolute;
+}
+
+.show-profile-tabs {
+  visibility: visible;
+  position: static;
+}
+
+.visibility {
+  visibility: visible;
+  position: static;
+}
+
+.component-visibility {
+  display: block;
+  visibility: visible;
+}
+
+.component-hidden-until-shown {
+  display: none;
+  visibility: hidden;
+}
+
+.component-shown-until-hidden {
+  display: block !important;
+  visibility: visible !important;
+}

@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./Song.css";
+
 export default function Song(props) {
-  return <div>{props.currentSong}</div>;
+  return <div className="Song-container">{props.currentSong}</div>;
 }
