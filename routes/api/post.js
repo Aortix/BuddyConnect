@@ -18,6 +18,7 @@ router.get(
     postSchema
       .find({})
       .populate("comments")
+      .sort({ datePosted: "desc" })
       .exec((err, posts) => {
         if (err) {
           return res.send(`There was an error finding the posts - ${err}`);
@@ -41,9 +42,11 @@ router.get(
         response.friends.forEach(friends => {
           returnArray.push(friends.toString());
         });
+        returnArray.push(response._id.toString());
         postSchema
           .find({})
           .populate("comments")
+          .sort({ datePosted: "desc" })
           .exec((err, response3) => {
             if (err) {
               return res.send(err);
@@ -74,6 +77,7 @@ router.post(
         postSchema
           .find({})
           .populate("comments")
+          .sort({ datePosted: "desc" })
           .exec((err, response) => {
             if (err) {
               return res.send(err);

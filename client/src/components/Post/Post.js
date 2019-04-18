@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from "moment";
 import CreateComment from "./../CreateComment/CreateComment";
 
 import "./Post.css";
@@ -25,6 +26,7 @@ class Post extends Component {
           return (
             <div key={post._id}>
               <div className="Post-specifics">
+                <p>{moment(post.datePosted).format("MM/DD/YYYY hh:mmA")}</p>
                 <h3
                   onClick={() => {
                     this.props.changeLocation(post.p_id);
@@ -38,6 +40,9 @@ class Post extends Component {
               {post.comments.map(comments => {
                 return (
                   <div className="comment-specifics" key={comments._id}>
+                    <p>
+                      {moment(comments.datePosted).format("MM/DD/YYYY hh:mmA")}
+                    </p>
                     <h4
                       onClick={() => {
                         this.props.changeLocation(comments.commenterP_id);

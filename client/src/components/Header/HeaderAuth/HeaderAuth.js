@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./../Header.css";
+
+import "./HeaderAuth.css";
 
 export const HeaderAuth = props => {
   if (props.authenticated === true) {
     return (
       <div className="HeaderAuth-container">
         <span
+          className="profile-link"
           onClick={() => {
             props.changeLocation(props.myProfile);
           }}

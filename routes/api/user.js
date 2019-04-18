@@ -108,22 +108,52 @@ router.post("/login", (req, res) => {
 
 //Private Route
 //Updating the current user's name
-/*router.put(
+router.put(
   "/update-name",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    userSchema.findByIdAndUpdate(
-      req.user.id,
+    profileSchema.findOneAndUpdate(
+      { user: req.user.id },
       { name: req.body.name },
       (err, response) => {
         if (err) {
           return res.send(err);
         }
-        return res.send("Users name has been changed.\n" + response);
+        userSchema.findByIdAndUpdate(
+          req.user.id,
+          { name: req.body.name },
+          (err, response2) => {
+            if (err) {
+              return res.send(err);
+            } else {
+            }
+          }
+        );
+        postSchema.updateMany(
+          { p_id: response._id },
+          { name: req.body.name },
+          (err, response3) => {
+            if (err) {
+              return res.send(err);
+            } else {
+            }
+          }
+        );
+        commentsSchema.updateMany(
+          { commenterP_id: response._id },
+          { commenterName: req.body.name },
+          (err, response4) => {
+            if (err) {
+              return res.send(err);
+            } else {
+            }
+          }
+        );
+        return res.send("Name should have been updated everywhere.");
       }
     );
   }
-);*/
+);
 
 //Private Route
 //Updating the current user's email
@@ -131,16 +161,31 @@ router.put(
   "/update-email",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    userSchema.findByIdAndUpdate(
-      req.user.id,
-      { email: req.body.email },
-      (err, response) => {
+    userSchema.findById(req.user.id, (err, response) => {
+      if (err) {
+        return res.send(err);
+      }
+      bcrypt.compare(req.body.password, response.password, (err, response2) => {
         if (err) {
           return res.send(err);
+        } else if (response2 == false) {
+          return res.send("Current password is incorrect.");
+        } else {
+          userSchema.findByIdAndUpdate(
+            req.user.id,
+            { email: req.body.email },
+            (err,
+            response3 => {
+              if (err) {
+                return res.send(err);
+              } else {
+                return res.send("Email changed!");
+              }
+            })
+          );
         }
-        return res.send("Users email has been changed.\n" + response);
-      }
-    );
+      });
+    });
   }
 );
 
@@ -150,55 +195,40 @@ router.put(
   "/update-password",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    if (req.body.newPassword === req.body.newPassword2) {
-      userSchema
-        .findById(req.user.id, (err, user) => {
+    userSchema.findById(req.user.id, (err, response) => {
+      if (err) {
+        return res.send(err);
+      }
+      bcrypt.compare(
+        req.body.password2,
+        response.password,
+        (err, response2) => {
           if (err) {
             return res.send(err);
-          } else if (user === null || user === undefined || user === 0) {
-            return res.send("User not found.");
+          } else if (response2 == false) {
+            return res.send("Current password is incorrect.");
           } else {
-            return user;
-          }
-        })
-        .then(user => {
-          bcrypt.compare(
-            req.body.currentPassword,
-            user.password,
-            (err, response) => {
+            bcrypt.hash(req.body.password, saltRounds, (err, salt) => {
               if (err) {
                 return res.send(err);
               }
-              if (response !== true) {
-                return res.send("Password is incorrect!");
-              } else {
-                bcrypt.hash(req.body.newPassword, saltRounds, (err, salt) => {
+              userSchema.findByIdAndUpdate(
+                req.user.id,
+                { password: salt, password2: salt },
+                (err,
+                response3 => {
                   if (err) {
                     return res.send(err);
                   } else {
-                    userSchema.findByIdAndUpdate(
-                      req.user.id,
-                      { password: salt, password2: salt },
-                      (err, response) => {
-                        if (err) {
-                          return res.send(err);
-                        } else {
-                          return res.send("Password Changed!");
-                        }
-                      }
-                    );
+                    return res.send("Password changed!");
                   }
-                });
-              }
-            }
-          );
-        })
-        .catch(err => {
-          return res.send(`Caught an error -> ${err}`);
-        });
-    } else {
-      return res.send("New password does not match in both entries!");
-    }
+                })
+              );
+            });
+          }
+        }
+      );
+    });
   }
 );
 
@@ -247,62 +277,69 @@ router.post(
 //Private Route
 //Removes user account and profile; still deciding on whether or not to remove posts and comments from the past...
 //Will come back to this...
-router.delete(
+router.put(
   "/delete-user",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    /*
-    userSchema.findById(req.user.id, (err, user) => {
+    userSchema.findById(req.user.id, (err, response) => {
       if (err) {
         return res.send(err);
       } else {
-        let userPostsIds = Array.from(...user.userPosts);
-        let userCommentsIds = [];
-        userPostsIds.forEach((postIds, index) => {
-          postSchema.findById(postIds, (err, posts) => {
+        bcrypt.compare(
+          req.body.password2,
+          response.password,
+          (err, response2) => {
             if (err) {
               return res.send(err);
+            } else if (response2 == false) {
+              return res.send("Current password is incorrect.");
             } else {
-              userCommentsIds += posts.comments[index];
-              return console.log(postIds, posts, userCommentsIds);
+              profileSchema.findOneAndRemove(
+                { user: req.user.id },
+                (err, response2) => {
+                  if (err) {
+                    return res.send(err);
+                  } else {
+                    console.log("Profile deleted.");
+                    commentsSchema.deleteMany(
+                      { commenterP_id: response2._id },
+                      (err, response) => {
+                        if (err) {
+                          return res.send(err);
+                        } else {
+                          console.log("Comments deleted.");
+                        }
+                      }
+                    );
+                    postSchema.deleteMany(
+                      { p_id: response2._id },
+                      (err, response) => {
+                        if (err) {
+                          return res.send(err);
+                        } else {
+                          console.log("Posts deleted.");
+                        }
+                      }
+                    );
+                    userSchema.findByIdAndDelete(
+                      req.user.id,
+                      (err, response) => {
+                        if (err) {
+                          return res.send(err);
+                        } else {
+                          console.log("User deleted.");
+                        }
+                      }
+                    );
+                    return res.send("Everything should be deleted.");
+                  }
+                }
+              );
             }
-          });
-        });
-        userCommentsIds.forEach(comments => {
-          commentsSchema.findById(comments, (err, comment) => {
-            if (err) {
-              return res.send(err);
-            } else {
-              return console.log(comment);
-            }
-          });
-        });
+          }
+        );
       }
     });
-
-    /*let profileId = userSchema.findById(req.user.id, (err, response) => {
-      if (err) {
-        return res.send(err);
-      }
-      return response.profile;
-    });
-
-    profileSchema.findByIdAndDelete(profileId, (err, response) => {
-      if (err) {
-        return res.send(err);
-      }
-
-      //should redirect to login page
-      return res.send(response);
-    });
-
-    userSchema.findByIdAndDelete(req.user.id, (err, response) => {
-      if (err) {
-        return res.send(err);
-      }
-
-      return res.send(response);
-    }); */
   }
 );
 module.exports = router;

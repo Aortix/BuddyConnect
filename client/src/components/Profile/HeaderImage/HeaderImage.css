@@ -2,5 +2,6 @@
   width: 100%;
   min-height: 300px;
   border: 1px solid black;
+  border-top: none;
   vertical-align: middle;
 }

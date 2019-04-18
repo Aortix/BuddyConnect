@@ -1,4 +1,11 @@
 .HeaderAuth-container {
-  border: 1px solid black;
-  padding-right: 50px;
+  margin-right: 15px;
+}
+
+.profile-link {
+  cursor: pointer;
+}
+
+.profile-link:hover {
+  text-decoration: underline;
 }

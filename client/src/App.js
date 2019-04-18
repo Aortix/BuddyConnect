@@ -22,6 +22,12 @@ import {
   checkForFriend,
   reverseAddedFriend
 } from "./actions/profile";
+import {
+  changeName,
+  changeEmail,
+  changePassword,
+  deleteAccount
+} from "./actions/settings";
 
 //Components
 import Login from "./components/Login/Login";
@@ -33,6 +39,7 @@ import Profile from "./components/Profile/Profile";
 import { USER_SIGNED_UP } from "./actions/types";
 import SideBar from "./components/SideBar/SideBar";
 import Footer from "./components/Footer/Footer";
+import Settings from "./components/Settings/Settings";
 
 class App extends Component {
   componentDidMount = () => {
@@ -198,6 +205,19 @@ class App extends Component {
             />
           )}
         />
+        <PrivateRoute
+          exact
+          path="/settings"
+          component={props => (
+            <Settings
+              changeName={this.props.changeName}
+              changeEmail={this.props.changeEmail}
+              changePassword={this.props.changePassword}
+              deleteAccount={this.props.deleteAccount}
+              {...props}
+            />
+          )}
+        />
         <Route
           exact
           path="/sign-up"
@@ -307,6 +327,18 @@ const mapDispatchToProps = dispatch => ({
   },
   reverseAddedFriend: () => {
     dispatch(reverseAddedFriend());
+  },
+  changeName: name => {
+    dispatch(changeName(name));
+  },
+  changeEmail: (email, password2) => {
+    dispatch(changeEmail(email, password2));
+  },
+  changePassword: (password, password2) => {
+    dispatch(changePassword(password, password2));
+  },
+  deleteAccount: password2 => {
+    dispatch(deleteAccount(password2));
   }
 });
 

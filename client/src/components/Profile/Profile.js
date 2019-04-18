@@ -59,7 +59,6 @@ class Profile extends Component {
                 document
                   .getElementById("posts-tab")
                   .classList.toggle("visibility");
-                /////////////////////////////////////////////
                 if (
                   document
                     .getElementById("Post-component")
@@ -105,7 +104,6 @@ class Profile extends Component {
                 document
                   .getElementById("about-me-tab")
                   .classList.toggle("visibility");
-                ////////////////////////////////////////////
                 if (
                   document
                     .getElementById("AboutMe-component")
@@ -151,7 +149,6 @@ class Profile extends Component {
                 document
                   .getElementById("interests-tab")
                   .classList.toggle("visibility");
-                ///////////////////////////////////////////
                 if (
                   document
                     .getElementById("Interests-component")
@@ -197,7 +194,6 @@ class Profile extends Component {
                 document
                   .getElementById("friends-tab")
                   .classList.toggle("visibility");
-                ////////////////////////////////
                 if (
                   document
                     .getElementById("Friends-component")

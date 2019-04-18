@@ -8,7 +8,7 @@
   text-align: left;
   margin: 0 auto;
   width: 80%;
-  border: 1.25px solid black;
+  border: 1.1px solid black;
 }
 
 .Post-specifics h3 {
@@ -17,6 +17,11 @@
   padding: 0px;
   margin: 0px;
   margin-left: 3px;
+  cursor: pointer;
+}
+
+.Post-specifics h3:hover {
+  text-decoration: underline;
 }
 
 .Post-specifics p {
@@ -41,6 +46,11 @@
   padding: 0px;
   margin: 0px;
   margin-left: 3px;
+  cursor: pointer;
+}
+
+.comment-specifics h4:hover {
+  text-decoration: underline;
 }
 
 .comment-specifics p {
@@ -54,8 +64,8 @@
   width: 80%;
   margin: 0 auto;
   text-align: left;
-  height: 26px;
-  padding-right: 3px;
+  height: 30px;
+  padding-right: 2px;
 }
 
 .add-comment-button {
