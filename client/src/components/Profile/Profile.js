@@ -7,6 +7,7 @@ import Song from "./Song/Song";
 import AddFriend from "./AddFriend/AddFriend";
 import HeaderImage from "./HeaderImage/HeaderImage";
 import Avatar from "./Avatar/Avatar";
+import UploadAvatar from "./UploadAvatar/UploadAvatar";
 import Name from "./Name/Name";
 import Post from "./../Post/Post";
 import AboutMe from "./AboutMe/AboutMe";
@@ -37,6 +38,7 @@ class Profile extends Component {
             currentHeaderImage={this.props.currentProfileData.header}
           />
           <Avatar currentAvatar={this.props.currentProfileData.avatar} />
+          <UploadAvatar changeAvatar={this.props.changeAvatar} />
           <Name currentName={this.props.currentProfileData.name} />
           <CreatePost
             createPost={this.props.createPost}

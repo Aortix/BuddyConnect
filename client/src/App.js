@@ -20,7 +20,8 @@ import {
   showFriends,
   addFriend,
   checkForFriend,
-  reverseAddedFriend
+  reverseAddedFriend,
+  changeAvatar
 } from "./actions/profile";
 import {
   changeName,
@@ -201,6 +202,7 @@ class App extends Component {
               createPostOnDifferentProfile={
                 this.props.createPostOnDifferentProfile
               }
+              changeAvatar={this.props.changeAvatar}
               {...props}
             />
           )}
@@ -336,6 +338,9 @@ const mapDispatchToProps = dispatch => ({
   },
   changePassword: (password, password2) => {
     dispatch(changePassword(password, password2));
+  },
+  changeAvatar: fileData => {
+    dispatch(changeAvatar(fileData));
   },
   deleteAccount: password2 => {
     dispatch(deleteAccount(password2));

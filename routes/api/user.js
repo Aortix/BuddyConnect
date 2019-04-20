@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const multer = require("multer");
+let upload = multer({ dest: "./client/src/uploads" });
 const router = express.Router();
+
 const userSchema = require("../../schemas/users.js");
 const postSchema = require("../../schemas/posts.js");
 const profileSchema = require("../../schemas/profiles.js");
@@ -231,6 +234,10 @@ router.put(
     });
   }
 );
+
+router.post("/update-avatar", upload.single("avatar"), (req, res, next) => {
+  return res.send(req.file);
+});
 
 //Private Route
 //Gets the current user that is logged in

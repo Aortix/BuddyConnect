@@ -140,3 +140,21 @@ export const checkForFriend = profileId => dispatch => {
 export const reverseAddedFriend = () => dispatch => {
   dispatch({ type: REVERSE_ADDED_FRIEND, payload: 0 });
 };
+
+export const changeAvatar = fileData => dispatch => {
+  const newFormData = new FormData();
+  newFormData.append("avatar", fileData);
+  const config = {
+    headers: {
+      "content-type": "multipart/form-data"
+    }
+  };
+  axios
+    .post("http://localhost:5000/api/user/update-avatar", newFormData, config)
+    .then(data => {
+      console.log(data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
