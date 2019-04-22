@@ -1,5 +1,12 @@
 .Name-container {
   position: absolute;
-  top: 250px;
-  left: 45%;
+  top: 306.25px;
+  width: 100%;
+  left: 0;
+  margin: 0 auto;
 }
+
+.Name-container p {
+  margin: 0px;
+}
+

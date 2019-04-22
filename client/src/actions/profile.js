@@ -48,6 +48,7 @@ export const getAndStoreMyProfile = () => dispatch => {
     axios
       .get("http://localhost:5000/api/profile/my/profile", config)
       .then(data => {
+        console.log('Was this called?');
         dispatch({ type: GET_AND_STORE_MY_PROFILE, payload: data.data });
       })
       .catch(err => {
@@ -142,19 +143,47 @@ export const reverseAddedFriend = () => dispatch => {
 };
 
 export const changeAvatar = fileData => dispatch => {
+  let token = window.localStorage.getItem("token");
+  if (token === undefined || token === null || token === "undefined") {
+    return null;
+  } else {
   const newFormData = new FormData();
   newFormData.append("avatar", fileData);
   const config = {
     headers: {
+      "Authorization": token,
       "content-type": "multipart/form-data"
     }
   };
   axios
     .post("http://localhost:5000/api/user/update-avatar", newFormData, config)
-    .then(data => {
-      console.log(data);
+    .then(() => {
+      console.log('Avatar uploaded.');
+      dispatch(getAndStoreMyProfile());
     })
     .catch(err => {
       console.log(err);
     });
-};
+}};
+
+export const changeHeader = headerData => dispatch => {
+  let token = window.localStorage.getItem("token");
+  if (token === undefined || token === null || token === "undefined") {
+    return null;
+  } else {
+  const config = {
+    headers: {
+      "Authorization": token
+    }
+  };
+  axios
+    .put("http://localhost:5000/api/profile/update/update-header", {header: headerData}, config)
+    .then(() => {
+      console.log('Header updated.');
+      dispatch(getAndStoreMyProfile());
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}};
+

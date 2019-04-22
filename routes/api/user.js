@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const multer = require("multer");
-let upload = multer({ dest: "./client/src/uploads" });
+const path = require("path");
+const fs = require("fs");
 const router = express.Router();
 
 const userSchema = require("../../schemas/users.js");
@@ -235,8 +236,53 @@ router.put(
   }
 );
 
-router.post("/update-avatar", upload.single("avatar"), (req, res, next) => {
-  return res.send(req.file);
+router.post("/update-avatar", passport.authenticate("jwt", {session: false}), (req, res) => {
+  const pathToFile = "./public/uploads/avatars/";
+  userSchema.findById(req.user.id, (err, response) => {
+    if (err) {
+      return res.send(err);
+    }
+    else {
+      fs.unlink(pathToFile + response.avatar, (err) => {
+        if (err) throw err;
+        console.log('Deletion successful.');
+      })
+    }
+  })
+    let storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, './public/uploads/avatars')
+      },
+      filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+      }
+    })
+
+    let upload = multer({storage: storage, limits: {fileSize: 700000}}).single('avatar');
+    upload(req, res, (err) => {
+      if (err instanceof multer.MulterError) {
+        return res.send(err);
+      } else if (err) {
+        return res.send(err);
+      } else {
+        console.log('Avatar image saved.');
+        userSchema.findByIdAndUpdate(req.user.id, {avatar: req.file.filename}, (err, response) => {
+          if (err) {
+            return res.send(err);
+          } else {
+            return console.log('Avatar updated in user database.');
+          }
+        })
+        profileSchema.findOneAndUpdate({user: req.user.id}, {avatar: req.file.filename}, (err, response) => {
+          if (err) {
+            return res.send(err);
+          } else {
+            console.log('Avatar updated in profile database.');
+            return res.send();
+          }
+        })
+      }
+    })
 });
 
 //Private Route

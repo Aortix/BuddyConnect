@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
+
 const userSchema = require("../../schemas/users.js");
 const postSchema = require("../../schemas/posts.js");
 const profileSchema = require("../../schemas/profiles.js");

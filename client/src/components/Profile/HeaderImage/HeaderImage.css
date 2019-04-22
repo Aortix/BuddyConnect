@@ -1,7 +1,36 @@
 .HeaderImage-container {
+  position: relative;
   width: 100%;
-  min-height: 300px;
+  height: 350px;
+}
+
+.HeaderImage-container > img {
+  display: block;
+  width: 100%;
   border: 1px solid black;
   border-top: none;
-  vertical-align: middle;
+  height: inherit;
+}
+
+.choosing-a-header {
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  justify-content: space-evenly;
+  top: 15px;
+  left: 10%;
+  width: 80%;
+  z-index: 3;
+  border: 2px solid black;
+  box-shadow: 0.5px 0.5px;
+  background-color: white;
+}
+
+.choosing-a-header img {
+  border: 1px solid black;
+  margin-top: 25px;
+}
+
+.choosing-a-header img:last-child {
+  margin-bottom: 25px;
 }

@@ -12,8 +12,8 @@ const ProfileSchema = new Schema({
     required: true
   },
   name: { type: String, required: true },
-  avatar: { type: String, default: "Standard", required: true },
-  header: { type: String, default: "Standard", required: false },
+  avatar: { type: String, default: "standard.jpg", required: true },
+  header: { type: String, default: "standard.png", required: false },
   song: { type: String, default: "Standard", required: false },
   aboutMe: { type: String, default: "Nothing here yet.", required: false },
   friends: [

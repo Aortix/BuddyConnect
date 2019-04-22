@@ -34,6 +34,8 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 
+app.use(express.static("public"));
+
 //Test get route
 app.get("/", (req, res) => {
   res.send(`This message was sent through port ${port} at /`);

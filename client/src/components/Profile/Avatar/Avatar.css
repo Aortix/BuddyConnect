@@ -1,5 +1,12 @@
 .Avatar-container {
   position: absolute;
-  top: 200px;
-  left: 40%;
+  left: calc(50% - 87.5px);
+  top: 62.5px;
+}
+
+.Avatar-container img {
+  height: 200px;
+  width: 175px;
+  border: 2px solid white;
+  margin: 0 auto;
 }

@@ -3,12 +3,8 @@ import React, { Component } from "react";
 import "./Profile.css";
 
 //components
-import Song from "./Song/Song";
-import AddFriend from "./AddFriend/AddFriend";
 import HeaderImage from "./HeaderImage/HeaderImage";
-import Avatar from "./Avatar/Avatar";
 import UploadAvatar from "./UploadAvatar/UploadAvatar";
-import Name from "./Name/Name";
 import Post from "./../Post/Post";
 import AboutMe from "./AboutMe/AboutMe";
 import Friends from "./Friends/Friends";
@@ -26,20 +22,19 @@ class Profile extends Component {
     } else {
       return (
         <div className="Profile-container">
-          <Song currentSong={this.props.currentProfileData.song} />
-          <AddFriend
-            isAFriend={this.props.isAFriend}
-            addFriend={this.props.addFriend}
-            currentProfile={this.props.currentProfile}
-            getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
-            myProfile={this.props.myProfile}
-          />
           <HeaderImage
             currentHeaderImage={this.props.currentProfileData.header}
+            changeHeader={this.props.changeHeader}
+            currentName={this.props.currentProfileData.name}
+            currentProfile={this.props.currentProfile}
+            myProfile={this.props.myProfile}
+            isAFriend={this.props.isAFriend}
+            addFriend={this.props.addFriend}
+            getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
           />
-          <Avatar currentAvatar={this.props.currentProfileData.avatar} />
-          <UploadAvatar changeAvatar={this.props.changeAvatar} />
-          <Name currentName={this.props.currentProfileData.name} />
+          <UploadAvatar currentProfile={this.props.currentProfile} myProfile={this.props.myProfile} 
+          currentAvatar={this.props.currentProfileData.avatar} 
+          changeAvatar={this.props.changeAvatar} />
           <CreatePost
             createPost={this.props.createPost}
             currentProfile={this.props.currentProfile}
