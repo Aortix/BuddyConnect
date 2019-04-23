@@ -22,7 +22,9 @@ import {
   checkForFriend,
   reverseAddedFriend,
   changeAvatar,
-  changeHeader
+  changeHeader,
+  changeAboutMe,
+  changeInterests
 } from "./actions/profile";
 import {
   changeName,
@@ -153,6 +155,7 @@ class App extends Component {
               authenticated={this.props.authenticated}
               myProfile={this.props.myProfile}
               authLogout={this.props.authLogout}
+              changeLocation={this.changeLocation}
               {...props}
             />
           )}
@@ -205,6 +208,8 @@ class App extends Component {
               }
               changeAvatar={this.props.changeAvatar}
               changeHeader={this.props.changeHeader}
+              changeAboutMe={this.props.changeAboutMe}
+              changeInterests={this.props.changeInterests}
               {...props}
             />
           )}
@@ -236,6 +241,7 @@ class App extends Component {
               authCheck={this.props.authCheck}
               authenticated={this.props.authenticated}
               userSignedUp={this.props.userSignedUp}
+              authErrors={this.props.authErrors}
               {...props}
             />
           )}
@@ -274,7 +280,8 @@ const mapStateToProps = state => ({
   currentProfileData: state.profileReducer.currentProfileData,
   friendThumbnails: state.profileReducer.friendThumbnails,
   isAFriend: state.profileReducer.isAFriend,
-  addedFriend: state.profileReducer.addedFriend
+  addedFriend: state.profileReducer.addedFriend,
+  authErrors: state.authReducer.errors
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -344,8 +351,14 @@ const mapDispatchToProps = dispatch => ({
   changeAvatar: fileData => {
     dispatch(changeAvatar(fileData));
   },
-  changeHeader: (headerData) => {
+  changeHeader: headerData => {
     dispatch(changeHeader(headerData));
+  },
+  changeAboutMe: aboutMeData => {
+    dispatch(changeAboutMe(aboutMeData));
+  },
+  changeInterests: interestsData => {
+    dispatch(changeInterests(interestsData));
   },
   deleteAccount: password2 => {
     dispatch(deleteAccount(password2));
@@ -356,5 +369,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withRouter(App))
+  )(App)
 );

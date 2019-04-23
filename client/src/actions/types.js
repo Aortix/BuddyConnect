@@ -3,6 +3,7 @@ export const SIGN_UP = "SIGN_UP";
 export const AUTHENTICATED = "AUTHENTICATED";
 export const LOGOUT = "LOGOUT";
 export const USER_SIGNED_UP = "USER_SIGNED_UP";
+export const ERROR = "ERROR";
 
 export const GET_ALL_POSTS = "GET_ALL_POSTS";
 export const GET_FRIENDS_POSTS = "GET_FRIENDS_POSTS";

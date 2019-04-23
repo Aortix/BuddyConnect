@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import isEmpty from "./../../utilities/isEmpty";
 import "./SignUp.css";
 
 class SignUp extends Component {
@@ -8,9 +9,10 @@ class SignUp extends Component {
     if (this.props.authenticated === true) {
       this.props.history.push("/dashboard");
     }
+    console.log(this.props.authErrors);
   };
 
-  componentDidUpdate = () => {
+  componentDidUpdate = prevProps => {
     if (this.props.authenticated === true) {
       this.props.history.push("/dashboard");
     }
@@ -32,6 +34,9 @@ class SignUp extends Component {
             value={this.props.name}
           />
           <br />
+          {isEmpty(this.props.authErrors.name) === true ? null : (
+            <p>{this.props.authErrors.name}</p>
+          )}
           Email: <br />
           <input
             type="email"
@@ -40,6 +45,9 @@ class SignUp extends Component {
             value={this.props.email}
           />
           <br />
+          {isEmpty(this.props.authErrors.email) === true ? null : (
+            <p>{this.props.authErrors.email}</p>
+          )}
           Password: <br />
           <input
             type="password"
@@ -48,6 +56,9 @@ class SignUp extends Component {
             value={this.props.password}
           />
           <br />
+          {isEmpty(this.props.authErrors.password) === true ? null : (
+            <p>{this.props.authErrors.password}</p>
+          )}
           Confirm Password: <br />
           <input
             type="password"
@@ -55,7 +66,11 @@ class SignUp extends Component {
             onChange={this.props.handleChange}
             value={this.props.confirmPassword}
           />
-          <br /> <br />
+          <br />
+          {isEmpty(this.props.authErrors.password2) === true ? null : (
+            <p>{this.props.authErrors.password2}</p>
+          )}
+          <br />
           <input
             type="submit"
             name="Submit"

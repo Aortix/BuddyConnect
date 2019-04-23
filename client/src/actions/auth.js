@@ -3,7 +3,8 @@ import {
   LOGIN,
   AUTHENTICATED,
   LOGOUT,
-  USER_SIGNED_UP
+  USER_SIGNED_UP,
+  ERROR
 } from "./../actions/types";
 
 export const authSignUp = (
@@ -18,15 +19,15 @@ export const authSignUp = (
     password,
     password2: confirmPassword
   };
-  console.log(requestBody);
   axios
     .post("http://localhost:5000/api/user/sign-up", requestBody)
-    .then(() => {
+    .then(data => {
       console.log("User should have been added.");
       dispatch({ type: USER_SIGNED_UP, payload: 1 });
     })
     .catch(err => {
-      return err;
+      console.log(err.response.data.errors);
+      dispatch({ type: ERROR, payload: err.response.data.errors });
     });
 };
 
@@ -45,6 +46,7 @@ export const authLogin = (email, password) => dispatch => {
         }
       });
       window.localStorage.setItem("token", data.data.token);
+      window.localStorage.setItem("avatar", data.data.avatar);
       console.log("Token should be in localstorage.");
     })
     .then(() => {

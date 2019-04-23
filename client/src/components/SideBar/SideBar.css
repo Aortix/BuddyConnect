@@ -2,11 +2,12 @@
   visibility: hidden;
   position: absolute;
   border-right: 1px solid black;
-  width: 25%;
+  width: 30%;
   height: calc(100% - 80px);
   background-color: var(--main-overlay-color);
   z-index: 2;
   font-size: 1.4rem;
+  background-color: var(--secondary-bg-color);
 }
 
 .SideBar-container-visible {
@@ -21,4 +22,9 @@
 
 .SideBar-container ul li {
   padding-bottom: 8px;
+  cursor: pointer;
+}
+
+.SideBar-container ul li:hover {
+  text-decoration: underline;
 }

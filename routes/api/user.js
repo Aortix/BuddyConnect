@@ -1,17 +1,22 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+
 const router = express.Router();
 
+const defaultHeaders = require("./../../public/uploads/defaults/defaultHeaders");
 const userSchema = require("../../schemas/users.js");
 const postSchema = require("../../schemas/posts.js");
 const profileSchema = require("../../schemas/profiles.js");
 const commentsSchema = require("../../schemas/comments.js");
+
+const signUpValidation = require("./../../validation/signUpValidation");
+const loginValidation = require("./../../validation/loginValidation");
+const settingsPageValidation = require("./../../validation/settingsPageValidation");
 
 require("./../../auth/jwtStrategy")(passport);
 
@@ -19,12 +24,22 @@ const saltRounds = 12;
 
 //Public Route
 //Create a new user - Hash password and store necessary information in DB
-router.post("/sign-up", (req, res) => {
+router.post("/sign-up", (req, res, next) => {
+  const errors = signUpValidation(req.body);
+
+  if (errors.noErrors === false) {
+    //errors.statusCode = 400;
+    return res.status(400).send(errors);
+  }
+
   if (req.body.password === req.body.password2) {
     bcrypt.hash(req.body.password, saltRounds, (err, salt) => {
       if (err) {
-        return res.send(err);
+        errors.misc = "Problem with hashing the password on our server.";
+        return res.status(500).send(errors.misc);
       }
+
+      const newHeader = defaultHeaders[Math.floor(Math.random() * 4)];
 
       const newUser = new userSchema({
         name: req.body.name,
@@ -35,28 +50,32 @@ router.post("/sign-up", (req, res) => {
 
       const newProfile = new profileSchema({
         name: req.body.name,
+        header: newHeader,
         user: newUser
       });
 
       //Adjust later and use promises or async/await instead.
       newUser.save(err => {
         if (err) {
-          return res.send(err);
+          errors.misc = "Problem with saving the user to the database.";
+          return res.status(500).send(errors.misc);
         } else {
           newProfile.save((err, data) => {
             if (err) {
-              return res.send(err);
+              errors.misc =
+                "Problem with saving the user's profile to the database.";
+              return res.status(500).send(errors.misc);
             } else {
-              return res.send(
-                "New User and Profile have been created.\n" + data
-              );
+              return res
+                .status(200)
+                .send("New User and Profile have been created.");
             }
           });
         }
       });
     });
   } else {
-    return res.send("Passwords must match!");
+    return res.status(400).send("Passwords must match!");
   }
 });
 
@@ -64,26 +83,32 @@ router.post("/sign-up", (req, res) => {
 /*Login - Login using an email and password, compares password to one in database and creates a token to be stored 
 in user's localstorage if login is successful*/
 router.post("/login", (req, res) => {
+  const errors = loginValidation(req.body);
+
+  if (errors.noErrors === false) {
+    return res.status(400).send(errors);
+  }
+
   userSchema
     .findOne({ email: req.body.email }, (err, response) => {
-      if (err) {
-        return res.send(`Error with finding email - ${err}`);
+      if (response == null || response == undefined) {
+        errors.misc = "Email doesn't exist in our database.";
+        return res.status(400).send(errors.misc);
+      } else if (err) {
+        errors.misc = "Problem with finding the email in our database.";
+        return res.status(400).send(errors.misc);
+      } else {
+        return response;
       }
-
-      if (response === null || response === undefined) {
-        return res.send("Email is not found.");
-      }
-
-      return response;
     })
     .then(response => {
       bcrypt.compare(req.body.password, response.password, (err, data) => {
-        if (err) {
-          return res.send(`Error with getting password - ${err}`);
-        }
-
         if (data !== true) {
-          return res.send("Password is incorrect.");
+          errors.misc = "Password is incorrect.";
+          return res.status(400).send(errors.misc);
+        } else if (err) {
+          errors.misc = "Problem with getting the password in our database.";
+          return res.status(500).send(errors.misc);
         } else {
           let query = {
             id: response._id,
@@ -97,16 +122,21 @@ router.post("/login", (req, res) => {
             },
             (err, token) => {
               if (err) {
-                return res.send(`Could not generate token or send it - ${err}`);
+                errors.misc = "Error generating the token on our server.";
+                return res.status(500).send(errors.misc);
+              } else {
+                return res.send({
+                  token: "Bearer " + token,
+                  avatar: response.avatar
+                });
               }
-              return res.send({ token: "Bearer " + token });
             }
           );
         }
       });
     })
     .catch(err => {
-      return res.send(`There was an error - ${err}`);
+      return res.status(500).send(`There was an error.`);
     });
 });
 
@@ -116,6 +146,12 @@ router.put(
   "/update-name",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = settingsPageValidation.updateNameValidation(req.body);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send(errors);
+    }
+
     profileSchema.findOneAndUpdate(
       { user: req.user.id },
       { name: req.body.name },
@@ -165,6 +201,11 @@ router.put(
   "/update-email",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = settingsPageValidation.updateEmailValidation(req.body);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send(errors);
+    }
     userSchema.findById(req.user.id, (err, response) => {
       if (err) {
         return res.send(err);
@@ -199,6 +240,11 @@ router.put(
   "/update-password",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = settingsPageValidation.updatePasswordValidation(req.body);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send(errors);
+    }
     userSchema.findById(req.user.id, (err, response) => {
       if (err) {
         return res.send(err);
@@ -236,54 +282,116 @@ router.put(
   }
 );
 
-router.post("/update-avatar", passport.authenticate("jwt", {session: false}), (req, res) => {
-  const pathToFile = "./public/uploads/avatars/";
-  userSchema.findById(req.user.id, (err, response) => {
-    if (err) {
-      return res.send(err);
-    }
-    else {
-      fs.unlink(pathToFile + response.avatar, (err) => {
-        if (err) throw err;
-        console.log('Deletion successful.');
-      })
-    }
-  })
+router.post(
+  "/update-avatar",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const pathToFile = "./public/uploads/avatars/";
+
+    //Function for filtering uploaded avatars so that only an image is uploaded
+    checkAvatarUpload = (file, cb) => {
+      const filetypes = /jpeg|jpg|png|gif/;
+      const extname = filetypes
+        .test(path.extname(file.originalname))
+        .toLowerCase();
+      const mimetype = filetypes.test(file.mimetype);
+
+      if (mimetype && extname) {
+        return cb(null, true);
+      } else {
+        cb("Error: images only!");
+      }
+    };
+
     let storage = multer.diskStorage({
       destination: (req, file, cb) => {
-        cb(null, './public/uploads/avatars')
+        cb(null, "./public/uploads/avatars");
       },
       filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        cb(
+          null,
+          file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        );
       }
-    })
+    });
 
-    let upload = multer({storage: storage, limits: {fileSize: 700000}}).single('avatar');
-    upload(req, res, (err) => {
+    let upload = multer({
+      storage: storage,
+      limits: { fileSize: 700000 },
+      fileFilter: (req, file, cb) => {
+        checkAvatarUpload(file, cb);
+      }
+    }).single("avatar");
+    upload(req, res, err => {
       if (err instanceof multer.MulterError) {
         return res.send(err);
       } else if (err) {
         return res.send(err);
       } else {
-        console.log('Avatar image saved.');
-        userSchema.findByIdAndUpdate(req.user.id, {avatar: req.file.filename}, (err, response) => {
+        userSchema.findById(req.user.id, (err, response) => {
           if (err) {
             return res.send(err);
           } else {
-            return console.log('Avatar updated in user database.');
+            if (response.avatar === "standard.jpg") {
+              console.log("Cant delete the standard avatar!");
+            } else {
+              fs.unlink(pathToFile + response.avatar, err => {
+                if (err) throw err;
+                console.log("Deletion successful.");
+              });
+            }
           }
-        })
-        profileSchema.findOneAndUpdate({user: req.user.id}, {avatar: req.file.filename}, (err, response) => {
-          if (err) {
-            return res.send(err);
-          } else {
-            console.log('Avatar updated in profile database.');
-            return res.send();
+        });
+        userSchema.findByIdAndUpdate(
+          req.user.id,
+          { avatar: req.file.filename },
+          (err, response) => {
+            if (err) {
+              return res.send(err);
+            } else {
+              return console.log("Avatar updated in user database.");
+            }
           }
-        })
+        );
+        profileSchema.findOneAndUpdate(
+          { user: req.user.id },
+          { avatar: req.file.filename },
+          (err, response) => {
+            if (err) {
+              return res.send(err);
+            } else {
+              console.log("Avatar updated in profile database.");
+
+              postSchema.findOneAndUpdate(
+                { p_id: response._id },
+                { avatar: req.file.filename },
+                (err, response2) => {
+                  if (err) {
+                    return res.send(err);
+                  } else {
+                    console.log("Avatar updated in the post database.");
+                  }
+                }
+              );
+              commentsSchema.findOneAndUpdate(
+                { commenterP_id: response._id },
+                { commenterAvatar: req.file.filename },
+                (err, response3) => {
+                  if (err) {
+                    return res.send(err);
+                  } else {
+                    console.log("Avatar updated in the comments database.");
+                    return res.send();
+                  }
+                }
+              );
+            }
+          }
+        );
       }
-    })
-});
+    });
+  }
+);
 
 //Private Route
 //Gets the current user that is logged in
@@ -334,6 +442,12 @@ router.put(
   "/delete-user",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = settingsPageValidation.deleteAccountValidation(req.body);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send(errors);
+    }
+
     userSchema.findById(req.user.id, (err, response) => {
       if (err) {
         return res.send(err);
@@ -395,4 +509,9 @@ router.put(
     });
   }
 );
+
+/*router.use((err, req, res, next) => {
+  return res.status(400).send(err.errors);
+});*/
+
 module.exports = router;

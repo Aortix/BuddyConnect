@@ -1,7 +1,6 @@
 .Post-container {
   margin: 0 auto;
-  width: 85%;
-  background-color: white;
+  width: 90%;
 }
 
 .Post-specifics {
@@ -11,11 +10,15 @@
   border: 1.1px solid black;
 }
 
+.post-image-and-name {
+  padding-left: 5px;
+  border: 1px solid black;
+}
+
 .Post-specifics h3 {
-  display: inline;
   font-size: 1.25rem;
-  padding: 0px;
-  margin: 0px;
+  margin: 0;
+  padding: 0;
   margin-left: 3px;
   cursor: pointer;
 }
@@ -25,8 +28,10 @@
 }
 
 .Post-specifics p {
+  display: inline-block;
   font-size: 1rem;
-  padding: 0px;
+  padding-left: 2px;
+  padding-bottom: 5px;
   margin: 0px;
   margin-left: 3px;
 }
@@ -37,13 +42,19 @@
   width: 80%;
   border: 1px solid black;
   border-top: none;
+  background-color: var(--secondary-bg-color);
+}
+
+.comment-specifics img {
+  display: inline-block;
+  padding-left: 5px;
 }
 
 .comment-specifics h4 {
   display: inline;
   font-weight: 500;
   font-size: 1rem;
-  padding: 0px;
+  padding-left: 2px;
   margin: 0px;
   margin-left: 3px;
   cursor: pointer;
@@ -58,6 +69,8 @@
   padding: 0px;
   margin: 0px;
   margin-left: 3px;
+  padding-left: 2px;
+  padding-bottom: 5px;
 }
 
 .add-comment-button-container {

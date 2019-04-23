@@ -3,3 +3,13 @@
   top: 10px;
   right: 25px;
 }
+
+.AddFriend-container button {
+  background-color: var(--secondary-bg-color);
+  border: 1px solid black;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  font-weight: 500;
+}

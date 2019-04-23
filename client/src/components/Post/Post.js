@@ -27,13 +27,20 @@ class Post extends Component {
             <div key={post._id}>
               <div className="Post-specifics">
                 <p>{moment(post.datePosted).format("MM/DD/YYYY hh:mmA")}</p>
-                <h3
+                <div
+                  className="post-image-and-name"
                   onClick={() => {
                     this.props.changeLocation(post.p_id);
                   }}
                 >
-                  {post.name}
-                </h3>
+                  <img
+                    width="27"
+                    height="27"
+                    src={`http://localhost:5000/uploads/avatars/${post.avatar}`}
+                    alt="avatar"
+                  />
+                  <h3>{post.name}</h3>
+                </div>
                 <br />
                 <p>{post.post}</p>
               </div>
@@ -43,13 +50,21 @@ class Post extends Component {
                     <p>
                       {moment(comments.datePosted).format("MM/DD/YYYY hh:mmA")}
                     </p>
-                    <h4
+                    <div
                       onClick={() => {
                         this.props.changeLocation(comments.commenterP_id);
                       }}
                     >
-                      {comments.commenterName}
-                    </h4>
+                      <img
+                        width="26"
+                        height="26"
+                        src={`http://localhost:5000/uploads/avatars/${
+                          comments.commenterAvatar
+                        }`}
+                        alt="avatar"
+                      />
+                      <h4>{comments.commenterName}</h4>
+                    </div>
                     <br />
                     <p>{comments.commenterComment}</p>
                   </div>

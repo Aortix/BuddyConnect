@@ -47,17 +47,18 @@ export default function SideBar(props) {
               Dashboard
             </li>
           </Link>
-          <Link to={`/profile/${props.myProfile}`}>
-            <li
-              onClick={() => {
+          <li
+            onClick={() => {
+              {
                 document
                   .getElementById("SideBar")
                   .classList.toggle("SideBar-container-visible");
-              }}
-            >
-              Profile
-            </li>
-          </Link>
+                props.changeLocation(props.myProfile);
+              }
+            }}
+          >
+            Profile
+          </li>
           <Link to="/settings">
             <li
               onClick={() => {

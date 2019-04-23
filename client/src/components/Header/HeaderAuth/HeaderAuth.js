@@ -13,7 +13,14 @@ export const HeaderAuth = props => {
             props.changeLocation(props.myProfile);
           }}
         >
-          Profile{" "}
+          <img
+            height="22"
+            width="22"
+            src={`http://localhost:5000/uploads/avatars/${window.localStorage.getItem(
+              "avatar"
+            )}`}
+            alt="myavatar"
+          />
         </span>
         <span>
           <Link to="/login" onClick={props.authLogout}>

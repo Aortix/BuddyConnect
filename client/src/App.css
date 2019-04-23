@@ -1,8 +1,9 @@
 :root {
-  --main-bg-color: #fbfbfb;
+  --main-bg-color: #ffffff;
   --main-text-color: #282828;
   --main-overlay-color: #ffffff;
-  --secondary-bg-color: #ff0000;
+  --secondary-bg-color: #fafafa;
+  --secondary-text-color: #fdf5eb;
   font-size: 16px;
 }
 

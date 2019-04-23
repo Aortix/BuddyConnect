@@ -1,0 +1,29 @@
+.Friends-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.friend-icon {
+  display: inline-block;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.friend-icon:hover {
+  background-color: white;
+  border: 1px inset gray;
+  padding: 5px;
+  box-shadow: 0.25px 0.25px;
+}
+
+.friend-icon p {
+  margin: 0;
+}
+
+.friend-icon img {
+  height: 110px;
+  width: 100px;
+}

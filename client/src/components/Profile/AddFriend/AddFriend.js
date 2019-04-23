@@ -7,7 +7,9 @@ export default function AddFriend(props) {
     return null;
   } else {
     return props.isAFriend === 1 ? (
-      <div className="AddFriend-container">Already A Friend</div>
+      <div className="AddFriend-container">
+        <button>Already A Friend</button>
+      </div>
     ) : (
       <div className="AddFriend-container">
         <button

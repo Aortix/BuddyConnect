@@ -32,9 +32,12 @@ class Profile extends Component {
             addFriend={this.props.addFriend}
             getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
           />
-          <UploadAvatar currentProfile={this.props.currentProfile} myProfile={this.props.myProfile} 
-          currentAvatar={this.props.currentProfileData.avatar} 
-          changeAvatar={this.props.changeAvatar} />
+          <UploadAvatar
+            currentProfile={this.props.currentProfile}
+            myProfile={this.props.myProfile}
+            currentAvatar={this.props.currentProfileData.avatar}
+            changeAvatar={this.props.changeAvatar}
+          />
           <CreatePost
             createPost={this.props.createPost}
             currentProfile={this.props.currentProfile}
@@ -239,11 +242,13 @@ class Profile extends Component {
             className={`component-hidden-until-shown`}
             id={`AboutMe-component`}
             currentAboutMe={this.props.currentProfileData.aboutMe}
+            changeAboutMe={this.props.changeAboutMe}
           />
           <Interests
             className={`component-hidden-until-shown`}
             id={`Interests-component`}
             currentInterests={this.props.currentProfileData.interests}
+            changeInterests={this.props.changeInterests}
           />
           <Friends
             className={`component-hidden-until-shown`}
@@ -252,6 +257,8 @@ class Profile extends Component {
             showFriends={this.props.showFriends}
             currentFriends={this.props.currentProfileData.friends}
             currentProfile={this.props.currentProfile}
+            getAndStoreAProfile={this.props.getAndStoreAProfile}
+            history={this.props.history}
           />
         </div>
       );

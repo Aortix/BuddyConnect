@@ -48,7 +48,7 @@ export const getAndStoreMyProfile = () => dispatch => {
     axios
       .get("http://localhost:5000/api/profile/my/profile", config)
       .then(data => {
-        console.log('Was this called?');
+        console.log("Was this called?");
         dispatch({ type: GET_AND_STORE_MY_PROFILE, payload: data.data });
       })
       .catch(err => {
@@ -147,43 +147,100 @@ export const changeAvatar = fileData => dispatch => {
   if (token === undefined || token === null || token === "undefined") {
     return null;
   } else {
-  const newFormData = new FormData();
-  newFormData.append("avatar", fileData);
-  const config = {
-    headers: {
-      "Authorization": token,
-      "content-type": "multipart/form-data"
-    }
-  };
-  axios
-    .post("http://localhost:5000/api/user/update-avatar", newFormData, config)
-    .then(() => {
-      console.log('Avatar uploaded.');
-      dispatch(getAndStoreMyProfile());
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}};
+    const newFormData = new FormData();
+    newFormData.append("avatar", fileData);
+    const config = {
+      headers: {
+        Authorization: token,
+        "content-type": "multipart/form-data"
+      }
+    };
+    axios
+      .post("http://localhost:5000/api/user/update-avatar", newFormData, config)
+      .then(() => {
+        console.log("Avatar uploaded.");
+        dispatch(getAndStoreMyProfile());
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+};
 
 export const changeHeader = headerData => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
   } else {
-  const config = {
-    headers: {
-      "Authorization": token
-    }
-  };
-  axios
-    .put("http://localhost:5000/api/profile/update/update-header", {header: headerData}, config)
-    .then(() => {
-      console.log('Header updated.');
-      dispatch(getAndStoreMyProfile());
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}};
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    };
+    axios
+      .put(
+        "http://localhost:5000/api/profile/update/update-header",
+        { header: headerData },
+        config
+      )
+      .then(() => {
+        console.log("Header updated.");
+        dispatch(getAndStoreMyProfile());
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+};
 
+export const changeAboutMe = aboutMeData => dispatch => {
+  let token = window.localStorage.getItem("token");
+  if (token === undefined || token === null || token === "undefined") {
+    return null;
+  } else {
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    };
+    axios
+      .put(
+        "http://localhost:5000/api/profile/update/update-aboutMe",
+        { aboutMe: aboutMeData },
+        config
+      )
+      .then(() => {
+        console.log("AboutMe updated.");
+        dispatch(getAndStoreMyProfile());
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+};
+
+export const changeInterests = interestsData => dispatch => {
+  let token = window.localStorage.getItem("token");
+  if (token === undefined || token === null || token === "undefined") {
+    return null;
+  } else {
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    };
+    axios
+      .put(
+        "http://localhost:5000/api/profile/update/update-interests",
+        { interests: interestsData },
+        config
+      )
+      .then(() => {
+        console.log("Interests updated.");
+        dispatch(getAndStoreMyProfile());
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+};
