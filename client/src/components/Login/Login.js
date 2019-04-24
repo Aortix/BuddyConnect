@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import isEmpty from "./../../utilities/isEmpty";
 import "./Login.css";
 
 class Login extends Component {
@@ -24,26 +25,30 @@ class Login extends Component {
           Email: <br />
           <input
             type="email"
-            name="email"
+            name="loginEmail"
             onChange={this.props.handleChange}
-            value={this.props.email}
+            value={this.props.loginEmail}
           />
+          {isEmpty(this.props.authErrors.email) === true ? null : (
+            <p>{this.props.authErrors.email}</p>
+          )}
           <br />
           Password: <br />
           <input
             type="password"
-            name="password"
+            name="loginPassword"
             onChange={this.props.handleChange}
-            value={this.props.password}
+            value={this.props.loginPassword}
           />
+          {isEmpty(this.props.authErrors.password) === true ? null : (
+            <p>{this.props.authErrors.password}</p>
+          )}
           <br /> <br />
-          <input
-            type="submit"
-            name="Submit"
-            value="GO"
-            onClick={this.props.handleLoginSubmit}
-          />
+          <input type="submit" name="Submit" value="GO" formNoValidate />
         </form>
+        {isEmpty(this.props.authErrors.misc) === true ? null : (
+          <p>{this.props.authErrors.misc}</p>
+        )}
         <Link to="/sign-up">
           <p>Need to create an account? Click here.</p>
         </Link>

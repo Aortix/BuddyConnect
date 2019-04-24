@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import "./CreateComment.css";
 import textareaExpand from "./../../utilities/textareaExpand";
+import isEmpty from "./../../utilities/isEmpty";
 
 class CreateComment extends Component {
   componentDidMount = () => {
@@ -42,7 +43,7 @@ class CreateComment extends Component {
         this.props.currentPost,
         this.props.myProfile
       );
-      this.props.changeCurrentFocusedPost("");
+      //this.props.changeCurrentFocusedPost("");
       this.setState({ commentText: "" });
     } else {
       this.props.createComment(
@@ -50,7 +51,7 @@ class CreateComment extends Component {
         this.props.currentPost,
         this.props.currentProfile
       );
-      this.props.changeCurrentFocusedPost("");
+      //this.props.changeCurrentFocusedPost("");
       this.setState({ commentText: "" });
     }
   };
@@ -64,6 +65,12 @@ class CreateComment extends Component {
             value={this.state.commentText}
             placeholder="Create Comments Here..."
           />
+          {isEmpty(this.props.commentErrors.comment) === true ? null : (
+            <p>{this.props.commentErrors.comment}</p>
+          )}
+          {isEmpty(this.props.commentErrors.misc) === true ? null : (
+            <p>{this.props.commentErrors.misc}</p>
+          )}
           <input
             type="submit"
             value="Submit"

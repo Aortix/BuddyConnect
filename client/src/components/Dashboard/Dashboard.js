@@ -47,6 +47,8 @@ class Dashboard extends Component {
             createPostOnDifferentProfile={
               this.props.createPostOnDifferentProfile
             }
+            postErrors={this.props.postErrors}
+            clearPostErrors={this.props.clearPostErrors}
           />
           <PrivateRoute
             exact
@@ -61,6 +63,10 @@ class Dashboard extends Component {
                 currentPost={this.props.currentPost}
                 createComment={this.props.createComment}
                 getAndStoreAProfile={this.props.getAndStoreAProfile}
+                commentErrors={this.props.commentErrors}
+                clearCommentErrors={this.props.clearCommentErrors}
+                deletePost={this.props.deletePost}
+                deleteComment={this.props.deleteComment}
                 {...props}
               />
             )}
@@ -78,6 +84,10 @@ class Dashboard extends Component {
                 currentPost={this.props.currentPost}
                 createComment={this.props.createComment}
                 getAndStoreAProfile={this.props.getAndStoreAProfile}
+                commentErrors={this.props.commentErrors}
+                clearCommentErrors={this.props.clearCommentErrors}
+                deletePost={this.props.deletePost}
+                deleteComment={this.props.deleteComment}
                 {...props}
               />
             )}

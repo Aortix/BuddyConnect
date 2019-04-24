@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import isEmpty from "./../../utilities/isEmpty";
 import "./CreatePost.css";
 
 class CreatePost extends Component {
@@ -36,6 +37,12 @@ class CreatePost extends Component {
               placeholder="What's on your mind today?"
             />
             <br />
+            {isEmpty(this.props.postErrors.post) === true ? null : (
+              <p>{this.props.postErrors.post}</p>
+            )}
+            {isEmpty(this.props.postErrors.misc) === true ? null : (
+              <p>{this.props.postErrors.misc}</p>
+            )}
             <input type="submit" value="Submit" onClick={this.submitPostForm} />
           </div>
         </form>

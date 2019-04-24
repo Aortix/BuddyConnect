@@ -3,7 +3,11 @@ import {
   GET_ALL_POSTS,
   GET_FRIENDS_POSTS,
   GET_PROFILE_POSTS,
-  CHANGE_CURRENT_FOCUSED_POST
+  CHANGE_CURRENT_FOCUSED_POST,
+  POST_ERRORS,
+  COMMENT_ERRORS,
+  CLEAR_POST_ERRORS,
+  CLEAR_COMMENT_ERRORS
 } from "./types";
 
 export const getAndStoreAllPosts = () => dispatch => {
@@ -85,7 +89,8 @@ export const createPost = (postText, profileId) => dispatch => {
   };
 
   let requestBody = {
-    post: postText
+    post: postText,
+    datePosted: Date.now()
   };
   axios
     .post("http://localhost:5000/api/post/create-post", requestBody, config)
@@ -93,9 +98,10 @@ export const createPost = (postText, profileId) => dispatch => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
       dispatch(getAndStoreProfilePosts(profileId));
+      dispatch({ type: CLEAR_POST_ERRORS });
     })
     .catch(err => {
-      return console.log(err);
+      dispatch({ type: POST_ERRORS, payload: err.response.data.errors });
     });
 };
 
@@ -112,7 +118,8 @@ export const createPostOnDifferentProfile = (
 
   let requestBody = {
     post: postText,
-    profileId: profileId
+    profileId: profileId,
+    datePosted: Date.now()
   };
   axios
     .post(
@@ -124,9 +131,10 @@ export const createPostOnDifferentProfile = (
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
       dispatch(getAndStoreProfilePosts(profileId));
+      dispatch({ type: CLEAR_POST_ERRORS });
     })
     .catch(err => {
-      return console.log(err);
+      dispatch({ type: POST_ERRORS, payload: err.response.data.errors });
     });
 };
 
@@ -144,7 +152,8 @@ export const createComment = (commentText, postId, profileId) => dispatch => {
 
   let requestBody = {
     comment: commentText,
-    post: postId
+    post: postId,
+    datePosted: Date.now()
   };
   axios
     .post("http://localhost:5000/api/post/create-comment", requestBody, config)
@@ -152,8 +161,59 @@ export const createComment = (commentText, postId, profileId) => dispatch => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
       dispatch(getAndStoreProfilePosts(profileId));
+      dispatch(changeCurrentFocusedPost(""));
+      dispatch({ type: CLEAR_COMMENT_ERRORS });
     })
     .catch(err => {
-      return console.log(err);
+      dispatch({ type: COMMENT_ERRORS, payload: err.response.data.errors });
+    });
+};
+
+export const deletePost = (postId, currentProfile) => dispatch => {
+  let token = window.localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: token
+    }
+  };
+  let requestBody = {
+    postId: postId
+  };
+  axios
+    .put("http://localhost:5000/api/post/delete-post", requestBody, config)
+    .then(data => {
+      dispatch(getAndStoreAllPosts());
+      dispatch(getAndStoreFriendsPosts());
+      dispatch(getAndStoreProfilePosts(currentProfile));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const deleteComment = (
+  commentId,
+  postId,
+  currentProfile
+) => dispatch => {
+  let token = window.localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: token
+    }
+  };
+  let requestBody = {
+    commentId: commentId,
+    postId: postId
+  };
+  axios
+    .put("http://localhost:5000/api/post/delete-comment", requestBody, config)
+    .then(data => {
+      dispatch(getAndStoreAllPosts());
+      dispatch(getAndStoreFriendsPosts());
+      dispatch(getAndStoreProfilePosts(currentProfile));
+    })
+    .catch(err => {
+      console.log(err);
     });
 };

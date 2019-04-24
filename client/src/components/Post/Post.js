@@ -17,6 +17,14 @@ class Post extends Component {
     this.props.changeCurrentFocusedPost(postId);
   };
 
+  deletePost = (postId, currentProfile) => {
+    this.props.deletePost(postId, currentProfile);
+  };
+
+  deleteComment = (commentId, postId, currentProfile) => {
+    this.props.deleteComment(commentId, postId, currentProfile);
+  };
+
   render() {
     return this.props.posts === null ? (
       <h1>Loading</h1>
@@ -27,6 +35,13 @@ class Post extends Component {
             <div key={post._id}>
               <div className="Post-specifics">
                 <p>{moment(post.datePosted).format("MM/DD/YYYY hh:mmA")}</p>
+                <button
+                  onClick={() =>
+                    this.deletePost(post._id, this.props.currentProfile)
+                  }
+                >
+                  Delete Post
+                </button>
                 <div
                   className="post-image-and-name"
                   onClick={() => {
@@ -50,6 +65,17 @@ class Post extends Component {
                     <p>
                       {moment(comments.datePosted).format("MM/DD/YYYY hh:mmA")}
                     </p>
+                    <button
+                      onClick={() =>
+                        this.deleteComment(
+                          comments._id,
+                          post._id,
+                          this.props.currentProfile
+                        )
+                      }
+                    >
+                      Delete Comment
+                    </button>
                     <div
                       onClick={() => {
                         this.props.changeLocation(comments.commenterP_id);
@@ -100,6 +126,8 @@ class Post extends Component {
                     changeCurrentFocusedPost={this.changeCurrentFocusedPost}
                     getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
                     createComment={this.props.createComment}
+                    commentErrors={this.props.commentErrors}
+                    clearCommentErrors={this.props.clearCommentErrors}
                   />
                 </div>
               )}

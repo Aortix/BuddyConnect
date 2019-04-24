@@ -35,8 +35,9 @@ router.post("/sign-up", (req, res, next) => {
   if (req.body.password === req.body.password2) {
     bcrypt.hash(req.body.password, saltRounds, (err, salt) => {
       if (err) {
-        errors.misc = "Problem with hashing the password on our server.";
-        return res.status(500).send(errors.misc);
+        errors.errors.password =
+          "Problem with hashing the password on our server.";
+        return res.status(500).send(errors);
       }
 
       const newHeader = defaultHeaders[Math.floor(Math.random() * 4)];
@@ -57,14 +58,14 @@ router.post("/sign-up", (req, res, next) => {
       //Adjust later and use promises or async/await instead.
       newUser.save(err => {
         if (err) {
-          errors.misc = "Problem with saving the user to the database.";
-          return res.status(500).send(errors.misc);
+          errors.errors.misc = "Problem with saving the user to the database.";
+          return res.status(500).send(errors);
         } else {
           newProfile.save((err, data) => {
             if (err) {
-              errors.misc =
+              errors.errors.misc =
                 "Problem with saving the user's profile to the database.";
-              return res.status(500).send(errors.misc);
+              return res.status(500).send(errors);
             } else {
               return res
                 .status(200)
@@ -92,11 +93,13 @@ router.post("/login", (req, res) => {
   userSchema
     .findOne({ email: req.body.email }, (err, response) => {
       if (response == null || response == undefined) {
-        errors.misc = "Email doesn't exist in our database.";
-        return res.status(400).send(errors.misc);
+        errors.errors.email = "Email doesn't exist in our database.";
+        console.log(errors);
+        return res.status(400).send(errors);
       } else if (err) {
-        errors.misc = "Problem with finding the email in our database.";
-        return res.status(400).send(errors.misc);
+        errors.errors.email =
+          "Problem with searching the database for this email";
+        return res.status(400).send(errors);
       } else {
         return response;
       }
@@ -104,11 +107,12 @@ router.post("/login", (req, res) => {
     .then(response => {
       bcrypt.compare(req.body.password, response.password, (err, data) => {
         if (data !== true) {
-          errors.misc = "Password is incorrect.";
-          return res.status(400).send(errors.misc);
+          errors.errors.password = "Password is incorrect.";
+          return res.status(400).send(errors);
         } else if (err) {
-          errors.misc = "Problem with getting the password in our database.";
-          return res.status(500).send(errors.misc);
+          errors.errors.password =
+            "Problem with searching for the password in our database.";
+          return res.status(500).send(errors);
         } else {
           let query = {
             id: response._id,
@@ -122,8 +126,9 @@ router.post("/login", (req, res) => {
             },
             (err, token) => {
               if (err) {
-                errors.misc = "Error generating the token on our server.";
-                return res.status(500).send(errors.misc);
+                errors.errors.misc =
+                  "Error generating the token on our server.";
+                return res.status(500).send(errors);
               } else {
                 return res.send({
                   token: "Bearer " + token,

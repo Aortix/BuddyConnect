@@ -3,7 +3,8 @@ import {
   AUTHENTICATED,
   LOGOUT,
   USER_SIGNED_UP,
-  ERROR
+  ERROR,
+  CLEAR_AUTH_ERRORS
 } from "./../actions/types";
 
 const initialState = {
@@ -39,6 +40,11 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         errors: action.payload
+      };
+    case CLEAR_AUTH_ERRORS:
+      return {
+        ...state,
+        errors: {}
       };
     default:
       return state;

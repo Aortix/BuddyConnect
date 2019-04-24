@@ -78,6 +78,9 @@ class SignUp extends Component {
             value="CREATE ACCOUNT"
           />
         </form>
+        {isEmpty(this.props.authErrors.misc) === true ? null : (
+          <p>{this.props.authErrors.misc}</p>
+        )}
         <Link to="/login">
           <p>Already have an account? Login here.</p>
         </Link>

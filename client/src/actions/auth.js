@@ -53,7 +53,8 @@ export const authLogin = (email, password) => dispatch => {
       dispatch(authCheck());
     })
     .catch(err => {
-      return err;
+      console.log(err.response.data.errors);
+      dispatch({ type: ERROR, payload: err.response.data.errors });
     });
 };
 

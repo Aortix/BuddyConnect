@@ -12,7 +12,9 @@ import {
   createPost,
   createPostOnDifferentProfile,
   createComment,
-  changeCurrentFocusedPost
+  changeCurrentFocusedPost,
+  deletePost,
+  deleteComment
 } from "./actions/posts";
 import {
   getAndStoreAProfile,
@@ -41,6 +43,9 @@ import Header from "./components/Header/Header";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Profile from "./components/Profile/Profile";
 import { USER_SIGNED_UP } from "./actions/types";
+import { CLEAR_AUTH_ERRORS } from "./actions/types";
+import { CLEAR_POST_ERRORS } from "./actions/types";
+import { CLEAR_COMMENT_ERRORS } from "./actions/types";
 import SideBar from "./components/SideBar/SideBar";
 import Footer from "./components/Footer/Footer";
 import Settings from "./components/Settings/Settings";
@@ -68,6 +73,7 @@ class App extends Component {
       this.props.getAndStoreAllPosts();
       this.props.getAndStoreFriendsPosts();
       this.props.getAndStoreMyProfile();
+      this.props.history.push(window.localStorage.getItem("location"));
     }
 
     //This will grab the necessary friend information and profile posts for the current user
@@ -90,11 +96,19 @@ class App extends Component {
         name: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        loginEmail: "",
+        loginPassword: ""
       });
 
       //resets userSignedUp back to 0
       this.props.userHasSignedUp();
+    }
+
+    if (this.props.location !== prevProps.location) {
+      this.props.clearAuthErrors();
+      this.props.clearPostErrors();
+      this.props.clearCommentErrors();
     }
   };
 
@@ -109,12 +123,14 @@ class App extends Component {
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    loginEmail: "",
+    loginPassword: ""
   };
 
   handleLoginSubmit = event => {
     event.preventDefault();
-    this.props.onLoginSubmit(this.state.email, this.state.password);
+    this.props.onLoginSubmit(this.state.loginEmail, this.state.loginPassword);
   };
 
   handleSignUpSubmit = event => {
@@ -177,6 +193,12 @@ class App extends Component {
               createPostOnDifferentProfile={
                 this.props.createPostOnDifferentProfile
               }
+              postErrors={this.props.postErrors}
+              commentErrors={this.props.commentErrors}
+              clearPostErrors={this.props.clearPostErrors}
+              clearCommentErrors={this.props.clearCommentErrors}
+              deletePost={this.props.deletePost}
+              deleteComment={this.props.deleteComment}
               {...props}
             />
           )}
@@ -210,6 +232,12 @@ class App extends Component {
               changeHeader={this.props.changeHeader}
               changeAboutMe={this.props.changeAboutMe}
               changeInterests={this.props.changeInterests}
+              postErrors={this.props.postErrors}
+              commentErrors={this.props.commentErrors}
+              clearPostErrors={this.props.clearPostErrors}
+              clearCommentErrors={this.props.clearCommentErrors}
+              deletePost={this.props.deletePost}
+              deleteComment={this.props.deleteComment}
               {...props}
             />
           )}
@@ -257,6 +285,7 @@ class App extends Component {
               password={this.state.password}
               authCheck={this.props.authCheck}
               authenticated={this.props.authenticated}
+              authErrors={this.props.authErrors}
               {...props}
             />
           )}
@@ -281,7 +310,9 @@ const mapStateToProps = state => ({
   friendThumbnails: state.profileReducer.friendThumbnails,
   isAFriend: state.profileReducer.isAFriend,
   addedFriend: state.profileReducer.addedFriend,
-  authErrors: state.authReducer.errors
+  authErrors: state.authReducer.errors,
+  postErrors: state.postsReducer.postErrors,
+  commentErrors: state.postsReducer.commentErrors
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -362,6 +393,21 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteAccount: password2 => {
     dispatch(deleteAccount(password2));
+  },
+  clearAuthErrors: () => {
+    dispatch({ type: CLEAR_AUTH_ERRORS });
+  },
+  clearPostErrors: () => {
+    dispatch({ type: CLEAR_POST_ERRORS });
+  },
+  clearCommentErrors: () => {
+    dispatch({ type: CLEAR_COMMENT_ERRORS });
+  },
+  deletePost: (postId, currentProfile) => {
+    dispatch(deletePost(postId, currentProfile));
+  },
+  deleteComment: (commentId, postId, currentProfile) => {
+    dispatch(deleteComment(commentId, postId, currentProfile));
   }
 });
 
