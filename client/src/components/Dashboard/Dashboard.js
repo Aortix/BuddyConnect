@@ -67,6 +67,7 @@ class Dashboard extends Component {
                 clearCommentErrors={this.props.clearCommentErrors}
                 deletePost={this.props.deletePost}
                 deleteComment={this.props.deleteComment}
+                myProfile={this.props.myProfile}
                 {...props}
               />
             )}
@@ -88,6 +89,7 @@ class Dashboard extends Component {
                 clearCommentErrors={this.props.clearCommentErrors}
                 deletePost={this.props.deletePost}
                 deleteComment={this.props.deleteComment}
+                myProfile={this.props.myProfile}
                 {...props}
               />
             )}

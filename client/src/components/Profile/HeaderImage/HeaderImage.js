@@ -90,6 +90,7 @@ class HeaderImage extends Component {
             currentProfile={this.props.currentProfile}
             getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
             myProfile={this.props.myProfile}
+            deleteFriend={this.props.deleteFriend}
           />
           <img
             src={`http://localhost:5000/uploads/headers/${
@@ -115,6 +116,7 @@ class HeaderImage extends Component {
             currentProfile={this.props.currentProfile}
             getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
             myProfile={this.props.myProfile}
+            deleteFriend={this.props.deleteFriend}
           />
           <Name currentName={this.props.currentName} />
         </div>

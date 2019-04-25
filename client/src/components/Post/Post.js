@@ -35,13 +35,15 @@ class Post extends Component {
             <div key={post._id}>
               <div className="Post-specifics">
                 <p>{moment(post.datePosted).format("MM/DD/YYYY hh:mmA")}</p>
-                <button
-                  onClick={() =>
-                    this.deletePost(post._id, this.props.currentProfile)
-                  }
-                >
-                  Delete Post
-                </button>
+                {this.props.myProfile === post.p_id ? (
+                  <button
+                    onClick={() =>
+                      this.deletePost(post._id, this.props.currentProfile)
+                    }
+                  >
+                    Delete Post
+                  </button>
+                ) : null}
                 <div
                   className="post-image-and-name"
                   onClick={() => {
@@ -65,17 +67,19 @@ class Post extends Component {
                     <p>
                       {moment(comments.datePosted).format("MM/DD/YYYY hh:mmA")}
                     </p>
-                    <button
-                      onClick={() =>
-                        this.deleteComment(
-                          comments._id,
-                          post._id,
-                          this.props.currentProfile
-                        )
-                      }
-                    >
-                      Delete Comment
-                    </button>
+                    {this.props.myProfile === comments.commenterP_id ? (
+                      <button
+                        onClick={() =>
+                          this.deleteComment(
+                            comments._id,
+                            post._id,
+                            this.props.currentProfile
+                          )
+                        }
+                      >
+                        Delete Comment
+                      </button>
+                    ) : null}
                     <div
                       onClick={() => {
                         this.props.changeLocation(comments.commenterP_id);

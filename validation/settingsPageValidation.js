@@ -34,12 +34,12 @@ const updateEmailValidation = data => {
     errors.email = "Email is empty.";
   }
 
-  if (!validator.isLength(data.password, { min: 6, max: 30 })) {
-    errors.password = "Password must be between 6 and 30 characters.";
+  if (!validator.isLength(data.emailPassword, { min: 6, max: 30 })) {
+    errors.emailPassword = "Password must be between 6 and 30 characters.";
   }
 
-  if (validator.isEmpty(data.password)) {
-    errors.password = "Password is empty.";
+  if (validator.isEmpty(data.emailPassword)) {
+    errors.emailPassword = "Password is empty.";
   }
 
   return {
@@ -51,16 +51,16 @@ const updateEmailValidation = data => {
 const updatePasswordValidation = data => {
   const errors = {};
 
-  if (!validator.isLength(data.password, { min: 6, max: 30 })) {
-    errors.password = "Password must be between 6 and 30 characters.";
+  if (!validator.isLength(data.passwordPassword, { min: 6, max: 30 })) {
+    errors.passwordPassword = "Password must be between 6 and 30 characters.";
   }
 
-  if (validator.isEmpty(data.password)) {
-    errors.password = "Password is empty.";
+  if (validator.isEmpty(data.passwordPassword)) {
+    errors.passwordPassword = "Password is empty.";
   }
 
-  if (!validator.equals(data.password, data.password2)) {
-    errors.password2 = "Passwords must match.";
+  if (!validator.equals(data.passwordPassword, data.passwordPassword2)) {
+    errors.passwordPassword2 = "Passwords must match.";
   }
 
   return {
@@ -72,12 +72,13 @@ const updatePasswordValidation = data => {
 const deleteAccountValidation = data => {
   const errors = {};
 
-  if (!validator.isLength(data.password, { min: 6, max: 30 })) {
-    errors.password = "Password must be between 6 and 30 characters.";
+  if (!validator.isLength(data.deleteAccountPassword, { min: 6, max: 30 })) {
+    errors.deleteAccountPassword =
+      "Password must be between 6 and 30 characters.";
   }
 
-  if (validator.isEmpty(data.password)) {
-    errors.password = "Password is empty.";
+  if (validator.isEmpty(data.deleteAccountPassword)) {
+    errors.deleteAccountPassword = "Password is empty.";
   }
 
   return {

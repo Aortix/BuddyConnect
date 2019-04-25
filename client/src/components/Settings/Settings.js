@@ -84,23 +84,27 @@ export default class Settings extends Component {
           name={this.state.name}
           handleInput={this.handleInput}
           handleNameSubmit={this.handleNameSubmit}
+          settingsErrors={this.props.settingsErrors}
         />
         <ChangeEmail
           email={this.state.email}
           emailPassword2={this.state.emailPassword2}
           handleInput={this.handleInput}
           handleEmailSubmit={this.handleEmailSubmit}
+          settingsErrors={this.props.settingsErrors}
         />
         <ChangePassword
           password={this.state.password}
           passwordPassword2={this.state.passwordPassword2}
           handleInput={this.handleInput}
           handlePasswordSubmit={this.handlePasswordSubmit}
+          settingsErrors={this.props.settingsErrors}
         />
         <DeleteAccount
           deleteAccountPassword2={this.state.deleteAccountPassword2}
           handleInput={this.handleInput}
           handleDeleteAccount={this.handleDeleteAccount}
+          settingsErrors={this.props.settingsErrors}
         />
       </div>
     );

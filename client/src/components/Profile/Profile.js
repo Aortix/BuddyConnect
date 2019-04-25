@@ -31,12 +31,16 @@ class Profile extends Component {
             isAFriend={this.props.isAFriend}
             addFriend={this.props.addFriend}
             getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
+            deleteFriend={this.props.deleteFriend}
           />
           <UploadAvatar
             currentProfile={this.props.currentProfile}
             myProfile={this.props.myProfile}
             currentAvatar={this.props.currentProfileData.avatar}
             changeAvatar={this.props.changeAvatar}
+            profileErrors={this.props.profileErrors}
+            clearProfileErrors={this.props.clearProfileErrors}
+            getAndStoreMyProfile={this.props.getAndStoreMyProfile}
           />
           <CreatePost
             createPost={this.props.createPost}
@@ -243,18 +247,23 @@ class Profile extends Component {
             clearCommentErrors={this.props.clearCommentErrors}
             deletePost={this.props.deletePost}
             deleteComment={this.props.deleteComment}
+            myProfile={this.props.myProfile}
           />
           <AboutMe
             className={`component-hidden-until-shown`}
             id={`AboutMe-component`}
             currentAboutMe={this.props.currentProfileData.aboutMe}
             changeAboutMe={this.props.changeAboutMe}
+            currentProfile={this.props.currentProfile}
+            myProfile={this.props.myProfile}
           />
           <Interests
             className={`component-hidden-until-shown`}
             id={`Interests-component`}
             currentInterests={this.props.currentProfileData.interests}
             changeInterests={this.props.changeInterests}
+            currentProfile={this.props.currentProfile}
+            myProfile={this.props.myProfile}
           />
           <Friends
             className={`component-hidden-until-shown`}

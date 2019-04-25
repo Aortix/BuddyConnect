@@ -4,9 +4,11 @@ import {
   GET_FRIEND_THUMBNAIL,
   ADD_FRIEND,
   CHECK_FOR_FRIEND,
-  REVERSE_ADDED_FRIEND
+  REVERSE_ADDED_FRIEND,
+  PROFILE_ERRORS
 } from "./types";
 import axios from "axios";
+import { getAndStoreFriendsPosts } from "./posts";
 
 export const getAndStoreAProfile = profileId => dispatch => {
   let token = window.localStorage.getItem("token");
@@ -162,7 +164,7 @@ export const changeAvatar = fileData => dispatch => {
         dispatch(getAndStoreMyProfile());
       })
       .catch(err => {
-        console.log(err);
+        dispatch({ type: PROFILE_ERRORS, payload: err.response.data });
       });
   }
 };
@@ -238,6 +240,32 @@ export const changeInterests = interestsData => dispatch => {
       .then(() => {
         console.log("Interests updated.");
         dispatch(getAndStoreMyProfile());
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+};
+
+export const deleteFriend = friendId => dispatch => {
+  let token = window.localStorage.getItem("token");
+  if (token === undefined || token === null || token === "undefined") {
+    return null;
+  } else {
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    };
+    axios
+      .put(
+        "http://localhost:5000/api/profile/friends/delete-friend",
+        { friendId: friendId },
+        config
+      )
+      .then(data => {
+        dispatch(checkForFriend(friendId));
+        dispatch(getAndStoreFriendsPosts());
       })
       .catch(err => {
         console.log(err);

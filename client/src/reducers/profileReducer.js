@@ -4,7 +4,9 @@ import {
   GET_FRIEND_THUMBNAIL,
   ADD_FRIEND,
   CHECK_FOR_FRIEND,
-  REVERSE_ADDED_FRIEND
+  REVERSE_ADDED_FRIEND,
+  PROFILE_ERRORS,
+  CLEAR_PROFILE_ERRORS
 } from "./../actions/types";
 
 const initialState = {
@@ -13,7 +15,8 @@ const initialState = {
   currentProfileData: null,
   friendThumbnails: null,
   isAFriend: 0,
-  addedFriend: 0
+  addedFriend: 0,
+  profileErrors: {}
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -51,6 +54,16 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         addedFriend: 0
+      };
+    case PROFILE_ERRORS:
+      return {
+        ...state,
+        profileErrors: action.payload
+      };
+    case CLEAR_PROFILE_ERRORS:
+      return {
+        ...state,
+        profileErrors: {}
       };
     default:
       return state;

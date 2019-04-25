@@ -14,6 +14,9 @@ export default function ChangeEmail(props) {
           required
         />
         <br />
+        {props.settingsErrors.email !== undefined ? (
+          <p>{props.settingsErrors.email}</p>
+        ) : null}
         Current Password:{" "}
         <input
           type="password"
@@ -22,7 +25,10 @@ export default function ChangeEmail(props) {
           onChange={props.handleInput}
           required
         />
-        <input type="submit" name="Submit" />
+        {props.settingsErrors.emailPassword !== undefined ? (
+          <p>{props.settingsErrors.emailPassword}</p>
+        ) : null}
+        <input type="submit" name="Submit" formNoValidate />
         <br />
       </form>
     </div>

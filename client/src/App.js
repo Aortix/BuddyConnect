@@ -26,7 +26,8 @@ import {
   changeAvatar,
   changeHeader,
   changeAboutMe,
-  changeInterests
+  changeInterests,
+  deleteFriend
 } from "./actions/profile";
 import {
   changeName,
@@ -46,6 +47,7 @@ import { USER_SIGNED_UP } from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
 import { CLEAR_COMMENT_ERRORS } from "./actions/types";
+import { CLEAR_PROFILE_ERRORS } from "./actions/types";
 import SideBar from "./components/SideBar/SideBar";
 import Footer from "./components/Footer/Footer";
 import Settings from "./components/Settings/Settings";
@@ -109,6 +111,7 @@ class App extends Component {
       this.props.clearAuthErrors();
       this.props.clearPostErrors();
       this.props.clearCommentErrors();
+      this.props.clearProfileErrors();
     }
   };
 
@@ -199,6 +202,7 @@ class App extends Component {
               clearCommentErrors={this.props.clearCommentErrors}
               deletePost={this.props.deletePost}
               deleteComment={this.props.deleteComment}
+              myProfile={this.props.myProfile}
               {...props}
             />
           )}
@@ -238,6 +242,10 @@ class App extends Component {
               clearCommentErrors={this.props.clearCommentErrors}
               deletePost={this.props.deletePost}
               deleteComment={this.props.deleteComment}
+              deleteFriend={this.props.deleteFriend}
+              profileErrors={this.props.profileErrors}
+              clearProfileErrors={this.props.clearProfileErrors}
+              getAndStoreMyProfile={this.props.getAndStoreMyProfile}
               {...props}
             />
           )}
@@ -251,6 +259,7 @@ class App extends Component {
               changeEmail={this.props.changeEmail}
               changePassword={this.props.changePassword}
               deleteAccount={this.props.deleteAccount}
+              settingsErrors={this.props.settingsErrors}
               {...props}
             />
           )}
@@ -312,7 +321,9 @@ const mapStateToProps = state => ({
   addedFriend: state.profileReducer.addedFriend,
   authErrors: state.authReducer.errors,
   postErrors: state.postsReducer.postErrors,
-  commentErrors: state.postsReducer.commentErrors
+  commentErrors: state.postsReducer.commentErrors,
+  profileErrors: state.profileReducer.profileErrors,
+  settingsErrors: state.settingsReducer.settingsErrors
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -403,11 +414,17 @@ const mapDispatchToProps = dispatch => ({
   clearCommentErrors: () => {
     dispatch({ type: CLEAR_COMMENT_ERRORS });
   },
+  clearProfileErrors: () => {
+    dispatch({ type: CLEAR_PROFILE_ERRORS });
+  },
   deletePost: (postId, currentProfile) => {
     dispatch(deletePost(postId, currentProfile));
   },
   deleteComment: (commentId, postId, currentProfile) => {
     dispatch(deleteComment(commentId, postId, currentProfile));
+  },
+  deleteFriend: friendId => {
+    dispatch(deleteFriend(friendId));
   }
 });
 

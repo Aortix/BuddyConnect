@@ -23,21 +23,34 @@ class Interests extends Component {
   };
 
   render() {
-    return this.state.editingInterests === false ? (
-      <div className={this.props.className} id={this.props.id}>
-        <p onClick={this.handleInterestsClick}>{this.props.currentInterests}</p>
-      </div>
-    ) : (
-      <div className={this.props.className} id={this.props.id}>
-        <form onSubmit={this.handleFormSubmit}>
-          <textarea
-            value={this.state.interestsText}
-            onChange={this.handleInput}
-          />
-          <input type="submit" name="Submit" />
-        </form>
-      </div>
-    );
+    if (this.props.currentProfile === this.props.myProfile) {
+      return this.state.editingInterests === false ? (
+        <div className={this.props.className} id={this.props.id}>
+          <p onClick={this.handleInterestsClick}>
+            {this.props.currentInterests}
+          </p>
+        </div>
+      ) : (
+        <div className={this.props.className} id={this.props.id}>
+          <form onSubmit={this.handleFormSubmit}>
+            <textarea
+              value={this.state.interestsText}
+              onChange={this.handleInput}
+            />
+            <br />
+            <input type="submit" name="Submit" />
+          </form>
+        </div>
+      );
+    } else {
+      return (
+        <div className={this.props.className} id={this.props.id}>
+          <p onClick={this.handleInterestsClick}>
+            {this.props.currentInterests}
+          </p>
+        </div>
+      );
+    }
   }
 }
 

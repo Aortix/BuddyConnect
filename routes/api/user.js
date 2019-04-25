@@ -215,26 +215,30 @@ router.put(
       if (err) {
         return res.send(err);
       }
-      bcrypt.compare(req.body.password, response.password, (err, response2) => {
-        if (err) {
-          return res.send(err);
-        } else if (response2 == false) {
-          return res.send("Current password is incorrect.");
-        } else {
-          userSchema.findByIdAndUpdate(
-            req.user.id,
-            { email: req.body.email },
-            (err,
-            response3 => {
-              if (err) {
-                return res.send(err);
-              } else {
-                return res.send("Email changed!");
-              }
-            })
-          );
+      bcrypt.compare(
+        req.body.emailPassword,
+        response.password,
+        (err, response2) => {
+          if (err) {
+            return res.send(err);
+          } else if (response2 == false) {
+            return res.send("Current password is incorrect.");
+          } else {
+            userSchema.findByIdAndUpdate(
+              req.user.id,
+              { email: req.body.email },
+              (err,
+              response3 => {
+                if (err) {
+                  return res.send(err);
+                } else {
+                  return res.send("Email changed!");
+                }
+              })
+            );
+          }
         }
-      });
+      );
     });
   }
 );
@@ -255,7 +259,7 @@ router.put(
         return res.send(err);
       }
       bcrypt.compare(
-        req.body.password2,
+        req.body.passwordPassword2,
         response.password,
         (err, response2) => {
           if (err) {
@@ -263,7 +267,7 @@ router.put(
           } else if (response2 == false) {
             return res.send("Current password is incorrect.");
           } else {
-            bcrypt.hash(req.body.password, saltRounds, (err, salt) => {
+            bcrypt.hash(req.body.passwordPassword, saltRounds, (err, salt) => {
               if (err) {
                 return res.send(err);
               }
@@ -291,20 +295,23 @@ router.post(
   "/update-avatar",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = {};
+
     const pathToFile = "./public/uploads/avatars/";
 
     //Function for filtering uploaded avatars so that only an image is uploaded
     checkAvatarUpload = (file, cb) => {
-      const filetypes = /jpeg|jpg|png|gif/;
-      const extname = filetypes
-        .test(path.extname(file.originalname))
-        .toLowerCase();
+      const filetypes = /jpeg|jpg|png/;
+      const extname = filetypes.test(
+        path.extname(file.originalname).toLowerCase()
+      );
       const mimetype = filetypes.test(file.mimetype);
 
       if (mimetype && extname) {
         return cb(null, true);
       } else {
-        cb("Error: images only!");
+        errors.avatar = "Error: .jpg, jpeg, or .png images only!";
+        return res.status(400).send(errors);
       }
     };
 
@@ -322,11 +329,12 @@ router.post(
 
     let upload = multer({
       storage: storage,
-      limits: { fileSize: 700000 },
+      limits: { fileSize: 900000 },
       fileFilter: (req, file, cb) => {
         checkAvatarUpload(file, cb);
       }
     }).single("avatar");
+
     upload(req, res, err => {
       if (err instanceof multer.MulterError) {
         return res.send(err);
@@ -458,7 +466,7 @@ router.put(
         return res.send(err);
       } else {
         bcrypt.compare(
-          req.body.password2,
+          req.body.deleteAccountPassword,
           response.password,
           (err, response2) => {
             if (err) {
@@ -514,9 +522,5 @@ router.put(
     });
   }
 );
-
-/*router.use((err, req, res, next) => {
-  return res.status(400).send(err.errors);
-});*/
 
 module.exports = router;

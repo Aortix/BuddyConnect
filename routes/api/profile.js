@@ -7,6 +7,7 @@ const postSchema = require("../../schemas/posts.js");
 const profileSchema = require("../../schemas/profiles.js");
 const router = express.Router();
 
+const settingsValidation = require("./../../validation/settingsPageValidation");
 require("./../../auth/jwtStrategy")(passport);
 
 //Private Route
@@ -61,12 +62,12 @@ router.put(
 //Private Route
 //Deleting a friend using their profileId as a param
 router.put(
-  "/delete-friend/:profileId",
+  "/friends/delete-friend",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
       { user: req.user.id },
-      { $pull: { friends: req.params.profileId } },
+      { $pull: { friends: req.body.friendId } },
       (err, response) => {
         if (err) {
           return res.send(err);
@@ -169,6 +170,10 @@ router.put(
   "/update/update-name",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = settingsValidation.updateNameValidation(req.body);
+    if (errors.noErrors === false) {
+      return res.status(400).send(errors);
+    }
     profileSchema.findOneAndUpdate(
       { user: req.user.id },
       { name: req.body.name },

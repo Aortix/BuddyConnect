@@ -23,21 +23,29 @@ class AboutMe extends Component {
   };
 
   render() {
-    return this.state.editingAboutMe === false ? (
-      <div className={this.props.className} id={this.props.id}>
-        <p onClick={this.handleAboutMeClick}>{this.props.currentAboutMe}</p>
-      </div>
-    ) : (
-      <div className={this.props.className} id={this.props.id}>
-        <form onSubmit={this.handleFormSubmit}>
-          <textarea
-            value={this.state.aboutMeText}
-            onChange={this.handleInput}
-          />
-          <input type="submit" name="Submit" />
-        </form>
-      </div>
-    );
+    if (this.props.currentProfile === this.props.myProfile) {
+      return this.state.editingAboutMe === false ? (
+        <div className={this.props.className} id={this.props.id}>
+          <p onClick={this.handleAboutMeClick}>{this.props.currentAboutMe}</p>
+        </div>
+      ) : (
+        <div className={this.props.className} id={this.props.id}>
+          <form onSubmit={this.handleFormSubmit}>
+            <textarea
+              value={this.state.aboutMeText}
+              onChange={this.handleInput}
+            />
+            <input type="submit" name="Submit" />
+          </form>
+        </div>
+      );
+    } else {
+      return (
+        <div className={this.props.className} id={this.props.id}>
+          <p onClick={this.handleAboutMeClick}>{this.props.currentAboutMe}</p>
+        </div>
+      );
+    }
   }
 }
 

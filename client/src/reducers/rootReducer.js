@@ -4,5 +4,11 @@ import { combineReducers } from "redux";
 import { authReducer } from "./authReducer";
 import { postsReducer } from "./postsReducer";
 import { profileReducer } from "./profileReducer";
+import { settingsReducer } from "./settingsReducer";
 
-export default combineReducers({ authReducer, postsReducer, profileReducer });
+export default combineReducers({
+  authReducer,
+  postsReducer,
+  profileReducer,
+  settingsReducer
+});

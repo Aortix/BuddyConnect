@@ -8,7 +8,9 @@ export default function AddFriend(props) {
   } else {
     return props.isAFriend === 1 ? (
       <div className="AddFriend-container">
-        <button>Already A Friend</button>
+        <button onClick={() => props.deleteFriend(props.currentProfile)}>
+          Already A Friend
+        </button>
       </div>
     ) : (
       <div className="AddFriend-container">
