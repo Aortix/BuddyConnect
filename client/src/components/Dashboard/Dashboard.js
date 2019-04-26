@@ -8,6 +8,10 @@ import CreatePost from "./../CreatePost/CreatePost";
 import "./Dashboard.css";
 
 class Dashboard extends Component {
+  componentDidMount = () => {
+    window.localStorage.setItem("location", "/dashboard");
+  };
+
   render() {
     return (
       <Router>

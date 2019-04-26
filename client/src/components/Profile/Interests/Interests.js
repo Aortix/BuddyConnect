@@ -19,7 +19,10 @@ class Interests extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     this.setState({ editingInterests: false });
-    this.props.changeInterests(this.state.interestsText);
+    this.props.changeInterests(
+      this.state.interestsText,
+      this.props.currentProfile
+    );
   };
 
   render() {

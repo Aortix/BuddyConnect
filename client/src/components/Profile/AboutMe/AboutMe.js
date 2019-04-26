@@ -19,7 +19,7 @@ class AboutMe extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     this.setState({ editingAboutMe: false });
-    this.props.changeAboutMe(this.state.aboutMeText);
+    this.props.changeAboutMe(this.state.aboutMeText, this.props.currentProfile);
   };
 
   render() {

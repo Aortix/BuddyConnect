@@ -13,6 +13,7 @@ export const HeaderAuth = props => {
             props.changeLocation(props.myProfile);
           }}
         >
+          <span>{window.localStorage.getItem("name")}</span>
           <img
             height="22"
             width="22"

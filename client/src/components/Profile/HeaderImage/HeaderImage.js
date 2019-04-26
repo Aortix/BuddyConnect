@@ -18,7 +18,8 @@ class HeaderImage extends Component {
   handleHeaderImageClick = e => {
     console.log("header image has been clicked");
     this.props.changeHeader(
-      document.getElementById(e.target.id).getAttribute("value")
+      document.getElementById(e.target.id).getAttribute("value"),
+      this.props.currentProfile
     );
     this.setState({ newHeaderImage: e.target.value, headerClicked: false });
   };

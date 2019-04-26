@@ -19,10 +19,9 @@ class Friends extends Component {
         >
           {this.props.friendThumbnails.map(friends => {
             return (
-              <div>
+              <div key={friends.profileid}>
                 <div
                   className="friend-icon"
-                  key={friends.profileId}
                   onClick={() => this.handleFriendClick(friends.profileId)}
                 >
                   <img

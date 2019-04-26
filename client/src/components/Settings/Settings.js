@@ -8,6 +8,14 @@ import ChangePassword from "./ChangePassword/ChangePassword";
 import DeleteAccount from "./DeleteAccount/DeleteAccount";
 
 export default class Settings extends Component {
+  componentDidMount = () => {
+    window.localStorage.setItem("location", "/settings");
+  };
+
+  componentWillUnmount = () => {
+    window.localStorage.setItem("location", "/dashboard");
+  };
+
   state = {
     name: "",
     email: "",

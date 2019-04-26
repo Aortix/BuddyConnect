@@ -132,7 +132,8 @@ router.post("/login", (req, res) => {
               } else {
                 return res.send({
                   token: "Bearer " + token,
-                  avatar: response.avatar
+                  avatar: response.avatar,
+                  name: response.name
                 });
               }
             }
@@ -194,7 +195,7 @@ router.put(
             }
           }
         );
-        return res.send("Name should have been updated everywhere.");
+        return res.send(req.body.name);
       }
     );
   }
@@ -375,7 +376,7 @@ router.post(
             } else {
               console.log("Avatar updated in profile database.");
 
-              postSchema.findOneAndUpdate(
+              postSchema.updateMany(
                 { p_id: response._id },
                 { avatar: req.file.filename },
                 (err, response2) => {
@@ -386,7 +387,7 @@ router.post(
                   }
                 }
               );
-              commentsSchema.findOneAndUpdate(
+              commentsSchema.updateMany(
                 { commenterP_id: response._id },
                 { commenterAvatar: req.file.filename },
                 (err, response3) => {
@@ -394,7 +395,6 @@ router.post(
                     return res.send(err);
                   } else {
                     console.log("Avatar updated in the comments database.");
-                    return res.send();
                   }
                 }
               );
@@ -402,6 +402,7 @@ router.post(
           }
         );
       }
+      return res.send(req.file.filename);
     });
   }
 );

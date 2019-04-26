@@ -74,8 +74,18 @@ class App extends Component {
       console.log("App component updated!");
       this.props.getAndStoreAllPosts();
       this.props.getAndStoreFriendsPosts();
-      this.props.getAndStoreMyProfile();
-      this.props.history.push(window.localStorage.getItem("location"));
+      if (
+        /^\/profile\//.test(window.localStorage.getItem("location")) === true
+      ) {
+        let pastProfile = window.localStorage.getItem("location");
+        console.log("THIS SHOULD BE GETTING CALLED");
+        this.props.history.push(pastProfile);
+        this.props.getAndStoreMyProfile();
+        this.props.getAndStoreAProfile(pastProfile.replace("/profile/", ""));
+      } else {
+        this.props.getAndStoreMyProfile();
+        this.props.history.push(window.localStorage.getItem("location"));
+      }
     }
 
     //This will grab the necessary friend information and profile posts for the current user
@@ -260,6 +270,8 @@ class App extends Component {
               changePassword={this.props.changePassword}
               deleteAccount={this.props.deleteAccount}
               settingsErrors={this.props.settingsErrors}
+              currentProfile={this.props.currentProfile}
+              myProfile={this.props.myProfile}
               {...props}
             />
           )}
@@ -390,17 +402,17 @@ const mapDispatchToProps = dispatch => ({
   changePassword: (password, password2) => {
     dispatch(changePassword(password, password2));
   },
-  changeAvatar: fileData => {
-    dispatch(changeAvatar(fileData));
+  changeAvatar: (fileData, profileId) => {
+    dispatch(changeAvatar(fileData, profileId));
   },
-  changeHeader: headerData => {
-    dispatch(changeHeader(headerData));
+  changeHeader: (headerData, profileId) => {
+    dispatch(changeHeader(headerData, profileId));
   },
-  changeAboutMe: aboutMeData => {
-    dispatch(changeAboutMe(aboutMeData));
+  changeAboutMe: (aboutMeData, profileId) => {
+    dispatch(changeAboutMe(aboutMeData, profileId));
   },
-  changeInterests: interestsData => {
-    dispatch(changeInterests(interestsData));
+  changeInterests: (interestsData, profileId) => {
+    dispatch(changeInterests(interestsData, profileId));
   },
   deleteAccount: password2 => {
     dispatch(deleteAccount(password2));

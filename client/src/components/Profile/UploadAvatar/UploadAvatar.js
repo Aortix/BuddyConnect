@@ -7,7 +7,7 @@ export default class UploadAvatar extends Component {
   componentDidUpdate = prevState => {
     if (prevState.fileUploaded !== this.state.fileUploaded) {
       console.log("Calling changeAvatar");
-      this.props.changeAvatar(this.state.file);
+      this.props.changeAvatar(this.state.file, this.props.currentProfile);
     }
   };
   state = {
@@ -25,7 +25,7 @@ export default class UploadAvatar extends Component {
   handleAvatarError = () => {
     alert(this.props.profileErrors.avatar);
     this.props.clearProfileErrors();
-    this.props.getAndStoreMyProfile();
+    this.props.getAndStoreAProfile(this.props.currentProfile);
   };
 
   render() {

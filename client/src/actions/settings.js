@@ -1,6 +1,8 @@
 import axios from "axios";
 
 import { SETTINGS_ERRORS } from "./types";
+import { getAndStoreAllPosts, getAndStoreFriendsPosts } from "./posts";
+import { getAndStoreMyProfile } from "./profile";
 
 export const changeName = name => dispatch => {
   let token = window.localStorage.getItem("token");
@@ -15,7 +17,10 @@ export const changeName = name => dispatch => {
     axios
       .put("http://localhost:5000/api/user/update-name", { name: name }, config)
       .then(data => {
-        console.log(data);
+        window.localStorage.setItem("name", data.data);
+        dispatch(getAndStoreAllPosts());
+        dispatch(getAndStoreFriendsPosts());
+        dispatch(getAndStoreMyProfile());
       })
       .catch(err => {
         dispatch({ type: SETTINGS_ERRORS, payload: err.response.data.errors });

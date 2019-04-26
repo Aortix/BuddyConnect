@@ -47,6 +47,13 @@ export const authLogin = (email, password) => dispatch => {
       });
       window.localStorage.setItem("token", data.data.token);
       window.localStorage.setItem("avatar", data.data.avatar);
+      window.localStorage.setItem("name", data.data.name);
+      if (
+        window.localStorage.getItem("location") === null ||
+        window.localStorage.getItem("location") === null
+      ) {
+        window.localStorage.setItem("location", "/dashboard");
+      }
       console.log("Token should be in localstorage.");
     })
     .then(() => {

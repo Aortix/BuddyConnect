@@ -30,8 +30,6 @@ export const profileReducer = (state = initialState, action) => {
     case GET_AND_STORE_MY_PROFILE:
       return {
         ...state,
-        currentProfile: action.payload._id,
-        currentProfileData: action.payload,
         myProfile: action.payload._id
       };
     case GET_FRIEND_THUMBNAIL:

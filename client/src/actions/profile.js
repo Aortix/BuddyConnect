@@ -8,7 +8,11 @@ import {
   PROFILE_ERRORS
 } from "./types";
 import axios from "axios";
-import { getAndStoreFriendsPosts } from "./posts";
+import {
+  getAndStoreAllPosts,
+  getAndStoreFriendsPosts,
+  getAndStoreProfilePosts
+} from "./posts";
 
 export const getAndStoreAProfile = profileId => dispatch => {
   let token = window.localStorage.getItem("token");
@@ -52,6 +56,7 @@ export const getAndStoreMyProfile = () => dispatch => {
       .then(data => {
         console.log("Was this called?");
         dispatch({ type: GET_AND_STORE_MY_PROFILE, payload: data.data });
+        dispatch(getAndStoreProfilePosts(data.data._id));
       })
       .catch(err => {
         console.log(err);
@@ -144,7 +149,7 @@ export const reverseAddedFriend = () => dispatch => {
   dispatch({ type: REVERSE_ADDED_FRIEND, payload: 0 });
 };
 
-export const changeAvatar = fileData => dispatch => {
+export const changeAvatar = (fileData, profileId) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -159,9 +164,13 @@ export const changeAvatar = fileData => dispatch => {
     };
     axios
       .post("http://localhost:5000/api/user/update-avatar", newFormData, config)
-      .then(() => {
+      .then(data => {
         console.log("Avatar uploaded.");
-        dispatch(getAndStoreMyProfile());
+        dispatch(getAndStoreAProfile(profileId));
+        window.localStorage.setItem("avatar", data.data);
+        dispatch(getAndStoreAllPosts());
+        dispatch(getAndStoreFriendsPosts());
+        dispatch(getAndStoreProfilePosts(profileId));
       })
       .catch(err => {
         dispatch({ type: PROFILE_ERRORS, payload: err.response.data });
@@ -169,7 +178,7 @@ export const changeAvatar = fileData => dispatch => {
   }
 };
 
-export const changeHeader = headerData => dispatch => {
+export const changeHeader = (headerData, profileId) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -187,7 +196,7 @@ export const changeHeader = headerData => dispatch => {
       )
       .then(() => {
         console.log("Header updated.");
-        dispatch(getAndStoreMyProfile());
+        dispatch(getAndStoreAProfile(profileId));
       })
       .catch(err => {
         console.log(err);
@@ -195,7 +204,7 @@ export const changeHeader = headerData => dispatch => {
   }
 };
 
-export const changeAboutMe = aboutMeData => dispatch => {
+export const changeAboutMe = (aboutMeData, profileId) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -213,7 +222,7 @@ export const changeAboutMe = aboutMeData => dispatch => {
       )
       .then(() => {
         console.log("AboutMe updated.");
-        dispatch(getAndStoreMyProfile());
+        dispatch(getAndStoreAProfile(profileId));
       })
       .catch(err => {
         console.log(err);
@@ -221,7 +230,7 @@ export const changeAboutMe = aboutMeData => dispatch => {
   }
 };
 
-export const changeInterests = interestsData => dispatch => {
+export const changeInterests = (interestsData, profileId) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -239,7 +248,7 @@ export const changeInterests = interestsData => dispatch => {
       )
       .then(() => {
         console.log("Interests updated.");
-        dispatch(getAndStoreMyProfile());
+        dispatch(getAndStoreAProfile(profileId));
       })
       .catch(err => {
         console.log(err);

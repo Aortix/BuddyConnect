@@ -1,5 +1,11 @@
 .HeaderAuth-container {
   margin-right: 15px;
+  color: black;
+  border: 1px solid black;
+}
+
+.HeaderAuth-container img {
+  display: inline;
 }
 
 .profile-link {

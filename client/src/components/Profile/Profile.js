@@ -14,6 +14,14 @@ import CreatePost from "./../CreatePost/CreatePost";
 class Profile extends Component {
   componentDidMount = () => {
     console.log(this.props.isAFriend);
+    window.localStorage.setItem(
+      "location",
+      `/profile/${this.props.currentProfile}`
+    );
+  };
+
+  componentWillUnmount = () => {
+    window.localStorage.setItem("location", "/dashboard");
   };
 
   render() {
