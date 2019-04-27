@@ -6,8 +6,8 @@ var alphanumberic = /^[a-z\d\-_\s]+$/i;
 const signUpValidation = data => {
   const errors = {};
 
-  if (!validator.isLength(data.name, { min: 3, max: 30 })) {
-    errors.name = "Name must be between 3 and 30 characters.";
+  if (!validator.isLength(data.name, { min: 3, max: 60 })) {
+    errors.name = "Name must be between 3 and 60 characters.";
   }
 
   if (validator.isEmpty(data.name)) {

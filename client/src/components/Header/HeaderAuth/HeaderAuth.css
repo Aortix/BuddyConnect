@@ -5,6 +5,13 @@
 
 .HeaderAuth-container img {
   display: inline;
+  border: 0.5px solid black;
+  vertical-align: middle;
+}
+
+.HeaderAuth-name {
+  vertical-align: middle;
+  margin-left: 2px;
 }
 
 .profile-link {
@@ -13,4 +20,8 @@
 
 .profile-link:hover {
   text-decoration: underline;
+}
+
+.HeaderAuth-sign_out-text {
+  display: none;
 }

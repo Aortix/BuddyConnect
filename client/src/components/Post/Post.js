@@ -29,100 +29,119 @@ class Post extends Component {
     return this.props.posts === null ? (
       <h1>Loading</h1>
     ) : (
-      <div className={`Post-container`} id={`${this.props.id}`}>
+      <div className="Post-container">
         {this.props.posts.map(post => {
           return (
             <div key={post._id}>
-              <div className="Post-specifics">
-                <p>{moment(post.datePosted).format("MM/DD/YYYY hh:mmA")}</p>
-                {this.props.myProfile === post.p_id ? (
-                  <button
-                    onClick={() =>
-                      this.deletePost(post._id, this.props.currentProfile)
-                    }
+              <div className="post-specifics">
+                <div className="post-post_information">
+                  <p className="post-date">
+                    {moment(post.datePosted).format("MM/DD/YYYY hh:mmA")}
+                  </p>
+                  {this.props.myProfile === post.p_id ? (
+                    <i
+                      id="post-delete_icon"
+                      className="fas fa-minus-circle fa-2x"
+                      onClick={() =>
+                        this.deletePost(post._id, this.props.currentProfile)
+                      }
+                    />
+                  ) : null}
+                  <div
+                    className="post-image_post-name"
+                    onClick={() => {
+                      this.props.changeLocation(post.p_id);
+                    }}
                   >
-                    Delete Post
-                  </button>
-                ) : null}
-                <div
-                  className="post-image-and-name"
-                  onClick={() => {
-                    this.props.changeLocation(post.p_id);
-                  }}
-                >
-                  <img
-                    width="27"
-                    height="27"
-                    src={`http://localhost:5000/uploads/avatars/${post.avatar}`}
-                    alt="avatar"
-                  />
-                  <h3>{post.name}</h3>
+                    <img
+                      className="post-avatar_image"
+                      width="27"
+                      height="30"
+                      src={`http://localhost:5000/uploads/avatars/${
+                        post.avatar
+                      }`}
+                      alt="avatar"
+                    />
+                    <h3 className="post-name">{post.name}</h3>
+                  </div>
                 </div>
-                <br />
-                <p>{post.post}</p>
+                <p className="post-post_content">{post.post}</p>
               </div>
               {post.comments.map(comments => {
                 return (
                   <div className="comment-specifics" key={comments._id}>
-                    <p>
-                      {moment(comments.datePosted).format("MM/DD/YYYY hh:mmA")}
-                    </p>
-                    {this.props.myProfile === comments.commenterP_id ? (
-                      <button
-                        onClick={() =>
-                          this.deleteComment(
-                            comments._id,
-                            post._id,
-                            this.props.currentProfile
-                          )
-                        }
+                    <div className="comment-comment_information">
+                      <p className="comment-date">
+                        {moment(comments.datePosted).format(
+                          "MM/DD/YYYY hh:mmA"
+                        )}
+                      </p>
+                      {this.props.myProfile === comments.commenterP_id ? (
+                        <i
+                          id="post-delete_comment"
+                          className="fas fa-minus-circle fa-lg"
+                          onClick={() =>
+                            this.deleteComment(
+                              comments._id,
+                              post._id,
+                              this.props.currentProfile
+                            )
+                          }
+                        />
+                      ) : null}
+                      <div
+                        className="comment-image_comment-name"
+                        onClick={() => {
+                          this.props.changeLocation(comments.commenterP_id);
+                        }}
                       >
-                        Delete Comment
-                      </button>
-                    ) : null}
-                    <div
-                      onClick={() => {
-                        this.props.changeLocation(comments.commenterP_id);
-                      }}
-                    >
-                      <img
-                        width="26"
-                        height="26"
-                        src={`http://localhost:5000/uploads/avatars/${
-                          comments.commenterAvatar
-                        }`}
-                        alt="avatar"
-                      />
-                      <h4>{comments.commenterName}</h4>
+                        <img
+                          className="comment-avatar_image"
+                          width="25"
+                          height="27.5"
+                          src={`http://localhost:5000/uploads/avatars/${
+                            comments.commenterAvatar
+                          }`}
+                          alt="avatar"
+                        />
+                        <h4 className="comment-name">
+                          {comments.commenterName}
+                        </h4>
+                      </div>
                     </div>
-                    <br />
-                    <p>{comments.commenterComment}</p>
+                    <p className="comment-comment_content">
+                      {comments.commenterComment}
+                    </p>
                   </div>
                 );
               })}
 
               {post._id !== this.props.currentPost ? (
                 <div className="add-comment-button-container">
-                  <button
-                    className="add-comment-button"
+                  <i
+                    className="fas fa-comment"
                     onClick={() => {
                       this.changeCurrentFocusedPost(post._id);
                     }}
                   >
-                    Add Comment
-                  </button>
+                    <span className="open_and_close-comment">
+                      &nbsp;Add Comment
+                    </span>
+                  </i>
                 </div>
               ) : (
                 <div>
                   <div className="add-comment-button-container">
-                    <button
-                      className="add-comment-button"
+                    <i
+                      className="fas fa-comment"
                       onClick={() => {
                         this.changeCurrentFocusedPost("");
                       }}
                     >
-                      Close Comment
-                    </button>
+                      <span className="open_and_close-comment">
+                        &nbsp;Close Comment
+                      </span>
+                    </i>
                   </div>
                   <CreateComment
                     currentProfile={this.props.currentProfile}

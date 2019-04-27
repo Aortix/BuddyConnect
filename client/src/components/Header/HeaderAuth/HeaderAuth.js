@@ -13,19 +13,21 @@ export const HeaderAuth = props => {
             props.changeLocation(props.myProfile);
           }}
         >
-          <span>{window.localStorage.getItem("name")}</span>
           <img
             height="22"
-            width="22"
+            width="20"
             src={`http://localhost:5000/uploads/avatars/${window.localStorage.getItem(
               "avatar"
             )}`}
             alt="myavatar"
           />
+          <span className="HeaderAuth-name">
+            {window.localStorage.getItem("name")}
+          </span>
         </span>
         <span>
           <Link to="/login" onClick={props.authLogout}>
-            Sign Out
+            <span className="HeaderAuth-sign_out-text">Sign Out</span>
           </Link>
         </span>
       </div>

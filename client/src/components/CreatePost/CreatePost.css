@@ -14,7 +14,9 @@
 .CreatePost-container input {
   vertical-align: top;
   margin-top: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 17px;
   border: 1px solid black;
   background-color: var(--main-bg-color);
+  font-size: 1rem;
+  cursor: pointer;
 }

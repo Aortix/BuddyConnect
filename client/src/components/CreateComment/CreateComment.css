@@ -6,15 +6,25 @@
 }
 
 .CreateComment-container textarea {
-  min-height: 30px;
+  min-height: 40px;
   max-height: 50vh;
   width: 100%;
   border: 1px solid black;
-  vertical-align: bottom;
+  vertical-align: top;
+}
+
+.CreateComment-container textarea:focus {
+  outline: none;
 }
 
 .CreateComment-container input {
   border: 1px solid black;
-  background-color: var(--main-bg-color);
+  background-color: var(--secondary-bg-color);
   vertical-align: top;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.CreateComment-container input:hover {
+  box-shadow: 0.25px 0.25px;
 }
