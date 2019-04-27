@@ -17,12 +17,12 @@ class Friends extends Component {
           className={`Friends-container ${this.props.className}`}
           id={this.props.id}
         >
-          {this.props.friendThumbnails.map(friends => {
+          {this.props.friendThumbnails.map((friends) => {
             return (
-              <div key={friends.profileid}>
                 <div
                   className="friend-icon"
                   onClick={() => this.handleFriendClick(friends.profileId)}
+                  key={friends.profileId}
                 >
                   <img
                     src={`http://localhost:5000/uploads/avatars/${
@@ -32,7 +32,6 @@ class Friends extends Component {
                   />
                   <p>{friends.name}</p>
                 </div>
-              </div>
             );
           })}
         </div>
