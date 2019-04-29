@@ -25,7 +25,7 @@ export default class UploadAvatar extends Component {
   handleAvatarError = () => {
     alert(this.props.profileErrors.avatar);
     this.props.clearProfileErrors();
-    this.props.getAndStoreAProfile(this.props.currentProfile);
+    this.props.getAndStoreMyProfile();
   };
 
   render() {

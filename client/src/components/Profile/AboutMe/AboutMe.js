@@ -35,7 +35,8 @@ class AboutMe extends Component {
               value={this.state.aboutMeText}
               onChange={this.handleInput}
             />
-            <input type="submit" name="Submit" />
+            <br />
+            <input className="AboutMe-submit_button" type="submit" name="Submit" />
           </form>
         </div>
       );

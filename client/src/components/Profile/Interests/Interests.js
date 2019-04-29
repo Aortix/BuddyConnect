@@ -41,7 +41,7 @@ class Interests extends Component {
               onChange={this.handleInput}
             />
             <br />
-            <input type="submit" name="Submit" />
+            <input className="Interests-submit_button" type="submit" name="Submit" />
           </form>
         </div>
       );

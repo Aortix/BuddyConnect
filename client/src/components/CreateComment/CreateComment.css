@@ -11,6 +11,8 @@
   width: 100%;
   border: 1px solid black;
   vertical-align: top;
+  margin-top: 5px;
+  margin-bottom: 2px;
 }
 
 .CreateComment-container textarea:focus {
@@ -20,7 +22,6 @@
 .CreateComment-container input {
   border: 1px solid black;
   background-color: var(--secondary-bg-color);
-  vertical-align: top;
   font-size: 1.1rem;
   cursor: pointer;
 }

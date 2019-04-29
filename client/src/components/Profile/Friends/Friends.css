@@ -7,16 +7,13 @@
 
 .friend-icon {
   display: inline-block;
-  margin-left: 20px;
   margin-bottom: 20px;
   cursor: pointer;
+  border: 2px solid var(--secondary-bg-color);
 }
 
 .friend-icon:hover {
-  background-color: white;
-  border: 1px inset gray;
-  padding: 5px;
-  box-shadow: 0.25px 0.25px;
+  box-shadow: 0px 0px 1px;
 }
 
 .friend-icon p {

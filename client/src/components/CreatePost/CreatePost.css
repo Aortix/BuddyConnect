@@ -5,18 +5,22 @@
   display: inline-block;
 }
 
+.CreatePost-title {
+  margin-top: 20px;
+  padding-top: 0px;
+  margin-bottom: 10px;
+}
+
 .CreatePost-container textarea {
-  margin-top: 15px;
   vertical-align: bottom;
   width: 300px;
 }
 
-.CreatePost-container input {
-  vertical-align: top;
-  margin-top: 5px;
-  margin-bottom: 17px;
-  border: 1px solid black;
+.CreatePost-submit_button {
+  margin-bottom: 40px;
+  margin-top: 10px;
   background-color: var(--main-bg-color);
-  font-size: 1rem;
+  border: 1px solid black;
+  font-size: 0.9rem;
   cursor: pointer;
 }

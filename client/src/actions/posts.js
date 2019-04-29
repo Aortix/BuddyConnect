@@ -97,7 +97,7 @@ export const createPost = (postText, profileId) => dispatch => {
     .then(data => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
-      //dispatch(getAndStoreProfilePosts(profileId));
+      dispatch(getAndStoreProfilePosts(profileId));
       dispatch({ type: CLEAR_POST_ERRORS });
     })
     .catch(err => {
@@ -184,7 +184,7 @@ export const deletePost = (postId, currentProfile) => dispatch => {
     .then(data => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
-      //dispatch(getAndStoreProfilePosts(currentProfile));
+      dispatch(getAndStoreProfilePosts(currentProfile));
     })
     .catch(err => {
       console.log(err);

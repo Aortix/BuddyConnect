@@ -1,0 +1,12 @@
+#AboutMe-component {
+    margin: 0 auto;
+    padding: 0;
+    width: 75%;
+}
+
+.AboutMe-submit_button {
+    background-color: var(--main-bg-color);
+    border: 1px solid black;
+    padding-left: 15px;
+    padding-right: 15px;
+}

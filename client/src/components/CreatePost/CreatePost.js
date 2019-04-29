@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import isEmpty from "./../../utilities/isEmpty";
+import postTitles from "./../../utilities/postTitles";
 import "./CreatePost.css";
 
 class CreatePost extends Component {
@@ -29,12 +30,13 @@ class CreatePost extends Component {
   render() {
     return (
       <div className="CreatePost-container">
+      <h2 className="CreatePost-title">Anything to share today?</h2>
         <form>
           <div className="create-post-form">
             <textarea
               onChange={this.changePostText}
               value={this.state.postText}
-              placeholder="What's on your mind today?"
+              placeholder="Talk about it here..."
             />
             <br />
             {isEmpty(this.props.postErrors.post) === true ? null : (
@@ -43,7 +45,7 @@ class CreatePost extends Component {
             {isEmpty(this.props.postErrors.misc) === true ? null : (
               <p>{this.props.postErrors.misc}</p>
             )}
-            <input type="submit" value="Submit" onClick={this.submitPostForm} />
+            <button className="CreatePost-submit_button" type="submit" onClick={this.submitPostForm}><i className="fas fa-paper-plane"></i><span>&nbsp;Submit</span></button>
           </div>
         </form>
       </div>

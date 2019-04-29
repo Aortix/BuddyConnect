@@ -74,14 +74,14 @@ class App extends Component {
       console.log("App component updated!");
       this.props.getAndStoreAllPosts();
       this.props.getAndStoreFriendsPosts();
+      
       if (
         /^\/profile\//.test(window.localStorage.getItem("location")) === true
       ) {
         let pastProfile = window.localStorage.getItem("location");
         console.log("THIS SHOULD BE GETTING CALLED");
+        this.props.getAndStoreMyProfile(pastProfile.replace("/profile/", ""));
         this.props.history.push(pastProfile);
-        this.props.getAndStoreMyProfile();
-        this.props.getAndStoreAProfile(pastProfile.replace("/profile/", ""));
       } else {
         this.props.getAndStoreMyProfile();
         this.props.history.push(window.localStorage.getItem("location"));
@@ -213,6 +213,7 @@ class App extends Component {
               deletePost={this.props.deletePost}
               deleteComment={this.props.deleteComment}
               myProfile={this.props.myProfile}
+              getAndStoreAProfile={this.props.getAndStoreAProfile}
               {...props}
             />
           )}

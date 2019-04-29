@@ -41,7 +41,7 @@ export const getAndStoreAProfile = profileId => dispatch => {
   }
 };
 
-export const getAndStoreMyProfile = () => dispatch => {
+export const getAndStoreMyProfile = profileId => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -56,7 +56,8 @@ export const getAndStoreMyProfile = () => dispatch => {
       .then(data => {
         console.log("Was this called?");
         dispatch({ type: GET_AND_STORE_MY_PROFILE, payload: data.data });
-        dispatch(getAndStoreProfilePosts(data.data._id));
+        dispatch(getAndStoreProfilePosts(profileId || data.data._id));
+        dispatch(getAndStoreAProfile(profileId || data.data._id));
       })
       .catch(err => {
         console.log(err);
