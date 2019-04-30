@@ -17,6 +17,14 @@ class Profile extends Component {
       "location",
       `/profile/${this.props.currentProfile}`
     );
+    if (
+      this.props.location.pathname.replace("/profile/", "") !==
+      this.props.currentProfile
+    ) {
+      this.props.getAndStoreAProfile(
+        this.props.location.pathname.replace("/profile/", "")
+      );
+    }
   };
 
   componentWillUnmount = () => {

@@ -55,10 +55,17 @@ export const getAndStoreMyProfile = profileId => dispatch => {
     axios
       .get("http://localhost:5000/api/profile/my/profile", config)
       .then(data => {
-        console.log("Was this called?");
         dispatch({ type: GET_AND_STORE_MY_PROFILE, payload: data.data });
-        dispatch(getAndStoreProfilePosts(profileId || data.data._id));
-        dispatch(getAndStoreAProfile(profileId || data.data._id));
+        console.log(profileId);
+        if (profileId !== undefined && profileId !== null) {
+          console.log("Someones profile was called.");
+          dispatch(getAndStoreProfilePosts(profileId));
+          dispatch(getAndStoreAProfile(profileId));
+        } else {
+          console.log("My profile was called.");
+          dispatch(getAndStoreProfilePosts(data.data._id));
+          dispatch(getAndStoreAProfile(data.data._id));
+        }
       })
       .catch(err => {
         console.log(err);

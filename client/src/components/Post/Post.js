@@ -6,7 +6,6 @@ import "./Post.css";
 
 class Post extends Component {
   componentDidMount = () => {
-    console.log("This should not be going crazy right?");
     this.props.postAlreadyDeleted();
     this.props.commentAlreadyDeleted();
   };

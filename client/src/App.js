@@ -80,11 +80,12 @@ class App extends Component {
         /^\/profile\//.test(window.localStorage.getItem("location")) === true
       ) {
         let pastProfile = window.localStorage.getItem("location");
-        console.log("THIS SHOULD BE GETTING CALLED");
+        console.log("Starting on a profile page.");
         this.props.getAndStoreMyProfile(pastProfile.replace("/profile/", ""));
         this.props.history.push(pastProfile);
       } else {
-        this.props.getAndStoreMyProfile();
+        console.log("Not starting on a profile page.");
+        this.props.getAndStoreMyProfile(null);
         this.props.history.push(window.localStorage.getItem("location"));
       }
     }
@@ -229,7 +230,6 @@ class App extends Component {
             <Profile
               profilePosts={this.props.profilePosts}
               getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
-              currentProfile={this.props.currentProfile}
               currentProfileData={this.props.currentProfileData}
               createPost={this.props.createPost}
               friendThumbnails={this.props.friendThumbnails}
@@ -267,6 +267,8 @@ class App extends Component {
               postAlreadyDeleted={this.props.postAlreadyDeleted}
               commentDeleted={this.props.commentDeleted}
               commentAlreadyDeleted={this.props.commentAlreadyDeleted}
+              location={props.location}
+              currentProfile={this.props.currentProfile}
               {...props}
             />
           )}
@@ -391,8 +393,8 @@ const mapDispatchToProps = dispatch => ({
   getAndStoreAProfile: profileId => {
     dispatch(getAndStoreAProfile(profileId));
   },
-  getAndStoreMyProfile: () => {
-    dispatch(getAndStoreMyProfile());
+  getAndStoreMyProfile: profileId => {
+    dispatch(getAndStoreMyProfile(profileId));
   },
   showFriends: profileId => {
     dispatch(showFriends(profileId));
