@@ -1,12 +1,29 @@
 .DeleteAccount-container {
+  width: 330px;
+  margin: 0 auto;
   margin-top: 70px;
+  text-align: left;
+}
+
+.DeleteAccount-user_input {
+  border: none;
+  border-bottom: 1px solid black;
+  width: calc(100% - 132px);
 }
 
 .DeleteAccount-container button {
+  display: block;
   border: 1px solid black;
   background-color: var(--main-bg-color);
   font-size: 1.3rem;
+  margin: 0 auto;
   margin-top: 10px;
   box-shadow: 0.25px 0.25px;
   cursor: pointer;
+}
+
+.DeleteAccount-text {
+  margin-top: 0px;
+  text-align: center;
+  font-size: 0.8rem;
 }

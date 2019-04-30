@@ -345,7 +345,7 @@ router.put(
           if (err) {
             return res.send(err);
           } else {
-            console.log("Profile deleted.");
+            console.log("Post from profile deleted.");
             return res.send(response4);
           }
         }

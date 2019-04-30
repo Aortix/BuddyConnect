@@ -58,6 +58,7 @@ export const authLogin = (email, password) => dispatch => {
     })
     .then(() => {
       dispatch(authCheck());
+      dispatch({ type: USER_SIGNED_UP, payload: 0 });
     })
     .catch(err => {
       console.log(err.response.data.errors);
@@ -71,7 +72,7 @@ export const authLogout = () => dispatch => {
     type: LOGOUT,
     payload: false
   });
-  dispatch({ type: USER_SIGNED_UP, payload: 1 });
+  dispatch({ type: USER_SIGNED_UP, payload: 0 });
 };
 
 export const authCheck = () => dispatch => {

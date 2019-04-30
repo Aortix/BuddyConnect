@@ -1,12 +1,15 @@
 import React from "react";
 
+import "./ChangeEmail.css";
+
 export default function ChangeEmail(props) {
   return (
-    <div>
-      Change Email:
+    <div className="ChangeEmail-container">
+      <h3 className="ChangeEmail-heading">Change Email:</h3>
       <form onSubmit={props.handleEmailSubmit}>
-        New Email:{" "}
+        <span>New Email: </span>
         <input
+          className="ChangeEmail-user_input_email"
           type="email"
           name="email"
           value={props.email}
@@ -19,6 +22,7 @@ export default function ChangeEmail(props) {
         ) : null}
         Current Password:{" "}
         <input
+          className="ChangeEmail-user_input_password"
           type="password"
           name="emailPassword2"
           value={props.emailPassword2}
@@ -28,7 +32,13 @@ export default function ChangeEmail(props) {
         {props.settingsErrors.emailPassword !== undefined ? (
           <p>{props.settingsErrors.emailPassword}</p>
         ) : null}
-        <input type="submit" name="Submit" formNoValidate />
+        <input
+          className="ChangeEmail-submit_button"
+          type="submit"
+          name="Submit"
+          value="Save"
+          formNoValidate
+        />
         <br />
       </form>
     </div>

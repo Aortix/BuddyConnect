@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 
 import isEmpty from "./../../utilities/isEmpty";
-import postTitles from "./../../utilities/postTitles";
 import "./CreatePost.css";
 
 class CreatePost extends Component {
+  componentDidMount = () => {
+    setTimeout(() => {
+      this.props.postAlreadyCreated();
+    }, 2000);
+  };
+
   state = {
     postText: ""
   };
@@ -30,7 +35,7 @@ class CreatePost extends Component {
   render() {
     return (
       <div className="CreatePost-container">
-      <h2 className="CreatePost-title">Anything to share today?</h2>
+        <h2 className="CreatePost-title">Anything to share today?</h2>
         <form>
           <div className="create-post-form">
             <textarea
@@ -45,7 +50,17 @@ class CreatePost extends Component {
             {isEmpty(this.props.postErrors.misc) === true ? null : (
               <p>{this.props.postErrors.misc}</p>
             )}
-            <button className="CreatePost-submit_button" type="submit" onClick={this.submitPostForm}><i className="fas fa-paper-plane"></i><span>&nbsp;Submit</span></button>
+            {this.props.postCreated === 1 ? (
+              <p>Post successfully created!</p>
+            ) : null}
+            <button
+              className="CreatePost-submit_button"
+              type="submit"
+              onClick={this.submitPostForm}
+            >
+              <i className="fas fa-paper-plane" />
+              <span>&nbsp;Submit</span>
+            </button>
           </div>
         </form>
       </div>

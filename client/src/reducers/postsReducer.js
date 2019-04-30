@@ -6,7 +6,10 @@ import {
   POST_ERRORS,
   COMMENT_ERRORS,
   CLEAR_POST_ERRORS,
-  CLEAR_COMMENT_ERRORS
+  CLEAR_COMMENT_ERRORS,
+  POST_CREATED,
+  POST_DELETED,
+  COMMENT_DELETED
 } from "./../actions/types";
 
 const initialState = {
@@ -15,7 +18,10 @@ const initialState = {
   profilePosts: null,
   currentPost: "",
   postErrors: {},
-  commentErrors: {}
+  commentErrors: {},
+  postCreated: 0,
+  postDeleted: 0,
+  commentDeleted: 0
 };
 
 export const postsReducer = (state = initialState, action) => {
@@ -59,6 +65,21 @@ export const postsReducer = (state = initialState, action) => {
       return {
         ...state,
         commentErrors: {}
+      };
+    case POST_CREATED:
+      return {
+        ...state,
+        postCreated: action.payload
+      };
+    case POST_DELETED:
+      return {
+        ...state,
+        postDeleted: action.payload
+      };
+    case COMMENT_DELETED:
+      return {
+        ...state,
+        commentDeleted: action.payload
       };
     default:
       return state;

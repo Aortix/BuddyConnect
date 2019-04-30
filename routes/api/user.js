@@ -301,18 +301,19 @@ router.post(
     const pathToFile = "./public/uploads/avatars/";
 
     //Function for filtering uploaded avatars so that only an image is uploaded
-    checkAvatarUpload = (file, cb) => {
+    checkAvatarUpload = (req, file, cb) => {
       const filetypes = /jpeg|jpg|png/;
       const extname = filetypes.test(
         path.extname(file.originalname).toLowerCase()
       );
       const mimetype = filetypes.test(file.mimetype);
 
-      if (mimetype && extname) {
+      if (mimetype === true && extname === true) {
         return cb(null, true);
       } else {
-        errors.avatar = "Error: .jpg, jpeg, or .png images only!";
-        return res.status(400).send(errors);
+        errors.avatar = "Images only!";
+        req.avatarValidation = "Images only!";
+        return cb(null, false);
       }
     };
 
@@ -332,15 +333,17 @@ router.post(
       storage: storage,
       limits: { fileSize: 900000 },
       fileFilter: (req, file, cb) => {
-        checkAvatarUpload(file, cb);
+        checkAvatarUpload(req, file, cb);
       }
     }).single("avatar");
 
     upload(req, res, err => {
       if (err instanceof multer.MulterError) {
-        return res.send(err);
+        return res.status(400).send(errors);
       } else if (err) {
-        return res.send(err);
+        return res.status(400).send(errors);
+      } else if (req.avatarValidation) {
+        return res.status(400).send(errors);
       } else {
         userSchema.findById(req.user.id, (err, response) => {
           if (err) {

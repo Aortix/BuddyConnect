@@ -5,7 +5,8 @@ import {
   ADD_FRIEND,
   CHECK_FOR_FRIEND,
   REVERSE_ADDED_FRIEND,
-  PROFILE_ERRORS
+  PROFILE_ERRORS,
+  CLEAR_PROFILE_ERRORS
 } from "./types";
 import axios from "axios";
 import {
@@ -172,8 +173,10 @@ export const changeAvatar = (fileData, profileId) => dispatch => {
         dispatch(getAndStoreAllPosts());
         dispatch(getAndStoreFriendsPosts());
         dispatch(getAndStoreProfilePosts(profileId));
+        dispatch({ type: CLEAR_PROFILE_ERRORS });
       })
       .catch(err => {
+        console.log("This is NOT an image!");
         dispatch({ type: PROFILE_ERRORS, payload: err.response.data });
       });
   }

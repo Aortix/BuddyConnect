@@ -6,8 +6,9 @@ export default function DeleteAccount(props) {
   return (
     <div className="DeleteAccount-container">
       <form onSubmit={props.handleDeleteAccount}>
-        Current Password:{" "}
+        <span>Current Password: </span>
         <input
+          className="DeleteAccount-user_input"
           type="password"
           name="deleteAccountPassword2"
           value={props.deleteAccountPassword2}
@@ -22,6 +23,9 @@ export default function DeleteAccount(props) {
           DELETE ACCOUNT
         </button>
       </form>
+      <p className="DeleteAccount-text">
+        *Requires entering your current password
+      </p>
     </div>
   );
 }

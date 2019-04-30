@@ -7,7 +7,10 @@ import {
   POST_ERRORS,
   COMMENT_ERRORS,
   CLEAR_POST_ERRORS,
-  CLEAR_COMMENT_ERRORS
+  CLEAR_COMMENT_ERRORS,
+  POST_CREATED,
+  POST_DELETED,
+  COMMENT_DELETED
 } from "./types";
 
 export const getAndStoreAllPosts = () => dispatch => {
@@ -98,6 +101,7 @@ export const createPost = (postText, profileId) => dispatch => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
       dispatch(getAndStoreProfilePosts(profileId));
+      dispatch({ type: POST_CREATED, payload: 1 });
       dispatch({ type: CLEAR_POST_ERRORS });
     })
     .catch(err => {
@@ -131,6 +135,7 @@ export const createPostOnDifferentProfile = (
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
       dispatch(getAndStoreProfilePosts(profileId));
+      dispatch({ type: POST_CREATED, payload: 1 });
       dispatch({ type: CLEAR_POST_ERRORS });
     })
     .catch(err => {
@@ -185,6 +190,7 @@ export const deletePost = (postId, currentProfile) => dispatch => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
       dispatch(getAndStoreProfilePosts(currentProfile));
+      dispatch({ type: POST_DELETED, payload: 1 });
     })
     .catch(err => {
       console.log(err);
@@ -212,6 +218,7 @@ export const deleteComment = (
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
       dispatch(getAndStoreProfilePosts(currentProfile));
+      dispatch({ type: COMMENT_DELETED, payload: 1 });
     })
     .catch(err => {
       console.log(err);

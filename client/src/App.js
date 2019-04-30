@@ -43,11 +43,12 @@ import PrivateRoute from "./components/Private_Route/Private_Route";
 import Header from "./components/Header/Header";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Profile from "./components/Profile/Profile";
-import { USER_SIGNED_UP } from "./actions/types";
+import { USER_SIGNED_UP, POST_DELETED, COMMENT_DELETED } from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
 import { CLEAR_COMMENT_ERRORS } from "./actions/types";
 import { CLEAR_PROFILE_ERRORS } from "./actions/types";
+import { POST_CREATED } from "./actions/types";
 import SideBar from "./components/SideBar/SideBar";
 import Footer from "./components/Footer/Footer";
 import Settings from "./components/Settings/Settings";
@@ -74,7 +75,7 @@ class App extends Component {
       console.log("App component updated!");
       this.props.getAndStoreAllPosts();
       this.props.getAndStoreFriendsPosts();
-      
+
       if (
         /^\/profile\//.test(window.localStorage.getItem("location")) === true
       ) {
@@ -103,7 +104,7 @@ class App extends Component {
 
     //This is if the User signs up, logs in, and then logs out within the same session; the information that was
     //inputed in the signup/login field before will now be blank instead of being filled with the previous information.
-    if (this.props.userSignedUp === 1) {
+    if (prevProps.userSignedUp !== this.props.userSignedUp) {
       this.setState({
         name: "",
         email: "",
@@ -112,9 +113,6 @@ class App extends Component {
         loginEmail: "",
         loginPassword: ""
       });
-
-      //resets userSignedUp back to 0
-      this.props.userHasSignedUp();
     }
 
     if (this.props.location !== prevProps.location) {
@@ -214,6 +212,12 @@ class App extends Component {
               deleteComment={this.props.deleteComment}
               myProfile={this.props.myProfile}
               getAndStoreAProfile={this.props.getAndStoreAProfile}
+              postCreated={this.props.postCreated}
+              postAlreadyCreated={this.props.postAlreadyCreated}
+              postDeleted={this.props.postDeleted}
+              postAlreadyDeleted={this.props.postAlreadyDeleted}
+              commentDeleted={this.props.commentDeleted}
+              commentAlreadyDeleted={this.props.commentAlreadyDeleted}
               {...props}
             />
           )}
@@ -257,6 +261,12 @@ class App extends Component {
               profileErrors={this.props.profileErrors}
               clearProfileErrors={this.props.clearProfileErrors}
               getAndStoreMyProfile={this.props.getAndStoreMyProfile}
+              postCreated={this.props.postCreated}
+              postAlreadyCreated={this.props.postAlreadyCreated}
+              postDeleted={this.props.postDeleted}
+              postAlreadyDeleted={this.props.postAlreadyDeleted}
+              commentDeleted={this.props.commentDeleted}
+              commentAlreadyDeleted={this.props.commentAlreadyDeleted}
               {...props}
             />
           )}
@@ -308,6 +318,8 @@ class App extends Component {
               authCheck={this.props.authCheck}
               authenticated={this.props.authenticated}
               authErrors={this.props.authErrors}
+              userSignedUp={this.props.userSignedUp}
+              userHasSignedUp={this.props.userHasSignedUp}
               {...props}
             />
           )}
@@ -336,7 +348,10 @@ const mapStateToProps = state => ({
   postErrors: state.postsReducer.postErrors,
   commentErrors: state.postsReducer.commentErrors,
   profileErrors: state.profileReducer.profileErrors,
-  settingsErrors: state.settingsReducer.settingsErrors
+  settingsErrors: state.settingsReducer.settingsErrors,
+  postCreated: state.postsReducer.postCreated,
+  postDeleted: state.postsReducer.postDeleted,
+  commentDeleted: state.postsReducer.commentDeleted
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -438,6 +453,15 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteFriend: friendId => {
     dispatch(deleteFriend(friendId));
+  },
+  postAlreadyCreated: () => {
+    dispatch({ type: POST_CREATED, payload: 0 });
+  },
+  postAlreadyDeleted: () => {
+    dispatch({ type: POST_DELETED, payload: 0 });
+  },
+  commentAlreadyDeleted: () => {
+    dispatch({ type: COMMENT_DELETED, payload: 0 });
   }
 });
 

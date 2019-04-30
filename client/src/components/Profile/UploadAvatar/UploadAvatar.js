@@ -4,12 +4,15 @@ import "./UploadAvatar.css";
 
 import Avatar from "./../Avatar/Avatar";
 export default class UploadAvatar extends Component {
-  componentDidUpdate = prevState => {
-    if (prevState.fileUploaded !== this.state.fileUploaded) {
-      console.log("Calling changeAvatar");
+  componentDidUpdate = (prevState, prevProps) => {
+    if (
+      prevState.fileUploaded !== this.state.fileUploaded &&
+      this.state.fileUploaded !== 0
+    ) {
       this.props.changeAvatar(this.state.file, this.props.currentProfile);
     }
   };
+
   state = {
     file: null,
     fileUploaded: 0
@@ -23,9 +26,7 @@ export default class UploadAvatar extends Component {
   };
 
   handleAvatarError = () => {
-    alert(this.props.profileErrors.avatar);
-    this.props.clearProfileErrors();
-    this.props.getAndStoreMyProfile();
+    //this.props.getAndStoreMyProfile(this.props.currentProfile);
   };
 
   render() {
@@ -43,9 +44,11 @@ export default class UploadAvatar extends Component {
               />
             </label>
           </form>
-          {this.props.profileErrors.avatar === undefined ? null : (
-            <div>{this.handleAvatarError()}</div>
-          )}
+          {this.props.profileErrors.avatar !== undefined ? (
+            <p className="UploadAvatar-error">
+              {this.props.profileErrors.avatar}
+            </p>
+          ) : null}
         </div>
       );
     } else {

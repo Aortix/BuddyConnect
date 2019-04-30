@@ -5,6 +5,12 @@ import CreateComment from "./../CreateComment/CreateComment";
 import "./Post.css";
 
 class Post extends Component {
+  componentDidMount = () => {
+    console.log("This should not be going crazy right?");
+    this.props.postAlreadyDeleted();
+    this.props.commentAlreadyDeleted();
+  };
+
   state = {
     profileClick: false
   };
@@ -26,6 +32,11 @@ class Post extends Component {
   };
 
   render() {
+    if (this.props.postDeleted === 1) {
+      alert("Post deleted!");
+    } else if (this.props.commentDeleted === 1) {
+      alert("Comment deleted!");
+    }
     return this.props.posts === null ? (
       <h1>Loading</h1>
     ) : (

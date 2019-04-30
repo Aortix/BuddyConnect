@@ -53,6 +53,8 @@ class Dashboard extends Component {
             }
             postErrors={this.props.postErrors}
             clearPostErrors={this.props.clearPostErrors}
+            postCreated={this.props.postCreated}
+            postAlreadyCreated={this.props.postAlreadyCreated}
           />
           <PrivateRoute
             exact
@@ -72,6 +74,10 @@ class Dashboard extends Component {
                 deletePost={this.props.deletePost}
                 deleteComment={this.props.deleteComment}
                 myProfile={this.props.myProfile}
+                postDeleted={this.props.postDeleted}
+                postAlreadyDeleted={this.props.postAlreadyDeleted}
+                commentDeleted={this.props.commentDeleted}
+                commentAlreadyDeleted={this.props.commentAlreadyDeleted}
                 {...props}
               />
             )}
@@ -94,6 +100,10 @@ class Dashboard extends Component {
                 deletePost={this.props.deletePost}
                 deleteComment={this.props.deleteComment}
                 myProfile={this.props.myProfile}
+                postDeleted={this.props.postDeleted}
+                postAlreadyDeleted={this.props.postAlreadyDeleted}
+                commentDeleted={this.props.commentDeleted}
+                commentAlreadyDeleted={this.props.commentAlreadyDeleted}
                 {...props}
               />
             )}

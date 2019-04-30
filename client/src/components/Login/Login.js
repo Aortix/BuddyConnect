@@ -9,6 +9,9 @@ class Login extends Component {
     if (this.props.authenticated === true) {
       this.props.history.push("/dashboard");
     }
+    setTimeout(() => {
+      this.props.userHasSignedUp();
+    }, 3000);
   };
 
   componentDidUpdate = () => {
@@ -43,6 +46,9 @@ class Login extends Component {
           {isEmpty(this.props.authErrors.password) === true ? null : (
             <p>{this.props.authErrors.password}</p>
           )}
+          {this.props.userSignedUp === 1 ? (
+            <p>User successfully registered!</p>
+          ) : null}
           <br /> <br />
           <input type="submit" name="Submit" value="GO" formNoValidate />
         </form>

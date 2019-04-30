@@ -13,7 +13,6 @@ import CreatePost from "./../CreatePost/CreatePost";
 
 class Profile extends Component {
   componentDidMount = () => {
-    console.log(this.props.isAFriend);
     window.localStorage.setItem(
       "location",
       `/profile/${this.props.currentProfile}`
@@ -40,6 +39,7 @@ class Profile extends Component {
             addFriend={this.props.addFriend}
             getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
             deleteFriend={this.props.deleteFriend}
+            profileErrors={this.props.profileErrors}
           />
           <UploadAvatar
             currentProfile={this.props.currentProfile}
@@ -58,6 +58,8 @@ class Profile extends Component {
             }
             postErrors={this.props.postErrors}
             clearPostErrors={this.props.clearPostErrors}
+            postCreated={this.props.postCreated}
+            postAlreadyCreated={this.props.postAlreadyCreated}
           />
           <ul className="profile-tabs-container">
             <li
@@ -256,6 +258,10 @@ class Profile extends Component {
             deletePost={this.props.deletePost}
             deleteComment={this.props.deleteComment}
             myProfile={this.props.myProfile}
+            postDeleted={this.props.postDeleted}
+            postAlreadyDeleted={this.props.postAlreadyDeleted}
+            commentDeleted={this.props.commentDeleted}
+            commentAlreadyDeleted={this.props.commentAlreadyDeleted}
           />
           <AboutMe
             className={`component-hidden-until-shown`}
