@@ -43,7 +43,17 @@ import PrivateRoute from "./components/Private_Route/Private_Route";
 import Header from "./components/Header/Header";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Profile from "./components/Profile/Profile";
-import { USER_SIGNED_UP, POST_DELETED, COMMENT_DELETED } from "./actions/types";
+import {
+  USER_SIGNED_UP,
+  POST_DELETED,
+  COMMENT_DELETED,
+  CLEAR_ABOUT_ME_UPDATED,
+  CLEAR_INTERESTS_UPDATED,
+  CLEAR_NAME_CHANGED,
+  CLEAR_EMAIL_CHANGED,
+  CLEAR_PASSWORD_CHANGED,
+  CLEAR_ACCOUNT_DELETED_CHANGED
+} from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
 import { CLEAR_COMMENT_ERRORS } from "./actions/types";
@@ -269,6 +279,11 @@ class App extends Component {
               commentAlreadyDeleted={this.props.commentAlreadyDeleted}
               location={props.location}
               currentProfile={this.props.currentProfile}
+              aboutMeUpdated={this.props.aboutMeUpdated}
+              interestsUpdated={this.props.interestsUpdated}
+              clearAboutMeUpdated={this.props.clearAboutMeUpdated}
+              clearInterestsUpdated={this.props.clearInterestsUpdated}
+              addedFriend={this.props.addedFriend}
               {...props}
             />
           )}
@@ -285,6 +300,15 @@ class App extends Component {
               settingsErrors={this.props.settingsErrors}
               currentProfile={this.props.currentProfile}
               myProfile={this.props.myProfile}
+              nameChanged={this.props.nameChanged}
+              emailChanged={this.props.emailChanged}
+              passwordChanged={this.props.passwordChanged}
+              deleteAccountChanged={this.props.deleteAccountChanged}
+              clearNameChanged={this.props.clearNameChanged}
+              clearEmailChanged={this.props.clearEmailChanged}
+              clearPasswordChanged={this.props.clearPasswordChanged}
+              clearAccountDeletedChanged={this.props.clearAccountDeletedChanged}
+              authLogout={this.props.authLogout}
               {...props}
             />
           )}
@@ -353,7 +377,13 @@ const mapStateToProps = state => ({
   settingsErrors: state.settingsReducer.settingsErrors,
   postCreated: state.postsReducer.postCreated,
   postDeleted: state.postsReducer.postDeleted,
-  commentDeleted: state.postsReducer.commentDeleted
+  commentDeleted: state.postsReducer.commentDeleted,
+  aboutMeUpdated: state.profileReducer.aboutMeUpdated,
+  interestsUpdated: state.profileReducer.interestsUpdated,
+  nameChanged: state.settingsReducer.nameChanged,
+  emailChanged: state.settingsReducer.emailChanged,
+  passwordChanged: state.settingsReducer.passwordChanged,
+  deleteAccountChanged: state.settingsReducer.deleteAccountChanged
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -464,6 +494,24 @@ const mapDispatchToProps = dispatch => ({
   },
   commentAlreadyDeleted: () => {
     dispatch({ type: COMMENT_DELETED, payload: 0 });
+  },
+  clearAboutMeUpdated: () => {
+    dispatch({ type: CLEAR_ABOUT_ME_UPDATED, payload: 0 });
+  },
+  clearInterestsUpdated: () => {
+    dispatch({ type: CLEAR_INTERESTS_UPDATED, payload: 0 });
+  },
+  clearNameChanged: () => {
+    dispatch({ type: CLEAR_NAME_CHANGED, payload: 0 });
+  },
+  clearEmailChanged: () => {
+    dispatch({ type: CLEAR_EMAIL_CHANGED, payload: 0 });
+  },
+  clearPasswordChanged: () => {
+    dispatch({ type: CLEAR_PASSWORD_CHANGED, payload: 0 });
+  },
+  clearAccountDeletedChanged: () => {
+    dispatch({ type: CLEAR_ACCOUNT_DELETED_CHANGED, payload: 0 });
   }
 });
 

@@ -26,49 +26,49 @@ class SignUp extends Component {
       <div className="SignUp-container">
         <h1>Sign Up</h1>
         <form onSubmit={this.props.handleSignUpSubmit}>
-          Name: <br />
+          <p>Name:</p>
           <input
             type="text"
             name="name"
             onChange={this.props.handleChange}
             value={this.props.name}
           />
-          <br />
           {isEmpty(this.props.authErrors.name) === true ? null : (
-            <p>{this.props.authErrors.name}</p>
+            <div className="SignUp-errors">{this.props.authErrors.name}</div>
           )}
-          Email: <br />
+          <p>Email:</p>
           <input
             type="email"
             name="email"
             onChange={this.props.handleChange}
             value={this.props.email}
           />
-          <br />
           {isEmpty(this.props.authErrors.email) === true ? null : (
-            <p>{this.props.authErrors.email}</p>
+            <div className="SignUp-errors">{this.props.authErrors.email}</div>
           )}
-          Password: <br />
+          <p>Password:</p>
           <input
             type="password"
             name="password"
             onChange={this.props.handleChange}
             value={this.props.password}
           />
-          <br />
           {isEmpty(this.props.authErrors.password) === true ? null : (
-            <p>{this.props.authErrors.password}</p>
+            <div className="SignUp-errors">
+              {this.props.authErrors.password}
+            </div>
           )}
-          Confirm Password: <br />
+          <p>Confirm Password:</p>
           <input
             type="password"
             name="confirmPassword"
             onChange={this.props.handleChange}
             value={this.props.confirmPassword}
           />
-          <br />
           {isEmpty(this.props.authErrors.password2) === true ? null : (
-            <p>{this.props.authErrors.password2}</p>
+            <div className="SignUp-errors">
+              {this.props.authErrors.password2}
+            </div>
           )}
           <br />
           <input
@@ -79,7 +79,7 @@ class SignUp extends Component {
           />
         </form>
         {isEmpty(this.props.authErrors.misc) === true ? null : (
-          <p>{this.props.authErrors.misc}</p>
+          <div className="SignUp-errors">{this.props.authErrors.misc}</div>
         )}
         <Link to="/login">
           <p>Already have an account? Login here.</p>

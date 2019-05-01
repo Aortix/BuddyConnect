@@ -3,6 +3,7 @@
   position: absolute;
   border-right: 1px solid black;
   width: 30%;
+  max-width: 200px;
   height: calc(100% - 80px);
   background-color: var(--main-overlay-color);
   z-index: 2;

@@ -36,7 +36,11 @@ class AboutMe extends Component {
               onChange={this.handleInput}
             />
             <br />
-            <input className="AboutMe-submit_button" type="submit" name="Submit" />
+            <input
+              className="AboutMe-submit_button"
+              type="submit"
+              name="Submit"
+            />
           </form>
         </div>
       );

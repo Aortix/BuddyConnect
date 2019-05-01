@@ -13,6 +13,10 @@ import CreatePost from "./../CreatePost/CreatePost";
 
 class Profile extends Component {
   componentDidMount = () => {
+    setTimeout(() => {
+      this.props.clearAboutMeUpdated();
+      this.props.clearInterestsUpdated();
+    }, 3000);
     window.localStorage.setItem(
       "location",
       `/profile/${this.props.currentProfile}`
@@ -48,6 +52,7 @@ class Profile extends Component {
             getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
             deleteFriend={this.props.deleteFriend}
             profileErrors={this.props.profileErrors}
+            addedFriend={this.props.addedFriend}
           />
           <UploadAvatar
             currentProfile={this.props.currentProfile}
@@ -251,6 +256,8 @@ class Profile extends Component {
               Friends
             </li>
           </ul>
+          {this.props.aboutMeUpdated === 1 ? <p>About me updated!</p> : null}
+          {this.props.interestsUpdated === 1 ? <p>Interests updated!</p> : null}
           <Post
             id={`Post-component`}
             posts={this.props.profilePosts}
@@ -271,6 +278,7 @@ class Profile extends Component {
             commentDeleted={this.props.commentDeleted}
             commentAlreadyDeleted={this.props.commentAlreadyDeleted}
           />
+
           <AboutMe
             className={`component-hidden-until-shown`}
             id={`AboutMe-component`}
@@ -279,6 +287,7 @@ class Profile extends Component {
             currentProfile={this.props.currentProfile}
             myProfile={this.props.myProfile}
           />
+
           <Interests
             className={`component-hidden-until-shown`}
             id={`Interests-component`}

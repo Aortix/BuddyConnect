@@ -6,7 +6,11 @@ import {
   CHECK_FOR_FRIEND,
   REVERSE_ADDED_FRIEND,
   PROFILE_ERRORS,
-  CLEAR_PROFILE_ERRORS
+  CLEAR_PROFILE_ERRORS,
+  ABOUT_ME_UPDATED,
+  CLEAR_ABOUT_ME_UPDATED,
+  INTERESTS_UPDATED,
+  CLEAR_INTERESTS_UPDATED
 } from "./../actions/types";
 
 const initialState = {
@@ -16,7 +20,9 @@ const initialState = {
   friendThumbnails: null,
   isAFriend: 0,
   addedFriend: 0,
-  profileErrors: {}
+  profileErrors: {},
+  aboutMeUpdated: 0,
+  interestsUpdated: 0
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -41,7 +47,7 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         isAFriend: action.payload,
-        addedFriend: 1
+        addedFriend: action.payload
       };
     case CHECK_FOR_FRIEND:
       return {
@@ -62,6 +68,26 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         profileErrors: {}
+      };
+    case ABOUT_ME_UPDATED:
+      return {
+        ...state,
+        aboutMeUpdated: action.payload
+      };
+    case CLEAR_ABOUT_ME_UPDATED:
+      return {
+        ...state,
+        aboutMeUpdated: action.payload
+      };
+    case INTERESTS_UPDATED:
+      return {
+        ...state,
+        interestsUpdated: action.payload
+      };
+    case CLEAR_INTERESTS_UPDATED:
+      return {
+        ...state,
+        interestsUpdated: action.payload
       };
     default:
       return state;

@@ -94,7 +94,6 @@ router.post("/login", (req, res) => {
     .findOne({ email: req.body.email }, (err, response) => {
       if (response == null || response == undefined) {
         errors.errors.email = "Email doesn't exist in our database.";
-        console.log(errors);
         return res.status(400).send(errors);
       } else if (err) {
         errors.errors.email =

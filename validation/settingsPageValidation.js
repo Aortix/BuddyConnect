@@ -59,8 +59,13 @@ const updatePasswordValidation = data => {
     errors.passwordPassword = "Password is empty.";
   }
 
-  if (!validator.equals(data.passwordPassword, data.passwordPassword2)) {
-    errors.passwordPassword2 = "Passwords must match.";
+  if (!validator.isLength(data.passwordPassword2, { min: 6, max: 30 })) {
+    errors.passwordPassword =
+      "Current password must be between 6 and 30 characters.";
+  }
+
+  if (validator.isEmpty(data.passwordPassword2)) {
+    errors.passwordPassword = "Current password is empty.";
   }
 
   return {

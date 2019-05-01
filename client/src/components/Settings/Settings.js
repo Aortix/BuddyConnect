@@ -40,6 +40,9 @@ export default class Settings extends Component {
       passwordPassword2: "",
       deleteAccountPassword2: ""
     });
+    setTimeout(() => {
+      this.props.clearNameChanged();
+    }, 4000);
   };
 
   handleEmailSubmit = e => {
@@ -53,6 +56,9 @@ export default class Settings extends Component {
       passwordPassword2: "",
       deleteAccountPassword2: ""
     });
+    setTimeout(() => {
+      this.props.clearEmailChanged();
+    }, 4000);
   };
 
   handlePasswordSubmit = e => {
@@ -69,6 +75,9 @@ export default class Settings extends Component {
       passwordPassword2: "",
       deleteAccountPassword2: ""
     });
+    setTimeout(() => {
+      this.props.clearPasswordChanged();
+    }, 4000);
   };
 
   handleDeleteAccount = e => {
@@ -82,6 +91,10 @@ export default class Settings extends Component {
       passwordPassword2: "",
       deleteAccountPassword2: ""
     });
+    setTimeout(() => {
+      this.props.clearAccountDeletedChanged();
+      this.props.authLogout();
+    }, 4000);
   };
 
   render() {
@@ -94,6 +107,9 @@ export default class Settings extends Component {
           handleNameSubmit={this.handleNameSubmit}
           settingsErrors={this.props.settingsErrors}
         />
+        {this.props.nameChanged === 1 ? (
+          <p>Name successfully changed!</p>
+        ) : null}
         <ChangeEmail
           email={this.state.email}
           emailPassword2={this.state.emailPassword2}
@@ -101,6 +117,9 @@ export default class Settings extends Component {
           handleEmailSubmit={this.handleEmailSubmit}
           settingsErrors={this.props.settingsErrors}
         />
+        {this.props.emailChanged === 1 ? (
+          <p>Email successfully changed!</p>
+        ) : null}
         <ChangePassword
           password={this.state.password}
           passwordPassword2={this.state.passwordPassword2}
@@ -108,12 +127,18 @@ export default class Settings extends Component {
           handlePasswordSubmit={this.handlePasswordSubmit}
           settingsErrors={this.props.settingsErrors}
         />
+        {this.props.passwordChanged === 1 ? (
+          <p>Password successfully changed!</p>
+        ) : null}
         <DeleteAccount
           deleteAccountPassword2={this.state.deleteAccountPassword2}
           handleInput={this.handleInput}
           handleDeleteAccount={this.handleDeleteAccount}
           settingsErrors={this.props.settingsErrors}
         />
+        {this.props.deleteAccountChanged === 1 ? (
+          <p>Account successfully deleted!</p>
+        ) : null}
       </div>
     );
   }

@@ -6,7 +6,9 @@ import {
   CHECK_FOR_FRIEND,
   REVERSE_ADDED_FRIEND,
   PROFILE_ERRORS,
-  CLEAR_PROFILE_ERRORS
+  CLEAR_PROFILE_ERRORS,
+  ABOUT_ME_UPDATED,
+  INTERESTS_UPDATED
 } from "./types";
 import axios from "axios";
 import {
@@ -234,6 +236,7 @@ export const changeAboutMe = (aboutMeData, profileId) => dispatch => {
       .then(() => {
         console.log("AboutMe updated.");
         dispatch(getAndStoreAProfile(profileId));
+        dispatch({ type: ABOUT_ME_UPDATED, payload: 1 });
       })
       .catch(err => {
         console.log(err);
@@ -260,6 +263,7 @@ export const changeInterests = (interestsData, profileId) => dispatch => {
       .then(() => {
         console.log("Interests updated.");
         dispatch(getAndStoreAProfile(profileId));
+        dispatch({ type: INTERESTS_UPDATED, payload: 1 });
       })
       .catch(err => {
         console.log(err);

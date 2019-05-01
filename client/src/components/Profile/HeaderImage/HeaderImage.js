@@ -34,52 +34,57 @@ class HeaderImage extends Component {
             }`}
             alt="header"
           />
-          <div className="choosing-a-header">
-            <img
-              id="alex-wong"
-              height="200"
-              width="200"
-              src="http://localhost:5000/uploads/headers/alex-wong-17993-unsplash.jpg"
-              value="alex-wong-17993-unsplash.jpg"
-              onClick={this.handleHeaderImageClick}
-              alt="image1"
-            />
-            <img
-              id="andrew-ridley"
-              height="200"
-              width="200"
-              src="http://localhost:5000/uploads/headers/andrew-ridley-76547-unsplash.jpg"
-              value="andrew-ridley-76547-unsplash.jpg"
-              onClick={this.handleHeaderImageClick}
-              alt="image2"
-            />
-            <img
-              id="steve-johnson"
-              height="200"
-              width="200"
-              src="http://localhost:5000/uploads/headers/steve-johnson-771436-unsplash.jpg"
-              value="steve-johnson-771436-unsplash.jpg"
-              onClick={this.handleHeaderImageClick}
-              alt="image3"
-            />
-            <img
-              id="standard"
-              height="200"
-              width="200"
-              src="http://localhost:5000/uploads/headers/standard.png"
-              value="standard.png"
-              onClick={this.handleHeaderImageClick}
-              alt="image4"
-            />
-            <img
-              id="kelly-sikkema"
-              height="200"
-              width="200"
-              src="http://localhost:5000/uploads/headers/kelly-sikkema-450720-unsplash.jpg"
-              value="kelly-sikkema-450720-unsplash.jpg"
-              onClick={this.handleHeaderImageClick}
-              alt="image5"
-            />
+          <div>
+            <div className="choosing-a-header">
+              <h2 className="choosing-a-header-title">Choose a Header </h2>
+              <div className="images-only">
+                <img
+                  id="alex-wong"
+                  height="200"
+                  width="200"
+                  src="http://localhost:5000/uploads/headers/alex-wong-17993-unsplash.jpg"
+                  value="alex-wong-17993-unsplash.jpg"
+                  onClick={this.handleHeaderImageClick}
+                  alt="image1"
+                />
+                <img
+                  id="andrew-ridley"
+                  height="200"
+                  width="200"
+                  src="http://localhost:5000/uploads/headers/andrew-ridley-76547-unsplash.jpg"
+                  value="andrew-ridley-76547-unsplash.jpg"
+                  onClick={this.handleHeaderImageClick}
+                  alt="image2"
+                />
+                <img
+                  id="steve-johnson"
+                  height="200"
+                  width="200"
+                  src="http://localhost:5000/uploads/headers/steve-johnson-771436-unsplash.jpg"
+                  value="steve-johnson-771436-unsplash.jpg"
+                  onClick={this.handleHeaderImageClick}
+                  alt="image3"
+                />
+                <img
+                  id="standard"
+                  height="200"
+                  width="200"
+                  src="http://localhost:5000/uploads/headers/standard.png"
+                  value="standard.png"
+                  onClick={this.handleHeaderImageClick}
+                  alt="image4"
+                />
+                <img
+                  id="kelly-sikkema"
+                  height="200"
+                  width="200"
+                  src="http://localhost:5000/uploads/headers/kelly-sikkema-450720-unsplash.jpg"
+                  value="kelly-sikkema-450720-unsplash.jpg"
+                  onClick={this.handleHeaderImageClick}
+                  alt="image5"
+                />
+              </div>
+            </div>
           </div>
           <Name currentName={this.props.currentName} />
         </div>
@@ -92,6 +97,7 @@ class HeaderImage extends Component {
             getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
             myProfile={this.props.myProfile}
             deleteFriend={this.props.deleteFriend}
+            addedFriend={this.props.addedFriend}
           />
           <img
             src={`http://localhost:5000/uploads/headers/${
@@ -118,6 +124,7 @@ class HeaderImage extends Component {
             getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
             myProfile={this.props.myProfile}
             deleteFriend={this.props.deleteFriend}
+            addedFriend={this.props.addedFriend}
           />
           <Name currentName={this.props.currentName} />
         </div>
