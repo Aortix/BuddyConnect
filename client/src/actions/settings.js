@@ -9,6 +9,7 @@ import {
 } from "./types";
 import { getAndStoreAllPosts, getAndStoreFriendsPosts } from "./posts";
 import { getAndStoreMyProfile } from "./profile";
+import { authLogout } from "./auth";
 
 export const changeName = name => dispatch => {
   let token = window.localStorage.getItem("token");
@@ -103,6 +104,7 @@ export const deleteAccount = password2 => dispatch => {
       )
       .then(data => {
         dispatch({ type: DELETE_ACCOUNT_CHANGED, payload: 1 });
+        setTimeout(() => dispatch(authLogout()), 3000);
       })
       .catch(err => {
         dispatch({ type: SETTINGS_ERRORS, payload: err.response.data.errors });

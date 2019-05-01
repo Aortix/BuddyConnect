@@ -7,11 +7,11 @@ const aboutMeValidation = data => {
   const errors = {};
 
   if (!validator.isLength(data.aboutMe, { min: 0, max: 350 })) {
-    errors.aboutMe = "About me cannot exceed 350 characters.";
+    errors.aboutMe = "Update Failed: About me cannot exceed 350 characters.";
   }
 
   if (validator.isEmpty(data.aboutMe)) {
-    errors.aboutMe = "There is no about me content.";
+    errors.aboutMe = "Update Failed: About me cannot be empty.";
   }
 
   return {
@@ -24,11 +24,11 @@ const interestsValidation = data => {
   const errors = {};
 
   if (!validator.isLength(data.interests, { min: 0, max: 350 })) {
-    errors.interests = "Comments cannot exceed 350 characters.";
+    errors.interests = "Update Failed: Interests cannot exceed 350 characters.";
   }
 
   if (validator.isEmpty(data.interests)) {
-    errors.interests = "There is no interests content.";
+    errors.interests = "Update Failed: Interests cannot be empty.";
   }
 
   return {

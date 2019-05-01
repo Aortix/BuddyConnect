@@ -18,7 +18,9 @@ export default function ChangePassword(props) {
         />
         <br />
         {props.settingsErrors.passwordPassword !== undefined ? (
-          <p>{props.settingsErrors.passwordPassword}</p>
+          <div className="ChangePassword-errors">
+            {props.settingsErrors.passwordPassword}
+          </div>
         ) : null}
         <span>Current Password: </span>
         <input
@@ -29,6 +31,11 @@ export default function ChangePassword(props) {
           onChange={props.handleInput}
           required
         />
+        {props.settingsErrors.passwordPassword2 !== undefined ? (
+          <div className="ChangePassword-errors">
+            {props.settingsErrors.passwordPassword2}
+          </div>
+        ) : null}
         <input
           className="ChangePassword-submit_button"
           type="submit"
@@ -37,9 +44,6 @@ export default function ChangePassword(props) {
           formNoValidate
         />
         <br />
-        {props.settingsErrors.passwordPassword2 !== undefined ? (
-          <p>{props.settingsErrors.passwordPassword2}</p>
-        ) : null}
       </form>
     </div>
   );

@@ -30,3 +30,19 @@
   margin-top: 8px;
   width: 80px;
 }
+
+.ChangeEmail-errors {
+  margin: 0 auto;
+  margin-bottom: 12px;
+  margin-top: 8px;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 300;
+  width: 160px;
+  border-radius: 7px;
+  color: var(--main-bg-color);
+  background-color: #dc143c;
+}

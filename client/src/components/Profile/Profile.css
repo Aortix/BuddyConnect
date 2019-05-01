@@ -45,3 +45,34 @@
   display: block !important;
   visibility: visible !important;
 }
+
+.Profile-successes {
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  width: 140px;
+  border-radius: 7px;
+  color: var(--main-bg-color);
+  background-color: #1e90ff;
+}
+
+.Profile-errors {
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  display: block;
+  color: red;
+  font-size: 0.8rem;
+  font-weight: 300;
+  width: 160px;
+  border-radius: 7px;
+  color: var(--main-bg-color);
+  background-color: #dc143c;
+}

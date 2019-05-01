@@ -66,10 +66,14 @@ class CreateComment extends Component {
             placeholder="Create Comments Here..."
           />
           {isEmpty(this.props.commentErrors.comment) === true ? null : (
-            <p>{this.props.commentErrors.comment}</p>
+            <div className="CreateComment-errors">
+              {this.props.commentErrors.comment}
+            </div>
           )}
           {isEmpty(this.props.commentErrors.misc) === true ? null : (
-            <p>{this.props.commentErrors.misc}</p>
+            <div className="CreateComment-errors">
+              {this.props.commentErrors.misc}
+            </div>
           )}
           <input
             type="submit"

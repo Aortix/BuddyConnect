@@ -8,6 +8,8 @@ const profileSchema = require("../../schemas/profiles.js");
 const router = express.Router();
 
 const settingsValidation = require("./../../validation/settingsPageValidation");
+const profileValidation = require("./../../validation/profileValidation");
+
 require("./../../auth/jwtStrategy")(passport);
 
 //Private Route
@@ -212,12 +214,17 @@ router.put(
   "/update/update-aboutMe",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.aboutMeValidation(req.body);
+    if (errors.noErrors === false) {
+      return res.status(400).send(errors);
+    }
     profileSchema.findOneAndUpdate(
       { user: req.user.id },
       { aboutMe: req.body.aboutMe },
       (err, response) => {
         if (err) {
-          return res.send(err);
+          errors.errors.aboutMe = "Profile cannot be found.";
+          return res.status(400).send(errors);
         }
         return res.send("About me Updated!");
       }
@@ -231,12 +238,19 @@ router.put(
   "/update/update-interests",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.interestsValidation(req.body);
+    if (errors.noErrors === false) {
+      return res.status(400).send(errors);
+    }
     profileSchema.findOneAndUpdate(
       { user: req.user.id },
       { interests: req.body.interests },
       (err, response) => {
         if (err) {
-          return res.send(err);
+          if (err) {
+            errors.errors.interests = "Profile cannot be found.";
+            return res.status(400).send(errors);
+          }
         }
         return res.send("Interests Updated!");
       }

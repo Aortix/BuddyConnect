@@ -263,9 +263,11 @@ router.put(
         response.password,
         (err, response2) => {
           if (err) {
-            return res.send(err);
+            errors.misc = "Something went wrong with checking pass in DB.";
+            return res.status(400).send(errors);
           } else if (response2 == false) {
-            return res.send("Current password is incorrect.");
+            errors.errors.passwordPassword2 = "Current password is incorrect.";
+            return res.status(400).send(errors);
           } else {
             bcrypt.hash(req.body.passwordPassword, saltRounds, (err, salt) => {
               if (err) {

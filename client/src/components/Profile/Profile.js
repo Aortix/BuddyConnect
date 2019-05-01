@@ -16,7 +16,7 @@ class Profile extends Component {
     setTimeout(() => {
       this.props.clearAboutMeUpdated();
       this.props.clearInterestsUpdated();
-    }, 3000);
+    }, 4000);
     window.localStorage.setItem(
       "location",
       `/profile/${this.props.currentProfile}`
@@ -256,8 +256,22 @@ class Profile extends Component {
               Friends
             </li>
           </ul>
-          {this.props.aboutMeUpdated === 1 ? <p>About me updated!</p> : null}
-          {this.props.interestsUpdated === 1 ? <p>Interests updated!</p> : null}
+          {this.props.aboutMeUpdated === 1 ? (
+            <div className="Profile-successes">About me updated!</div>
+          ) : null}
+          {this.props.interestsUpdated === 1 ? (
+            <div className="Profile-successes">Interests updated!</div>
+          ) : null}
+          {this.props.profileErrors.aboutMe !== undefined ? (
+            <div className="Profile-errors">
+              {this.props.profileErrors.aboutMe}
+            </div>
+          ) : null}
+          {this.props.profileErrors.interests !== undefined ? (
+            <div className="Profile-errors">
+              {this.props.profileErrors.interests}
+            </div>
+          ) : null}
           <Post
             id={`Post-component`}
             posts={this.props.profilePosts}

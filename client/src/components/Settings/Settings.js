@@ -93,7 +93,6 @@ export default class Settings extends Component {
     });
     setTimeout(() => {
       this.props.clearAccountDeletedChanged();
-      this.props.authLogout();
     }, 4000);
   };
 
@@ -108,7 +107,7 @@ export default class Settings extends Component {
           settingsErrors={this.props.settingsErrors}
         />
         {this.props.nameChanged === 1 ? (
-          <p>Name successfully changed!</p>
+          <div className="Settings-successes">Name successfully changed!</div>
         ) : null}
         <ChangeEmail
           email={this.state.email}
@@ -118,7 +117,7 @@ export default class Settings extends Component {
           settingsErrors={this.props.settingsErrors}
         />
         {this.props.emailChanged === 1 ? (
-          <p>Email successfully changed!</p>
+          <div className="Settings-successes">Email successfully changed!</div>
         ) : null}
         <ChangePassword
           password={this.state.password}
@@ -128,7 +127,9 @@ export default class Settings extends Component {
           settingsErrors={this.props.settingsErrors}
         />
         {this.props.passwordChanged === 1 ? (
-          <p>Password successfully changed!</p>
+          <div className="Settings-successes">
+            Password successfully changed!
+          </div>
         ) : null}
         <DeleteAccount
           deleteAccountPassword2={this.state.deleteAccountPassword2}
@@ -137,7 +138,9 @@ export default class Settings extends Component {
           settingsErrors={this.props.settingsErrors}
         />
         {this.props.deleteAccountChanged === 1 ? (
-          <p>Account successfully deleted!</p>
+          <div className="Settings-successes">
+            Account successfully deleted!
+          </div>
         ) : null}
       </div>
     );

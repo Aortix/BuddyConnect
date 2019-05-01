@@ -25,7 +25,7 @@ class Login extends Component {
       <div className="Login-container">
         <h1>Login</h1>
         <form onSubmit={this.props.handleLoginSubmit}>
-          Email: <br />
+          <p>Email:</p>
           <input
             type="email"
             name="loginEmail"
@@ -33,10 +33,9 @@ class Login extends Component {
             value={this.props.loginEmail}
           />
           {isEmpty(this.props.authErrors.email) === true ? null : (
-            <p>{this.props.authErrors.email}</p>
+            <div className="Login-errors">{this.props.authErrors.email}</div>
           )}
-          <br />
-          Password: <br />
+          <p>Password:</p>
           <input
             type="password"
             name="loginPassword"
@@ -44,16 +43,16 @@ class Login extends Component {
             value={this.props.loginPassword}
           />
           {isEmpty(this.props.authErrors.password) === true ? null : (
-            <p>{this.props.authErrors.password}</p>
+            <div className="Login-errors">{this.props.authErrors.password}</div>
           )}
           {this.props.userSignedUp === 1 ? (
-            <p>User successfully registered!</p>
+            <div className="Login-successes">User successfully registered!</div>
           ) : null}
-          <br /> <br />
+          <br />
           <input type="submit" name="Submit" value="GO" formNoValidate />
         </form>
         {isEmpty(this.props.authErrors.misc) === true ? null : (
-          <p>{this.props.authErrors.misc}</p>
+          <div className="Login-errors">{this.props.authErrors.misc}</div>
         )}
         <Link to="/sign-up">
           <p>Need to create an account? Click here.</p>

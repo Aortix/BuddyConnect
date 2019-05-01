@@ -18,7 +18,7 @@ export default function ChangeEmail(props) {
         />
         <br />
         {props.settingsErrors.email !== undefined ? (
-          <p>{props.settingsErrors.email}</p>
+          <div className="ChangeEmail-errors">{props.settingsErrors.email}</div>
         ) : null}
         Current Password:{" "}
         <input
@@ -30,7 +30,9 @@ export default function ChangeEmail(props) {
           required
         />
         {props.settingsErrors.emailPassword !== undefined ? (
-          <p>{props.settingsErrors.emailPassword}</p>
+          <div className="ChangeEmail-errors">
+            {props.settingsErrors.emailPassword}
+          </div>
         ) : null}
         <input
           className="ChangeEmail-submit_button"

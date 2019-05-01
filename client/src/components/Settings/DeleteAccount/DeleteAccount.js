@@ -16,9 +16,11 @@ export default function DeleteAccount(props) {
           required
         />
         <br />
-        {props.settingsErrors.deleteAccountPassword !== undefined
-          ? props.settingsErrors.deleteAccountPassword
-          : null}
+        {props.settingsErrors.deleteAccountPassword !== undefined ? (
+          <div className="DeleteAccount-errors">
+            {props.settingsErrors.deleteAccountPassword}
+          </div>
+        ) : null}
         <button type="submit" name="Submit" formNoValidate>
           DELETE ACCOUNT
         </button>

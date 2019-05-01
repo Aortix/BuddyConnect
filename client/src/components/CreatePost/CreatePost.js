@@ -7,7 +7,7 @@ class CreatePost extends Component {
   componentDidMount = () => {
     setTimeout(() => {
       this.props.postAlreadyCreated();
-    }, 2000);
+    }, 2500);
   };
 
   state = {
@@ -45,13 +45,19 @@ class CreatePost extends Component {
             />
             <br />
             {isEmpty(this.props.postErrors.post) === true ? null : (
-              <p>{this.props.postErrors.post}</p>
+              <div className="CreatePost-errors">
+                {this.props.postErrors.post}
+              </div>
             )}
             {isEmpty(this.props.postErrors.misc) === true ? null : (
-              <p>{this.props.postErrors.misc}</p>
+              <div className="CreatePost-errors">
+                {this.props.postErrors.misc}
+              </div>
             )}
             {this.props.postCreated === 1 ? (
-              <p>Post successfully created!</p>
+              <div className="CreatePost-successes">
+                Post successfully created!
+              </div>
             ) : null}
             <button
               className="CreatePost-submit_button"

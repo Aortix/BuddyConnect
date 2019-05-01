@@ -29,3 +29,19 @@
 .CreateComment-container input:hover {
   box-shadow: 0.25px 0.25px;
 }
+
+.CreateComment-errors {
+  margin-top: 3px;
+  margin-bottom: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 10px;
+  display: block;
+  color: red;
+  font-size: 0.8rem;
+  font-weight: 300;
+  width: 180px;
+  border-radius: 7px;
+  color: var(--main-bg-color);
+  background-color: #dc143c;
+}

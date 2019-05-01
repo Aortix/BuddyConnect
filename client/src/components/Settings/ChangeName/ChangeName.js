@@ -15,20 +15,20 @@ export default function ChangeName(props) {
             name="name"
             value={props.name}
             onChange={props.handleInput}
-            formNoValidate
             required
           />
         </div>
+        {props.settingsErrors.name !== undefined ? (
+          <div className="ChangeName-errors">{props.settingsErrors.name}</div>
+        ) : null}
         <input
           className="ChangeName-submit_button"
           type="submit"
           name="Submit"
           value="Save"
+          formNoValidate
         />
         <br />
-        {props.settingsErrors.name !== undefined
-          ? props.settingsErrors.name
-          : null}
       </form>
     </div>
   );

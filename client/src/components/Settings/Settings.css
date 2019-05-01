@@ -1,3 +1,17 @@
 .Settings-container {
   margin-top: 15px;
 }
+
+.Settings-successes {
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  width: 140px;
+  border-radius: 7px;
+  color: var(--main-bg-color);
+  background-color: #1e90ff;
+}

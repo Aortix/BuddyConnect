@@ -239,7 +239,8 @@ export const changeAboutMe = (aboutMeData, profileId) => dispatch => {
         dispatch({ type: ABOUT_ME_UPDATED, payload: 1 });
       })
       .catch(err => {
-        console.log(err);
+        dispatch({ type: PROFILE_ERRORS, payload: err.response.data.errors });
+        setTimeout(() => dispatch({ type: CLEAR_PROFILE_ERRORS }), 3000);
       });
   }
 };
@@ -266,7 +267,8 @@ export const changeInterests = (interestsData, profileId) => dispatch => {
         dispatch({ type: INTERESTS_UPDATED, payload: 1 });
       })
       .catch(err => {
-        console.log(err);
+        dispatch({ type: PROFILE_ERRORS, payload: err.response.data.errors });
+        setTimeout(() => dispatch({ type: CLEAR_PROFILE_ERRORS }), 3000);
       });
   }
 };
