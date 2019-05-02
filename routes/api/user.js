@@ -28,7 +28,6 @@ router.post("/sign-up", (req, res, next) => {
   const errors = signUpValidation(req.body);
 
   if (errors.noErrors === false) {
-    //errors.statusCode = 400;
     return res.status(400).send(errors);
   }
 
@@ -55,16 +54,16 @@ router.post("/sign-up", (req, res, next) => {
         user: newUser
       });
 
-      //Adjust later and use promises or async/await instead.
       newUser.save(err => {
         if (err) {
-          errors.errors.misc = "Problem with saving the user to the database.";
+          errors.errors.misc =
+            "Problem with saving the user to the database. Try again.";
           return res.status(500).send(errors);
         } else {
           newProfile.save((err, data) => {
             if (err) {
               errors.errors.misc =
-                "Problem with saving the user's profile to the database.";
+                "Problem with saving the user's profile to the database. Try again.";
               return res.status(500).send(errors);
             } else {
               return res
@@ -75,8 +74,6 @@ router.post("/sign-up", (req, res, next) => {
         }
       });
     });
-  } else {
-    return res.status(400).send("Passwords must match!");
   }
 });
 
@@ -97,7 +94,7 @@ router.post("/login", (req, res) => {
         return res.status(400).send(errors);
       } else if (err) {
         errors.errors.email =
-          "Problem with searching the database for this email";
+          "Problem with searching the database for this email. Try again.";
         return res.status(400).send(errors);
       } else {
         return response;
@@ -110,7 +107,7 @@ router.post("/login", (req, res) => {
           return res.status(400).send(errors);
         } else if (err) {
           errors.errors.password =
-            "Problem with searching for the password in our database.";
+            "Problem with searching for the password in our database. Try again.";
           return res.status(500).send(errors);
         } else {
           let query = {
@@ -126,7 +123,7 @@ router.post("/login", (req, res) => {
             (err, token) => {
               if (err) {
                 errors.errors.misc =
-                  "Error generating the token on our server.";
+                  "Error generating the token on our server. Try again.";
                 return res.status(500).send(errors);
               } else {
                 return res.send({
@@ -141,7 +138,8 @@ router.post("/login", (req, res) => {
       });
     })
     .catch(err => {
-      return res.status(500).send(`There was an error.`);
+      errors.errors.misc = `There was an uncaught error: ${err.toString()}`;
+      return res.status(500).send(errors);
     });
 });
 
@@ -162,14 +160,18 @@ router.put(
       { name: req.body.name },
       (err, response) => {
         if (err) {
-          return res.send(err);
+          errors.errors.name =
+            "There was an error updating the name on your profile. Try again.";
+          return res.status(500).send(errors);
         }
         userSchema.findByIdAndUpdate(
           req.user.id,
           { name: req.body.name },
           (err, response2) => {
             if (err) {
-              return res.send(err);
+              errors.errors.name =
+                "There was an error updating the name on your user. Try again.";
+              return res.status(500).send(errors);
             } else {
             }
           }
@@ -179,7 +181,9 @@ router.put(
           { name: req.body.name },
           (err, response3) => {
             if (err) {
-              return res.send(err);
+              errors.errors.name =
+                "There was an error updating the name on your posts. Try again.";
+              return res.status(500).send(errors);
             } else {
             }
           }
@@ -189,7 +193,9 @@ router.put(
           { commenterName: req.body.name },
           (err, response4) => {
             if (err) {
-              return res.send(err);
+              errors.errors.name =
+                "There was an error updating the name on your comments. Try again.";
+              return res.status(500).send(errors);
             } else {
             }
           }
@@ -213,7 +219,8 @@ router.put(
     }
     userSchema.findById(req.user.id, (err, response) => {
       if (err) {
-        return res.send(err);
+        errors.errors.misc = "Could not find user to update. Try again.";
+        return res.status(500).send(errors);
       }
       bcrypt.compare(
         req.body.emailPassword,
@@ -222,7 +229,8 @@ router.put(
           if (err) {
             return res.send(err);
           } else if (response2 == false) {
-            return res.send("Current password is incorrect.");
+            errors.errors.emailPassword = "Incorrect Password.";
+            return res.status(400).send(errors);
           } else {
             userSchema.findByIdAndUpdate(
               req.user.id,
@@ -230,7 +238,9 @@ router.put(
               (err,
               response3 => {
                 if (err) {
-                  return res.send(err);
+                  errors.errors.misc =
+                    "Could not update email for the user. Try again.";
+                  return res.status(500).send(errors);
                 } else {
                   return res.send("Email changed!");
                 }
@@ -279,7 +289,9 @@ router.put(
                 (err,
                 response3 => {
                   if (err) {
-                    return res.send(err);
+                    errors.errors.misc =
+                      "Cannot update password for user. Try again.";
+                    return res.status(400).send(errors);
                   } else {
                     return res.send("Password changed!");
                   }
@@ -312,7 +324,7 @@ router.post(
       if (mimetype === true && extname === true) {
         return cb(null, true);
       } else {
-        errors.avatar = "Images only!";
+        errors.avatar = ".jpeg, .jpg, and .png images only!";
         req.avatarValidation = "Images only!";
         return cb(null, false);
       }
@@ -340,15 +352,21 @@ router.post(
 
     upload(req, res, err => {
       if (err instanceof multer.MulterError) {
-        return res.status(400).send(errors);
+        errors.errors.misc =
+          "Something went wrong with the image uploading software. Try again.";
+        return res.status(500).send(errors);
       } else if (err) {
-        return res.status(400).send(errors);
+        errors.errors.misc =
+          "Something went wrong with the image uploading. Try again.";
+        return res.status(500).send(errors);
       } else if (req.avatarValidation) {
         return res.status(400).send(errors);
       } else {
         userSchema.findById(req.user.id, (err, response) => {
           if (err) {
-            return res.send(err);
+            errors.errors.misc =
+              "Can't find user account to update. Try again.";
+            return res.status(500).send(errors);
           } else {
             if (response.avatar === "standard.jpg") {
               console.log("Cant delete the standard avatar!");
@@ -365,7 +383,9 @@ router.post(
           { avatar: req.file.filename },
           (err, response) => {
             if (err) {
-              return res.send(err);
+              errors.errors.misc =
+                "Can't find user account to update. Try again.";
+              return res.status(500).send(errors);
             } else {
               return console.log("Avatar updated in user database.");
             }
@@ -376,7 +396,8 @@ router.post(
           { avatar: req.file.filename },
           (err, response) => {
             if (err) {
-              return res.send(err);
+              errors.errors.misc = "Can't find profile to update. Try again.";
+              return res.status(500).send(errors);
             } else {
               console.log("Avatar updated in profile database.");
 
@@ -385,7 +406,9 @@ router.post(
                 { avatar: req.file.filename },
                 (err, response2) => {
                   if (err) {
-                    return res.send(err);
+                    errors.errors.misc =
+                      "Can't update avatar on posts. Try again.";
+                    return res.status(500).send(errors);
                   } else {
                     console.log("Avatar updated in the post database.");
                   }
@@ -396,7 +419,9 @@ router.post(
                 { commenterAvatar: req.file.filename },
                 (err, response3) => {
                   if (err) {
-                    return res.send(err);
+                    errors.errors.misc =
+                      "Can't update avatar on comments. Try again.";
+                    return res.status(500).send(errors);
                   } else {
                     console.log("Avatar updated in the comments database.");
                   }
@@ -411,30 +436,6 @@ router.post(
   }
 );
 
-//Private Route
-//Gets the current user that is logged in
-router.get(
-  "/current-user",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    userSchema
-      .findById(req.user.id)
-      /*.populate("profile")
-      .populate({ path: "profile", populate: { path: "userPosts" } })
-      .populate({
-        path: "profile",
-        populate: { path: "userPosts", populate: { path: "comments" } }
-      })*/
-      .exec((err, response) => {
-        if (err) {
-          return res.send(err);
-        } else {
-          return res.send(response);
-        }
-      });
-  }
-);
-
 router.post(
   "/verify-user",
   passport.authenticate("jwt", { session: false }),
@@ -444,9 +445,12 @@ router.post(
       process.env.SECRET_KEY,
       (err, decoded) => {
         if (err) {
-          return res.send(err);
+          return res.status(500).send("What happened?");
+        } else if (decoded === undefined) {
+          return res.status(401).send("Invalid token.");
         } else {
-          return res.send(decoded);
+          console.log("Valid token");
+          return res.send("Valid.");
         }
       }
     );
@@ -468,29 +472,37 @@ router.put(
 
     userSchema.findById(req.user.id, (err, response) => {
       if (err) {
-        return res.send(err);
+        errors.errors.misc = "Cannot find user. Try again.";
+        return res.status(500).send(errors);
       } else {
         bcrypt.compare(
           req.body.deleteAccountPassword,
           response.password,
           (err, response2) => {
             if (err) {
-              return res.send(err);
+              errors.errors.misc =
+                "Something went wrong with comparing password from db. Try again.";
+              return res.status(500).send(errors);
             } else if (response2 == false) {
-              return res.send("Current password is incorrect.");
+              errors.errors.misc = "Password is incorrect.";
+              return res.status(500).send(errors);
             } else {
               profileSchema.findOneAndRemove(
                 { user: req.user.id },
                 (err, response2) => {
                   if (err) {
-                    return res.send(err);
+                    errors.errors.misc =
+                      "Cannot find profile to delete. Try again.";
+                    return res.status(500).send(errors);
                   } else {
                     console.log("Profile deleted.");
                     commentsSchema.deleteMany(
                       { commenterP_id: response2._id },
                       (err, response) => {
                         if (err) {
-                          return res.send(err);
+                          errors.errors.misc =
+                            "Cannot find comments to delete. Try again.";
+                          return res.status(500).send(errors);
                         } else {
                           console.log("Comments deleted.");
                         }
@@ -500,7 +512,9 @@ router.put(
                       { p_id: response2._id },
                       (err, response) => {
                         if (err) {
-                          return res.send(err);
+                          errors.errors.misc =
+                            "Cannot find posts to delete. Try again.";
+                          return res.status(500).send(errors);
                         } else {
                           console.log("Posts deleted.");
                         }
@@ -510,7 +524,9 @@ router.put(
                       req.user.id,
                       (err, response) => {
                         if (err) {
-                          return res.send(err);
+                          errors.errors.misc =
+                            "Cannot find user to delete. Try again.";
+                          return res.status(500).send(errors);
                         } else {
                           console.log("User deleted.");
                         }

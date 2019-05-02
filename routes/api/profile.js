@@ -2,8 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
 
-const userSchema = require("../../schemas/users.js");
-const postSchema = require("../../schemas/posts.js");
 const profileSchema = require("../../schemas/profiles.js");
 const router = express.Router();
 
@@ -20,7 +18,7 @@ router.get(
   (req, res) => {
     profileSchema.findById(req.params.profileId, (err, data) => {
       if (err) {
-        return res.send(err);
+        return res.status(500).send("Cannot find profile.");
       }
       return res.send(data);
     });
@@ -33,7 +31,7 @@ router.get(
   (req, res) => {
     profileSchema.findOne({ user: req.user.id }, (err, data) => {
       if (err) {
-        return res.send(err);
+        return res.status(500).send("Cannot find profile.");
       } else {
         return res.send(data);
       }
@@ -44,7 +42,7 @@ router.get(
 //Private Route
 //Adds a friend to your friends list
 router.put(
-  "/add-friend",
+  "/friends/add-friend",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     profileSchema.findOneAndUpdate(
@@ -52,7 +50,9 @@ router.put(
       { $push: { friends: req.body.profileId } },
       (err, response) => {
         if (err) {
-          return res.send(err);
+          return res
+            .status(500)
+            .send("Cannot find profile to update with new friend.");
         } else {
           return res.send(response);
         }
@@ -72,7 +72,9 @@ router.put(
       { $pull: { friends: req.body.friendId } },
       (err, response) => {
         if (err) {
-          return res.send(err);
+          return res
+            .status(500)
+            .send("Cannot find profile to update friends list.");
         } else {
           return res.send("Friend was deleted!");
         }
@@ -88,7 +90,9 @@ router.post(
     profileSchema.findOne({ user: req.user.id }, (err, response) => {
       let returnArray = [];
       if (err) {
-        return res.send(err);
+        return res
+          .status(500)
+          .send("Could not find profile to check if a friend.");
       } else {
         response.friends.forEach(friends => {
           returnArray.push(friends.toString());
@@ -113,7 +117,9 @@ router.post(
       .populate({ path: "friends", model: profileSchema })
       .exec((err, response) => {
         if (err) {
-          return res.send(err);
+          return res
+            .status(500)
+            .send("Could not find profile to check for friends.");
         } else {
           response.friends.forEach(friend => {
             returnArray.push({
@@ -139,70 +145,9 @@ router.put(
       { header: req.body.header },
       (err, response) => {
         if (err) {
-          return res.send(err);
+          return res.status(500).send("Could not find profile to update.");
         }
         return res.send("Header Updated!");
-      }
-    );
-  }
-);
-
-//Private Route
-//Used to update the user's avatar
-router.put(
-  "/update/update-avatar",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    profileSchema.findOneAndUpdate(
-      { user: req.user.id },
-      { avatar: req.body.avatar },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("Avatar Updated!");
-      }
-    );
-  }
-);
-
-//Private Route
-//Used to update the user's name
-router.put(
-  "/update/update-name",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const errors = settingsValidation.updateNameValidation(req.body);
-    if (errors.noErrors === false) {
-      return res.status(400).send(errors);
-    }
-    profileSchema.findOneAndUpdate(
-      { user: req.user.id },
-      { name: req.body.name },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("Name Updated!");
-      }
-    );
-  }
-);
-
-//Private Route
-//Used to update the user's song
-router.put(
-  "/update/update-song",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    profileSchema.findOneAndUpdate(
-      { user: req.user.id },
-      { song: req.body.song },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("Song Updated!");
       }
     );
   }
@@ -253,101 +198,6 @@ router.put(
           }
         }
         return res.send("Interests Updated!");
-      }
-    );
-  }
-);
-
-//Private Route
-//Used to reset the user's header back to default
-router.put(
-  "/update/reset-header",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    profileSchema.findOneAndUpdate(
-      { user: req.user.id },
-      { header: "Standard" },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("Header Reset!");
-      }
-    );
-  }
-);
-
-//Private Route
-//Used to reset the user's avatar back to default
-/*router.put(
-  "/update/reset-avatar",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    profileSchema.findOneAndUpdate(
-      {user: req.user.id},
-      { avatar: null },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("Avatar Reset!");
-      }
-    );
-  }
-);*/
-
-//Private Route
-//Used to reset the user's song back to default
-router.put(
-  "/update/reset-song",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    profileSchema.findOneAndUpdate(
-      { user: req.user.id },
-      { song: "Standard" },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("Song Reset!");
-      }
-    );
-  }
-);
-
-//Private Route
-//Used to reset the user's about me section back to default
-router.put(
-  "/update/reset-aboutMe",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    profileSchema.findOneAndUpdate(
-      { user: req.user.id },
-      { aboutMe: "Standard" },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("About me Reset!");
-      }
-    );
-  }
-);
-
-//Private Route
-//Used to reset the user's interests back to default
-router.put(
-  "/update/reset-interests",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    profileSchema.findOneAndUpdate(
-      { user: req.user.id },
-      { interests: "Standard" },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("Interests Reset!");
       }
     );
   }

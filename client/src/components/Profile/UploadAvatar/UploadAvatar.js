@@ -49,6 +49,11 @@ export default class UploadAvatar extends Component {
               {this.props.profileErrors.avatar}
             </p>
           ) : null}
+          {this.props.profileErrors.misc !== undefined ? (
+            <p className="UploadAvatar-error">
+              {this.props.profileErrors.misc}
+            </p>
+          ) : null}
         </div>
       );
     } else {

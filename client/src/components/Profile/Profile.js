@@ -272,6 +272,11 @@ class Profile extends Component {
               {this.props.profileErrors.interests}
             </div>
           ) : null}
+          {this.props.profileErrors.misc !== undefined ? (
+            <div className="Profile-errors">
+              {this.props.profileErrors.misc}
+            </div>
+          ) : null}
           <Post
             id={`Post-component`}
             posts={this.props.profilePosts}

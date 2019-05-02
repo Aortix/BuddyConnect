@@ -20,8 +20,7 @@ const PostSchema = new Schema({
       ref: commentsSchema,
       required: false
     }
-  ],
-  addComment: { type: Boolean, default: false, required: true }
+  ]
 });
 
 const posts = mongoose.model("post", PostSchema);

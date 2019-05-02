@@ -49,11 +49,11 @@ class Login extends Component {
             <div className="Login-successes">User successfully registered!</div>
           ) : null}
           <br />
+          {isEmpty(this.props.authErrors.misc) === true ? null : (
+            <div className="Login-errors">{this.props.authErrors.misc}</div>
+          )}
           <input type="submit" name="Submit" value="GO" formNoValidate />
         </form>
-        {isEmpty(this.props.authErrors.misc) === true ? null : (
-          <div className="Login-errors">{this.props.authErrors.misc}</div>
-        )}
         <Link to="/sign-up">
           <p>Need to create an account? Click here.</p>
         </Link>

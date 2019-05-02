@@ -113,7 +113,7 @@ export const addFriend = profileId => dispatch => {
     };
     axios
       .put(
-        `http://localhost:5000/api/profile/add-friend/`,
+        `http://localhost:5000/api/profile/friends/add-friend/`,
         { profileId: profileId },
         config
       )

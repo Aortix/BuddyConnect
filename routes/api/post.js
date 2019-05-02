@@ -10,7 +10,6 @@ const commentSchema = require("../../schemas/comments.js");
 const postValidation = require("../../validation/postValidation");
 const commentValidation = require("../../validation/commentValidation");
 
-const isEmpty = require("../../client/src/utilities/isEmpty");
 require("../../auth/jwtStrategy")(passport);
 
 //Private route
@@ -25,7 +24,9 @@ router.get(
       .sort({ datePosted: "desc" })
       .exec((err, posts) => {
         if (err) {
-          return res.send(`There was an error finding the posts - ${err}`);
+          return res
+            .status(500)
+            .send(`There was an error finding the posts - ${err}`);
         }
         return res.send(posts);
       });
@@ -41,7 +42,7 @@ router.get(
     let returnArray = [];
     profileSchema.findOne({ user: req.user.id }, (err, response) => {
       if (err) {
-        return res.send(err);
+        return res.status(500).send("Error finding profile with posts.");
       } else {
         response.friends.forEach(friends => {
           returnArray.push(friends.toString());
@@ -53,7 +54,7 @@ router.get(
           .sort({ datePosted: "desc" })
           .exec((err, response3) => {
             if (err) {
-              return res.send(err);
+              return res.status(500).send("Error finding posts");
             } else {
               let newArray = response3.filter(posts => {
                 return returnArray.includes(posts.p_id.toString());
@@ -73,7 +74,7 @@ router.post(
     let returnArray = [];
     profileSchema.findById(req.body.profileId).exec((err, profile) => {
       if (err) {
-        return res.send(`There was an error finding the posts - ${err}`);
+        return res.status(500).send("Error finding the profile.");
       } else {
         profile.posts.forEach(posts => {
           returnArray.push(posts.toString());
@@ -84,7 +85,7 @@ router.post(
           .sort({ datePosted: "desc" })
           .exec((err, response) => {
             if (err) {
-              return res.send(err);
+              return res.status(500).send("Error finding posts.");
             } else {
               let newArray = response.filter(posts => {
                 return returnArray.includes(posts._id.toString());
@@ -110,8 +111,8 @@ router.post(
     }
     profileSchema.findOne({ user: req.user.id }, (err, response) => {
       if (err) {
-        errors.misc = "Cannot find profile for this user.";
-        return res.status(500).send(errors.errors);
+        errors.errors.misc = "Cannot find profile for this user.";
+        return res.status(500).send(errors);
       } else {
         const newPost = new postSchema({
           p_id: response._id,
@@ -123,17 +124,17 @@ router.post(
 
         newPost.save((err, data) => {
           if (err) {
-            errors.misc = "Cannot save this post due to server error.";
-            return res.status(500).send(errors.errors);
+            errors.errors.misc = "Cannot save this post due to server error.";
+            return res.status(500).send(errors);
           } else {
             profileSchema.findByIdAndUpdate(
               response._id,
               { $push: { posts: data } },
               (err, post) => {
                 if (err) {
-                  errors.misc =
+                  errors.errors.misc =
                     "Cannot update profile with this post due to server error.";
-                  return res.status(500).send(errors.errors);
+                  return res.status(500).send(errors);
                 }
                 return res.send(data);
               }
@@ -158,8 +159,8 @@ router.post(
     }
     profileSchema.findOne({ user: req.user.id }, (err, response) => {
       if (err) {
-        errors.misc = "Cannot find specific profile to make post.";
-        return res.status(500).send(errors.errors);
+        errors.errors.misc = "Cannot find specific profile to make post.";
+        return res.status(500).send(errors);
       } else {
         const newPost = new postSchema({
           p_id: response._id,
@@ -171,16 +172,17 @@ router.post(
 
         newPost.save((err, data) => {
           if (err) {
-            errors.misc = "Cannot save the post due to server error.";
-            return res.status(500).send(errors.errors);
+            errors.errors.misc = "Cannot save the post due to server error.";
+            return res.status(500).send(errors);
           } else {
             profileSchema.findByIdAndUpdate(
               req.body.profileId,
               { $push: { posts: data } },
               (err, post) => {
                 if (err) {
-                  errors.misc = "Cannot update the profile with the post.";
-                  return res.status(500).send(errors.errors);
+                  errors.errors.misc =
+                    "Cannot update the profile with the post.";
+                  return res.status(500).send(errors);
                 }
                 return res.send(data);
               }
@@ -205,12 +207,13 @@ router.post(
     }
     profileSchema.findOne({ user: req.user.id }, (err, response) => {
       if (err) {
-        errors.misc = "Cannot find profile for this comment on the server.";
+        errors.errors.misc =
+          "Cannot find profile for this comment on the server.";
         return res.status(500).send(errors);
       } else {
         userSchema.findById(req.user.id, (err, response2) => {
           if (err) {
-            errors.misc =
+            errors.errors.misc =
               "Cannot find the user for this comment on the server.";
             return res.status(500).send(errors);
           } else {
@@ -226,13 +229,14 @@ router.post(
               { $push: { comments: newComment } },
               err => {
                 if (err) {
-                  errors.misc =
+                  errors.errors.misc =
                     "Cannot update the profile of the user who made this comment.";
                   return res.status(500).send(errors);
                 } else {
                   newComment.save((err, data) => {
                     if (err) {
-                      errors.misc = "Cannot save the comment in the database.";
+                      errors.errors.misc =
+                        "Cannot save the comment in the database.";
                       return res.status(500).send(errors);
                     } else {
                       console.log("Comment was added!");
@@ -250,69 +254,6 @@ router.post(
 );
 
 //Private Route
-//Create a comment on a post using the comment schema
-router.put(
-  "/click-add_comment-button",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    postSchema.findById(req.body.postId, (err, dataToUpdate) => {
-      if (err) {
-        return res.send(err);
-      } else {
-        dataToUpdate.addComment = !dataToUpdate.addComment;
-        dataToUpdate.save((err, updatedData) => {
-          if (err) {
-            return res.send(err);
-          } else {
-            return res.send("Add comment button clicked");
-          }
-        });
-      }
-    });
-  }
-);
-
-//Private Route
-//Used to update a user's post
-router.put(
-  "/update-post",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    query = { post: req.body.initialPost };
-    postSchema.findOneAndUpdate(
-      query,
-      { post: req.body.post },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("Post has been updated!");
-      }
-    );
-  }
-);
-
-//Private Route
-//Used to update a user's comment
-router.put(
-  "/update-comment",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    query = { userComment: req.body.initialComment };
-    commentSchema.findOneAndUpdate(
-      query,
-      { userComment: req.body.userComment },
-      (err, response) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.send("Comment has been updated!");
-      }
-    );
-  }
-);
-
-//Private Route
 //Used to delete a user's post
 router.put(
   "/delete-post",
@@ -320,13 +261,15 @@ router.put(
   (req, res) => {
     postSchema.findById(req.body.postId, (err, response) => {
       if (err) {
-        return res.send(err);
+        return res.status(500).send("Error finding post.");
       }
       let arrayOfCommentIds = response.comments;
       arrayOfCommentIds.forEach(comment => {
         commentSchema.findByIdAndDelete(comment, (err, response2) => {
           if (err) {
-            return res.send(err);
+            return res
+              .status(500)
+              .send("Error finding comment under post to delete.");
           } else {
             return console.log("Comment Deleted");
           }
@@ -334,7 +277,7 @@ router.put(
       });
       postSchema.findByIdAndDelete(req.body.postId, (err, response3) => {
         if (err) {
-          return res.send(err);
+          return res.status(500).send("Error finding post to delete.");
         }
         return console.log("Post deleted.");
       });
@@ -343,7 +286,9 @@ router.put(
         { $pull: { posts: response._id } },
         (err, response4) => {
           if (err) {
-            return res.send(err);
+            return res
+              .status(500)
+              .send("Error finding profile to update posts.");
           } else {
             console.log("Post from profile deleted.");
             return res.send(response4);
@@ -362,7 +307,7 @@ router.put(
   (req, res) => {
     commentSchema.findByIdAndDelete(req.body.commentId, (err, response) => {
       if (err) {
-        return res.send(err);
+        return res.status(500).send("Error finding comment to delete");
       }
       console.log("Comment deleted!");
       postSchema.findByIdAndUpdate(
@@ -370,7 +315,9 @@ router.put(
         { $pull: { comments: response._id } },
         (err, response) => {
           if (err) {
-            return res.send(err);
+            return res
+              .status(500)
+              .send("Error finding post to remove comment from.");
           } else {
             return res.send(
               "Comment deleted along with embedded comment in post!"

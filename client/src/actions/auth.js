@@ -26,7 +26,6 @@ export const authSignUp = (
       dispatch({ type: USER_SIGNED_UP, payload: 1 });
     })
     .catch(err => {
-      console.log(err.response.data.errors);
       dispatch({ type: ERROR, payload: err.response.data.errors });
     });
 };
@@ -61,7 +60,6 @@ export const authLogin = (email, password) => dispatch => {
       dispatch({ type: USER_SIGNED_UP, payload: 0 });
     })
     .catch(err => {
-      console.log(err.response.data.errors);
       dispatch({ type: ERROR, payload: err.response.data.errors });
     });
 };

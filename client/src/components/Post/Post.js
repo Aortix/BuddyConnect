@@ -23,26 +23,28 @@ class Post extends Component {
   };
 
   deletePost = (postId, currentProfile) => {
-    this.props.deletePost(postId, currentProfile);
+    document.getElementById(postId).classList.toggle("postDeleted");
+
+    setTimeout(() => this.props.deletePost(postId, currentProfile), 2000);
   };
 
   deleteComment = (commentId, postId, currentProfile) => {
-    this.props.deleteComment(commentId, postId, currentProfile);
+    document.getElementById(commentId).classList.toggle("commentDeleted");
+
+    setTimeout(
+      () => this.props.deleteComment(commentId, postId, currentProfile),
+      2000
+    );
   };
 
   render() {
-    if (this.props.postDeleted === 1) {
-      alert("Post deleted!");
-    } else if (this.props.commentDeleted === 1) {
-      alert("Comment deleted!");
-    }
     return this.props.posts === null ? (
       <h1>Loading</h1>
     ) : (
       <div className="Post-container" id={this.props.id}>
         {this.props.posts.map(post => {
           return (
-            <div key={post._id}>
+            <div id={post._id} key={post._id}>
               <div className="post-specifics">
                 <div className="post-post_information">
                   <p className="post-date">
@@ -79,7 +81,11 @@ class Post extends Component {
               </div>
               {post.comments.map(comments => {
                 return (
-                  <div className="comment-specifics" key={comments._id}>
+                  <div
+                    id={comments._id}
+                    className="comment-specifics"
+                    key={comments._id}
+                  >
                     <div className="comment-comment_information">
                       <p className="comment-date">
                         {moment(comments.datePosted).format(

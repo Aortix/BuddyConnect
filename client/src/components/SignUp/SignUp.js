@@ -70,6 +70,9 @@ class SignUp extends Component {
               {this.props.authErrors.password2}
             </div>
           )}
+          {isEmpty(this.props.authErrors.misc) === true ? null : (
+            <div className="SignUp-errors">{this.props.authErrors.misc}</div>
+          )}
           <br />
           <input
             type="submit"
