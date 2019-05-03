@@ -12,7 +12,7 @@ const PostSchema = new Schema({
     required: true
   },
   name: { type: String, required: true },
-  avatar: { type: String, default: "Standard", required: true },
+  avatar: { type: String, default: "standard.png", required: true },
   post: { type: String, default: "Initial Post. Ignore.", required: true },
   comments: [
     {

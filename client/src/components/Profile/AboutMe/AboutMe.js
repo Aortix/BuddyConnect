@@ -26,7 +26,8 @@ class AboutMe extends Component {
     if (this.props.currentProfile === this.props.myProfile) {
       return this.state.editingAboutMe === false ? (
         <div className={this.props.className} id={this.props.id}>
-          <p onClick={this.handleAboutMeClick}>{this.props.currentAboutMe}</p>
+          <span>{this.props.currentAboutMe}</span>&nbsp;
+          <i onClick={this.handleAboutMeClick} className="fas fa-edit" />
         </div>
       ) : (
         <div className={this.props.className} id={this.props.id}>

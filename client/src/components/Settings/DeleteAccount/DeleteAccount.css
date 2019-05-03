@@ -11,6 +11,10 @@
   width: calc(100% - 132px);
 }
 
+.DeleteAccount-user_input:focus {
+  outline-color: transparent;
+}
+
 .DeleteAccount-container button {
   display: block;
   border: 1px solid black;

@@ -16,12 +16,16 @@
   min-width: calc(100% - 87px);
 }
 
+.ChangeName-user_input:focus {
+  outline-color: transparent;
+}
+
 .ChangeName-submit_button {
   display: block;
   border: 1px solid black;
   background-color: var(--secondary-bg-color);
   margin: 0 auto;
-  margin-top: 8px;
+  margin-top: 13px;
   width: 80px;
 }
 

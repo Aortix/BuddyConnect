@@ -29,9 +29,8 @@ class Interests extends Component {
     if (this.props.currentProfile === this.props.myProfile) {
       return this.state.editingInterests === false ? (
         <div className={this.props.className} id={this.props.id}>
-          <p onClick={this.handleInterestsClick}>
-            {this.props.currentInterests}
-          </p>
+          <span>{this.props.currentInterests}</span>&nbsp;
+          <i onClick={this.handleInterestsClick} className="fas fa-edit" />
         </div>
       ) : (
         <div className={this.props.className} id={this.props.id}>
@@ -41,7 +40,11 @@ class Interests extends Component {
               onChange={this.handleInput}
             />
             <br />
-            <input className="Interests-submit_button" type="submit" name="Submit" />
+            <input
+              className="Interests-submit_button"
+              type="submit"
+              name="Submit"
+            />
           </form>
         </div>
       );

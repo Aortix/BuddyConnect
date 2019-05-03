@@ -7,7 +7,8 @@ import {
   CLEAR_NAME_CHANGED,
   CLEAR_EMAIL_CHANGED,
   CLEAR_PASSWORD_CHANGED,
-  CLEAR_ACCOUNT_DELETED_CHANGED
+  CLEAR_ACCOUNT_DELETED_CHANGED,
+  CLEAR_SETTINGS_ERRORS
 } from "./../actions/types";
 
 const initialState = {
@@ -64,6 +65,11 @@ export const settingsReducer = (state = initialState, action) => {
       return {
         ...state,
         deleteAccountChanged: action.payload
+      };
+    case CLEAR_SETTINGS_ERRORS:
+      return {
+        ...state,
+        settingsErrors: {}
       };
     default:
       return state;

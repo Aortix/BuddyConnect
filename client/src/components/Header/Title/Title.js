@@ -14,7 +14,11 @@ export default function Title() {
             .classList.toggle("SideBar-container-visible");
         }}
       >
-        <img src={ElementDropdownImage} alt="Dropdown" />
+        <img
+          className="dropdown-image"
+          src={ElementDropdownImage}
+          alt="Dropdown"
+        />
       </span>
       <Link to="/dashboard">
         <span className="Title">BuddyConnect</span>

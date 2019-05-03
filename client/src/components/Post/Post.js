@@ -3,6 +3,7 @@ import moment from "moment";
 import CreateComment from "./../CreateComment/CreateComment";
 import CreatePost from "./../CreatePost/CreatePost";
 
+import isEmpty from "./../../utilities/isEmpty";
 import "./Post.css";
 
 class Post extends Component {
@@ -39,8 +40,20 @@ class Post extends Component {
   };
 
   render() {
-    return this.props.posts === null ? (
-      <h1>Loading</h1>
+    return isEmpty(this.props.posts) === true ? (
+      <div className="no-posts-container">
+        <div className="no-posts-text">
+          <span>Hey there!&nbsp;</span>
+          <i class="far fa-hand-peace" />
+
+          <p>
+            I'm glad you're with us! This place might seem a little empty at the
+            moment, but if you head over to the global tab and add some friends,
+            you'll be surprised at how fast it fills up!
+          </p>
+        </div>
+        <i class="far fa-smile-beam fa-3x" />
+      </div>
     ) : (
       <div
         className={`Post-container ${this.props.className}`}

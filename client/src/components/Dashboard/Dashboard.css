@@ -24,6 +24,10 @@
   width: 90px;
 }
 
+#posts-button:focus {
+  outline-color: transparent;
+}
+
 #global-button {
   pointer-events: auto;
   font-size: 1.2rem;

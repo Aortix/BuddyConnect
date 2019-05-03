@@ -15,10 +15,6 @@
   margin-bottom: 2px;
 }
 
-.CreateComment-container textarea:focus {
-  outline: none;
-}
-
 .CreateComment-container input {
   border: 1px solid black;
   background-color: var(--secondary-bg-color);

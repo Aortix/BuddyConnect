@@ -1,8 +1,11 @@
 const defaultHeaders = {
-  0: "alex-wong-17993-unsplash.jpg",
-  1: "andrew-ridley-76547-unsplash.jpg",
-  2: "kelly-sikkema-450720-unsplash.jpg",
-  3: "steve-johnson-771436-unsplash.jpg"
+  0: "aaron-burden-363695-unsplash.jpg",
+  1: "aron-van-de-pol-115112-unsplash.jpg",
+  2: "jeremy-bishop-335002-unsplash.jpg",
+  3: "jonathan-riley-118591-unsplash.jpg",
+  4: "nasa-89127-unsplash.jpg",
+  5: "samuel-zeller-379406-unsplash.jpg",
+  6: "stanislav-kondratiev-77922-unsplash.jpg"
 };
 
 module.exports = defaultHeaders;

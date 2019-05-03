@@ -368,7 +368,7 @@ router.post(
               "Can't find user account to update. Try again.";
             return res.status(500).send(errors);
           } else {
-            if (response.avatar === "standard.jpg") {
+            if (response.avatar === "standard.png") {
               console.log("Cant delete the standard avatar!");
             } else {
               fs.unlink(pathToFile + response.avatar, err => {

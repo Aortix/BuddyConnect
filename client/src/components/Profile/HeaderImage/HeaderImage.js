@@ -4,6 +4,8 @@ import "./HeaderImage.css";
 import Name from "./../Name/Name";
 import AddFriend from "./../AddFriend/AddFriend.js";
 
+import defaultHeaders from "./../../../utilities/defaultHeaders";
+
 class HeaderImage extends Component {
   state = {
     headerClicked: false,
@@ -38,51 +40,19 @@ class HeaderImage extends Component {
             <div className="choosing-a-header">
               <h2 className="choosing-a-header-title">Choose a Header </h2>
               <div className="images-only">
-                <img
-                  id="alex-wong"
-                  height="200"
-                  width="200"
-                  src="http://localhost:5000/uploads/headers/alex-wong-17993-unsplash.jpg"
-                  value="alex-wong-17993-unsplash.jpg"
-                  onClick={this.handleHeaderImageClick}
-                  alt="image1"
-                />
-                <img
-                  id="andrew-ridley"
-                  height="200"
-                  width="200"
-                  src="http://localhost:5000/uploads/headers/andrew-ridley-76547-unsplash.jpg"
-                  value="andrew-ridley-76547-unsplash.jpg"
-                  onClick={this.handleHeaderImageClick}
-                  alt="image2"
-                />
-                <img
-                  id="steve-johnson"
-                  height="200"
-                  width="200"
-                  src="http://localhost:5000/uploads/headers/steve-johnson-771436-unsplash.jpg"
-                  value="steve-johnson-771436-unsplash.jpg"
-                  onClick={this.handleHeaderImageClick}
-                  alt="image3"
-                />
-                <img
-                  id="standard"
-                  height="200"
-                  width="200"
-                  src="http://localhost:5000/uploads/headers/standard.png"
-                  value="standard.png"
-                  onClick={this.handleHeaderImageClick}
-                  alt="image4"
-                />
-                <img
-                  id="kelly-sikkema"
-                  height="200"
-                  width="200"
-                  src="http://localhost:5000/uploads/headers/kelly-sikkema-450720-unsplash.jpg"
-                  value="kelly-sikkema-450720-unsplash.jpg"
-                  onClick={this.handleHeaderImageClick}
-                  alt="image5"
-                />
+                {Object.values(defaultHeaders).map(header => {
+                  return (
+                    <img
+                      id={header}
+                      height="200"
+                      width="400"
+                      src={`http://localhost:5000/uploads/headers/${header}`}
+                      value={header}
+                      onClick={this.handleHeaderImageClick}
+                      alt={`header-${header}`}
+                    />
+                  );
+                })}
               </div>
             </div>
           </div>
