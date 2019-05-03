@@ -54,7 +54,8 @@ import {
   CLEAR_PASSWORD_CHANGED,
   CLEAR_ACCOUNT_DELETED_CHANGED,
   UPDATE_POSTS_TO_SEE,
-  CURRENT_TAB
+  CURRENT_TAB,
+  CURRENT_COMPONENT
 } from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
@@ -290,6 +291,8 @@ class App extends Component {
               addedFriend={this.props.addedFriend}
               currentTab={this.props.currentTab}
               updateCurrentTab={this.props.updateCurrentTab}
+              currentComponent={this.props.currentComponent}
+              updateCurrentComponent={this.props.updateCurrentComponent}
               {...props}
             />
           )}
@@ -391,7 +394,8 @@ const mapStateToProps = state => ({
   passwordChanged: state.settingsReducer.passwordChanged,
   deleteAccountChanged: state.settingsReducer.deleteAccountChanged,
   postsToSee: state.postsReducer.postsToSee,
-  currentTab: state.profileReducer.currentTab
+  currentTab: state.profileReducer.currentTab,
+  currentComponent: state.profileReducer.currentComponent
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -526,6 +530,9 @@ const mapDispatchToProps = dispatch => ({
   },
   updateCurrentTab: tab => {
     dispatch({ type: CURRENT_TAB, payload: tab });
+  },
+  updateCurrentComponent: component => {
+    dispatch({ type: CURRENT_COMPONENT, payload: component });
   }
 });
 

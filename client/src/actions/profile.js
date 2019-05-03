@@ -8,7 +8,9 @@ import {
   PROFILE_ERRORS,
   CLEAR_PROFILE_ERRORS,
   ABOUT_ME_UPDATED,
-  INTERESTS_UPDATED
+  INTERESTS_UPDATED,
+  CLEAR_INTERESTS_UPDATED,
+  CLEAR_ABOUT_ME_UPDATED
 } from "./types";
 import axios from "axios";
 import {
@@ -237,6 +239,9 @@ export const changeAboutMe = (aboutMeData, profileId) => dispatch => {
         console.log("AboutMe updated.");
         dispatch(getAndStoreAProfile(profileId));
         dispatch({ type: ABOUT_ME_UPDATED, payload: 1 });
+        setTimeout(() => {
+          dispatch({ type: CLEAR_ABOUT_ME_UPDATED, payload: 0 });
+        }, 3000);
       })
       .catch(err => {
         dispatch({ type: PROFILE_ERRORS, payload: err.response.data.errors });
@@ -265,6 +270,9 @@ export const changeInterests = (interestsData, profileId) => dispatch => {
         console.log("Interests updated.");
         dispatch(getAndStoreAProfile(profileId));
         dispatch({ type: INTERESTS_UPDATED, payload: 1 });
+        setTimeout(() => {
+          dispatch({ type: CLEAR_INTERESTS_UPDATED, payload: 0 });
+        }, 3000);
       })
       .catch(err => {
         dispatch({ type: PROFILE_ERRORS, payload: err.response.data.errors });

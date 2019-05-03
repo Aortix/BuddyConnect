@@ -17,29 +17,8 @@
   margin: 0 auto;
 }
 
-.profile-individual-tabs {
-  visibility: hidden;
-  position: absolute;
-}
-
-.show-profile-tabs {
-  visibility: visible;
-  position: static;
-}
-
-.visibility {
-  visibility: visible;
-  position: static;
-}
-
-.component-hidden-until-shown {
-  display: none !important;
-  visibility: hidden !important;
-}
-
-.component-shown-until-hidden {
-  display: block !important;
-  visibility: visible !important;
+.Profile-hidden_tab {
+  display: none;
 }
 
 .Profile-successes {
@@ -89,33 +68,12 @@
     font-weight: 500;
   }
 
-  .profile-individual-tabs {
-    padding-top: 20px;
-    padding-bottom: 20px;
+  .Profile-hidden_tab {
+    display: block;
   }
 
-  .profile-individual-tabs {
-    visibility: visible;
-    position: static;
-  }
-
-  .show-profile-tabs {
-    visibility: hidden;
-    position: absolute;
-  }
-
-  .visibility {
-    visibility: visible;
-    position: static;
-  }
-
-  .profile-individual-tabs:first-child {
-    border-top: none;
-  }
-
-  .profile-desktop {
-    visibility: visible;
-    position: static;
+  .Profile-hidden_tab_perm {
+    display: none;
   }
 
   .Profile-desktop_flex {
