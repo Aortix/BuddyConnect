@@ -52,7 +52,9 @@ import {
   CLEAR_NAME_CHANGED,
   CLEAR_EMAIL_CHANGED,
   CLEAR_PASSWORD_CHANGED,
-  CLEAR_ACCOUNT_DELETED_CHANGED
+  CLEAR_ACCOUNT_DELETED_CHANGED,
+  UPDATE_POSTS_TO_SEE,
+  CURRENT_TAB
 } from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
@@ -229,6 +231,8 @@ class App extends Component {
               postAlreadyDeleted={this.props.postAlreadyDeleted}
               commentDeleted={this.props.commentDeleted}
               commentAlreadyDeleted={this.props.commentAlreadyDeleted}
+              postsToSee={this.props.postsToSee}
+              updatePostsToSee={this.props.updatePostsToSee}
               {...props}
             />
           )}
@@ -284,6 +288,8 @@ class App extends Component {
               clearAboutMeUpdated={this.props.clearAboutMeUpdated}
               clearInterestsUpdated={this.props.clearInterestsUpdated}
               addedFriend={this.props.addedFriend}
+              currentTab={this.props.currentTab}
+              updateCurrentTab={this.props.updateCurrentTab}
               {...props}
             />
           )}
@@ -383,7 +389,9 @@ const mapStateToProps = state => ({
   nameChanged: state.settingsReducer.nameChanged,
   emailChanged: state.settingsReducer.emailChanged,
   passwordChanged: state.settingsReducer.passwordChanged,
-  deleteAccountChanged: state.settingsReducer.deleteAccountChanged
+  deleteAccountChanged: state.settingsReducer.deleteAccountChanged,
+  postsToSee: state.postsReducer.postsToSee,
+  currentTab: state.profileReducer.currentTab
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -512,6 +520,12 @@ const mapDispatchToProps = dispatch => ({
   },
   clearAccountDeletedChanged: () => {
     dispatch({ type: CLEAR_ACCOUNT_DELETED_CHANGED, payload: 0 });
+  },
+  updatePostsToSee: posts => {
+    dispatch({ type: UPDATE_POSTS_TO_SEE, payload: posts });
+  },
+  updateCurrentTab: tab => {
+    dispatch({ type: CURRENT_TAB, payload: tab });
   }
 });
 

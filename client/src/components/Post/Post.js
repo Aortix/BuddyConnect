@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import moment from "moment";
 import CreateComment from "./../CreateComment/CreateComment";
+import CreatePost from "./../CreatePost/CreatePost";
 
 import "./Post.css";
 
@@ -25,7 +26,7 @@ class Post extends Component {
   deletePost = (postId, currentProfile) => {
     document.getElementById(postId).classList.toggle("postDeleted");
 
-    setTimeout(() => this.props.deletePost(postId, currentProfile), 2000);
+    setTimeout(() => this.props.deletePost(postId, currentProfile), 1000);
   };
 
   deleteComment = (commentId, postId, currentProfile) => {
@@ -33,7 +34,7 @@ class Post extends Component {
 
     setTimeout(
       () => this.props.deleteComment(commentId, postId, currentProfile),
-      2000
+      1000
     );
   };
 
@@ -41,7 +42,10 @@ class Post extends Component {
     return this.props.posts === null ? (
       <h1>Loading</h1>
     ) : (
-      <div className="Post-container" id={this.props.id}>
+      <div
+        className={`Post-container ${this.props.className}`}
+        id={this.props.id}
+      >
         {this.props.posts.map(post => {
           return (
             <div id={post._id} key={post._id}>

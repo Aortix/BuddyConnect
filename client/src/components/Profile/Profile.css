@@ -7,6 +7,7 @@
   display: inline-block;
   padding: 0;
   width: 100px;
+  cursor: pointer;
 }
 
 .profile-tabs-container li {
@@ -31,14 +32,9 @@
   position: static;
 }
 
-.component-visibility {
-  display: block;
-  visibility: visible;
-}
-
 .component-hidden-until-shown {
-  display: none;
-  visibility: hidden;
+  display: none !important;
+  visibility: hidden !important;
 }
 
 .component-shown-until-hidden {
@@ -75,4 +71,68 @@
   border-radius: 7px;
   color: var(--main-bg-color);
   background-color: #dc143c;
+}
+
+@media screen and (min-width: 860px) {
+  .Profile-container {
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    background-color: var(--main-bg-color);
+  }
+
+  .profile-tabs-container {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 500;
+  }
+
+  .profile-individual-tabs {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .profile-individual-tabs {
+    visibility: visible;
+    position: static;
+  }
+
+  .show-profile-tabs {
+    visibility: hidden;
+    position: absolute;
+  }
+
+  .visibility {
+    visibility: visible;
+    position: static;
+  }
+
+  .profile-individual-tabs:first-child {
+    border-top: none;
+  }
+
+  .profile-desktop {
+    visibility: visible;
+    position: static;
+  }
+
+  .Profile-desktop_flex {
+    display: flex;
+    flex-wrap: nowrap;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+
+  .Profile-tabs_desktop {
+    width: 30%;
+    align-items: flex-end;
+    border-right: 1px solid black;
+  }
+
+  .Profile-tab_information_desktop {
+    padding-top: 10px;
+    width: 70%;
+  }
 }

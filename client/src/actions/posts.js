@@ -103,6 +103,7 @@ export const createPost = (postText, profileId) => dispatch => {
       dispatch(getAndStoreProfilePosts(profileId));
       dispatch({ type: POST_CREATED, payload: 1 });
       dispatch({ type: CLEAR_POST_ERRORS });
+      window.scrollTo(0, 0);
     })
     .catch(err => {
       dispatch({ type: POST_ERRORS, payload: err.response.data.errors });

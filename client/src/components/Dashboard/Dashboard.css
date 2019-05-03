@@ -1,4 +1,10 @@
 .Dashboard-container {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.Dashboard-container-with-background {
 }
 
 .post-buttons-container {
@@ -14,8 +20,8 @@
   margin: 0 auto;
   background-color: var(--main-bg-color);
   border: 1px solid black;
-  padding: 0 19px;
   cursor: pointer;
+  width: 90px;
 }
 
 #global-button {
@@ -25,8 +31,8 @@
   margin: 0 auto;
   background-color: var(--main-bg-color);
   border: 1px solid black;
-  padding: 0 15px;
   cursor: pointer;
+  width: 90px;
 }
 
 .global-button-hidden {
@@ -40,6 +46,50 @@
 }
 
 .post-buttons-hidden {
-  visibility: hidden;
-  position: absolute;
+  display: none !important;
+}
+
+@media only screen and (min-width: 860px) {
+  .Dashboard-container {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 0 auto;
+    width: 80%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    background-color: var(--main-bg-color);
+  }
+
+  .post-buttons-container {
+    visibility: visible !important;
+  }
+
+  .global-button-hidden {
+    visibility: visible;
+    position: static;
+  }
+
+  #posts-button {
+    display: inline-block;
+  }
+
+  #global-button {
+    display: inline-block;
+  }
+
+  .Dashboard-post_buttons_and_create_post {
+    min-height: 100vh;
+    min-width: 350px;
+  }
+
+  .Dashboard-post_buttons_and_create_post-inner {
+    position: fixed;
+    top: 30%;
+    left: 14%;
+    font-size: 1.2rem;
+  }
+
+  .Dashboard-Post_component {
+    width: calc(100% - 350px);
+  }
 }

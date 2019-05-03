@@ -10,7 +10,8 @@ import {
   ABOUT_ME_UPDATED,
   CLEAR_ABOUT_ME_UPDATED,
   INTERESTS_UPDATED,
-  CLEAR_INTERESTS_UPDATED
+  CLEAR_INTERESTS_UPDATED,
+  CURRENT_TAB
 } from "./../actions/types";
 
 const initialState = {
@@ -22,7 +23,9 @@ const initialState = {
   addedFriend: 0,
   profileErrors: {},
   aboutMeUpdated: 0,
-  interestsUpdated: 0
+  interestsUpdated: 0,
+  // 0 = Posts, 1 = About Me, 2 = Interests, 3 = Friends, 4 = All tabs at once
+  currentTab: 0,
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -89,6 +92,11 @@ export const profileReducer = (state = initialState, action) => {
         ...state,
         interestsUpdated: action.payload
       };
+      case CURRENT_TAB: 
+      return {
+        ...state,
+        currentTab: action.payload
+      }
     default:
       return state;
   }

@@ -9,7 +9,8 @@ import {
   CLEAR_COMMENT_ERRORS,
   POST_CREATED,
   POST_DELETED,
-  COMMENT_DELETED
+  COMMENT_DELETED,
+  UPDATE_POSTS_TO_SEE
 } from "./../actions/types";
 
 const initialState = {
@@ -17,6 +18,8 @@ const initialState = {
   friendsPosts: null,
   profilePosts: null,
   currentPost: "",
+  //0 = user and friends posts, 1 = global posts
+  postsToSee: 0,
   postErrors: {},
   commentErrors: {},
   postCreated: 0,
@@ -80,6 +83,11 @@ export const postsReducer = (state = initialState, action) => {
       return {
         ...state,
         commentDeleted: action.payload
+      };
+    case UPDATE_POSTS_TO_SEE:
+      return {
+        ...state,
+        postsToSee: action.payload
       };
     default:
       return state;
