@@ -1,7 +1,11 @@
-#AboutMe-component {
+.AboutMe-container {
   margin: 0 auto;
   padding: 0;
   width: 75%;
+}
+
+.AboutMe-container span {
+  word-wrap: break-word;
 }
 
 .AboutMe-submit_button {
@@ -13,4 +17,10 @@
 
 .fa-edit {
   cursor: pointer;
+}
+
+@media screen and (min-width: 860px) {
+  .AboutMe-container {
+    text-align: left;
+  }
 }

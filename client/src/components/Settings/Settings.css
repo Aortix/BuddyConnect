@@ -1,5 +1,6 @@
 .Settings-container {
-  margin-top: 15px;
+  height: 100%;
+  padding-bottom: 15px;
 }
 
 .Settings-successes {
@@ -14,4 +15,15 @@
   border-radius: 7px;
   color: var(--main-bg-color);
   background-color: #1e90ff;
+}
+
+@media screen and (min-width: 860px) {
+  .Settings-container {
+    margin: 0 auto;
+    width: 80%;
+    background-color: var(--main-bg-color);
+    border: 1px solid black;
+    border-top: none;
+    padding-top: 1px;
+  }
 }

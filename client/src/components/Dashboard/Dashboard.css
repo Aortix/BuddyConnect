@@ -61,6 +61,7 @@
     width: 80%;
     border-left: 1px solid black;
     border-right: 1px solid black;
+    border-bottom: 1px solid black;
     background-color: var(--main-bg-color);
   }
 
@@ -94,6 +95,11 @@
   }
 
   .Dashboard-Post_component {
+    margin-top: 10px;
     width: calc(100% - 350px);
+  }
+
+  .active {
+    background-color: black !important;
   }
 }

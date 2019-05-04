@@ -25,12 +25,13 @@ class AboutMe extends Component {
   render() {
     if (this.props.currentProfile === this.props.myProfile) {
       return this.state.editingAboutMe === false ? (
-        <div className={this.props.className} id={this.props.id}>
-          <span>{this.props.currentAboutMe}</span>&nbsp;
+        <div className="AboutMe-container">
           <i onClick={this.handleAboutMeClick} className="fas fa-edit" />
+          &nbsp;
+          <span>{this.props.currentAboutMe}</span>
         </div>
       ) : (
-        <div className={this.props.className} id={this.props.id}>
+        <div className="AboutMe-container">
           <form onSubmit={this.handleFormSubmit}>
             <textarea
               value={this.state.aboutMeText}
@@ -47,7 +48,7 @@ class AboutMe extends Component {
       );
     } else {
       return (
-        <div className={this.props.className} id={this.props.id}>
+        <div className="AboutMe-container">
           <p onClick={this.handleAboutMeClick}>{this.props.currentAboutMe}</p>
         </div>
       );

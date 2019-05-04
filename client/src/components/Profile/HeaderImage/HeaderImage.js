@@ -31,6 +31,7 @@ class HeaderImage extends Component {
       return this.state.headerClicked === true ? (
         <div className="HeaderImage-container" onClick={this.handleHeaderClick}>
           <img
+            id="HeaderImage-profile"
             src={`http://localhost:5000/uploads/headers/${
               this.props.currentHeaderImage
             }`}
@@ -70,6 +71,7 @@ class HeaderImage extends Component {
             addedFriend={this.props.addedFriend}
           />
           <img
+            id="HeaderImage-profile"
             src={`http://localhost:5000/uploads/headers/${
               this.props.currentHeaderImage
             }`}

@@ -28,12 +28,13 @@ class Interests extends Component {
   render() {
     if (this.props.currentProfile === this.props.myProfile) {
       return this.state.editingInterests === false ? (
-        <div className={this.props.className} id={this.props.id}>
-          <span>{this.props.currentInterests}</span>&nbsp;
+        <div className="Interests-container">
           <i onClick={this.handleInterestsClick} className="fas fa-edit" />
+          &nbsp;
+          <span>{this.props.currentInterests}</span>
         </div>
       ) : (
-        <div className={this.props.className} id={this.props.id}>
+        <div className="Interests-container">
           <form onSubmit={this.handleFormSubmit}>
             <textarea
               value={this.state.interestsText}
@@ -50,7 +51,7 @@ class Interests extends Component {
       );
     } else {
       return (
-        <div className={this.props.className} id={this.props.id}>
+        <div className="Interests-container">
           <p onClick={this.handleInterestsClick}>
             {this.props.currentInterests}
           </p>

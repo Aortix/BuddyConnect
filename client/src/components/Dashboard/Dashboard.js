@@ -29,6 +29,16 @@ class Dashboard extends Component {
     this.props.updatePostsToSee(number);
   };
 
+  updateToGlobalTab = () => {
+    document
+      .getElementById("posts-button")
+      .classList.toggle("post-buttons-hidden");
+  };
+
+  updateToPostsTab = () => {
+    document.getElementById("global-button").classList.toggle("post-buttons");
+  };
+
   render() {
     return (
       <div className="Dashboard-container">
@@ -39,8 +49,9 @@ class Dashboard extends Component {
                 <button
                   id="posts-button"
                   value="posts"
+                  className="active"
                   onClick={() => {
-                    this.updatePostsToPosts(0);
+                    this.updateToPostsTab();
                   }}
                 >
                   Posts
@@ -71,8 +82,9 @@ class Dashboard extends Component {
                 <button
                   id="posts-button"
                   value="global"
+                  className="active"
                   onClick={() => {
-                    this.updatePostsToPosts(1);
+                    this.updateToGlobalTab();
                   }}
                 >
                   Global

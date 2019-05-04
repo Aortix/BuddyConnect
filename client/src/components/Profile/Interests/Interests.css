@@ -1,12 +1,23 @@
-#Interests-component {
-    margin: 0 auto;
-    padding: 0;
-    width: 75%;
+.Interests-container {
+  height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  width: 75%;
+}
+
+.Interests-container span {
+  word-wrap: break-word;
 }
 
 .Interests-submit_button {
-    background-color: var(--main-bg-color);
-    border: 1px solid black;
-    padding-left: 15px;
-    padding-right: 15px;
+  background-color: var(--main-bg-color);
+  border: 1px solid black;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media screen and (min-width: 860px) {
+  .Interests-container {
+    text-align: left;
+  }
 }

@@ -12,7 +12,7 @@
   margin-top: 20px;
 }
 
-.SignUp-container input {
+.SignUp-container form input {
   margin-top: 10px;
   margin-bottom: 5px;
   border: none;
@@ -53,4 +53,14 @@
   border-radius: 7px;
   color: var(--main-bg-color);
   background-color: #dc143c;
+}
+
+@media screen and (min-width: 860px) {
+  .SignUp-container form input {
+    background-color: var(--secondary-bg-color);
+  }
+
+  .SignUp-container input:last-child {
+    background-color: var(--main-bg-color);
+  }
 }

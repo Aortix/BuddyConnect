@@ -53,8 +53,8 @@
   cursor: pointer;
 }
 
-.Name-component {
-  pointer-events: none;
+#HeaderImage-profile {
+  cursor: pointer;
 }
 
 @media screen and (min-width: 860px) {

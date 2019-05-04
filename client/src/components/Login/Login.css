@@ -13,7 +13,7 @@
   padding: 0;
 }
 
-.Login-container input {
+.Login-container form input {
   margin-top: 15px;
   border: none;
   border-bottom: 1px solid black;
@@ -68,4 +68,14 @@
   border-radius: 7px;
   color: var(--main-bg-color);
   background-color: #1e90ff;
+}
+
+@media screen and (min-width: 860px) {
+  .Login-container form input {
+    background-color: var(--secondary-bg-color);
+  }
+
+  .Login-container input:last-child {
+    background-color: var(--main-bg-color);
+  }
 }

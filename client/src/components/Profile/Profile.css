@@ -64,8 +64,18 @@
 
   .profile-tabs-container {
     width: 100%;
-    font-size: 2rem;
+    font-size: 2.4rem;
     font-weight: 500;
+    height: 100%;
+    border-right: 1px solid black;
+  }
+
+  .profile-tabs-container li {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-right: none;
+    border-left: none;
+    border-top: none;
   }
 
   .Profile-hidden_tab {
@@ -85,12 +95,11 @@
 
   .Profile-tabs_desktop {
     width: 30%;
-    align-items: flex-end;
-    border-right: 1px solid black;
   }
 
   .Profile-tab_information_desktop {
     padding-top: 10px;
+    margin-top: 5px;
     width: 70%;
   }
 }

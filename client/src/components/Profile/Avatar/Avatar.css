@@ -11,6 +11,10 @@
   margin: 0 auto;
 }
 
+#Avatar-avatar {
+  cursor: pointer;
+}
+
 @media screen and (min-width: 860px) {
   .Avatar-container {
     left: calc(50% - 87.5px);

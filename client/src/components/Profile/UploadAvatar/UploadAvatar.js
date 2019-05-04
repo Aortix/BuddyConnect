@@ -35,7 +35,11 @@ export default class UploadAvatar extends Component {
         <div className="UploadAvatar-container">
           <form encType="multipart/form-data">
             <label>
-              <Avatar currentAvatar={this.props.currentAvatar} />
+              <Avatar
+                currentProfile={this.props.currentProfile}
+                myProfile={this.props.myProfile}
+                currentAvatar={this.props.currentAvatar}
+              />
               <input
                 type="file"
                 name="avatar"
@@ -59,7 +63,11 @@ export default class UploadAvatar extends Component {
     } else {
       return (
         <div className="UploadAvatar-container">
-          <Avatar currentAvatar={this.props.currentAvatar} />
+          <Avatar
+            currentProfile={this.props.currentProfile}
+            myProfile={this.props.myProfile}
+            currentAvatar={this.props.currentAvatar}
+          />
         </div>
       );
     }
