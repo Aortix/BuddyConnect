@@ -52,6 +52,23 @@
   background-color: #dc143c;
 }
 
+.Profile-active {
+  visibility: hidden;
+  position: absolute;
+  background-color: black;
+  color: var(--main-bg-color);
+}
+
+.Profile-not_active {
+  visibility: hidden;
+  position: absolute;
+}
+
+.ppp {
+  background-color: black;
+  color: var(--main-bg-color);
+}
+
 @media screen and (min-width: 860px) {
   .Profile-container {
     width: 80%;
@@ -101,5 +118,31 @@
     padding-top: 10px;
     margin-top: 5px;
     width: 70%;
+  }
+
+  #tab-0 {
+    display: none;
+  }
+
+  #tab-1 {
+    display: none;
+  }
+
+  #tab-2 {
+    display: none;
+  }
+
+  #tab-3 {
+    display: none;
+  }
+
+  .Profile-active {
+    visibility: visible;
+    position: static;
+  }
+
+  .Profile-not_active {
+    visibility: visible;
+    position: static;
   }
 }

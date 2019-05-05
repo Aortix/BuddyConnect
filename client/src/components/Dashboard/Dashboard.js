@@ -84,7 +84,7 @@ class Dashboard extends Component {
                   value="global"
                   className="active"
                   onClick={() => {
-                    this.updateToGlobalTab();
+                    this.updateToPostsTab();
                   }}
                 >
                   Global

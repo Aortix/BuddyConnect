@@ -84,49 +84,41 @@ class Profile extends Component {
             <div className="Profile-tabs_desktop">
               <ul className="profile-tabs-container">
                 {this.props.currentTab === 0 ? (
-                  <li onClick={() => this.updateTabAndComponent(0)}>Posts</li>
-                ) : (
                   <li
-                    className="Profile-hidden_tab"
+                    id="tab-0"
+                    className="ppp"
                     onClick={() => this.updateTabAndComponent(0)}
                   >
                     Posts
                   </li>
-                )}
+                ) : null}
                 {this.props.currentTab === 1 ? (
-                  <li onClick={() => this.updateTabAndComponent(1)}>
-                    About Me
-                  </li>
-                ) : (
                   <li
-                    className="Profile-hidden_tab"
+                    id="tab-1"
+                    className="ppp"
                     onClick={() => this.updateTabAndComponent(1)}
                   >
                     About Me
                   </li>
-                )}
+                ) : null}
                 {this.props.currentTab === 2 ? (
-                  <li onClick={() => this.updateTabAndComponent(2)}>
-                    Interests
-                  </li>
-                ) : (
                   <li
-                    className="Profile-hidden_tab"
+                    id="tab-2"
+                    className="ppp"
                     onClick={() => this.updateTabAndComponent(2)}
                   >
                     Interests
                   </li>
-                )}
+                ) : null}
                 {this.props.currentTab === 3 ? (
-                  <li onClick={() => this.updateTabAndComponent(3)}>Friends</li>
-                ) : (
                   <li
-                    className="Profile-hidden_tab"
+                    id="tab-3"
+                    className="ppp"
                     onClick={() => this.updateTabAndComponent(3)}
                   >
                     Friends
                   </li>
-                )}
+                ) : null}
                 {this.props.currentTab === 4 ? (
                   <React.Fragment>
                     <li
@@ -149,6 +141,118 @@ class Profile extends Component {
                     </li>
                     <li
                       className="Profile-hidden_tab_perm"
+                      onClick={() => this.updateTabAndComponent(3)}
+                    >
+                      Friends
+                    </li>
+                  </React.Fragment>
+                ) : null}
+                {this.props.currentComponent === 0 ? (
+                  <React.Fragment>
+                    <li
+                      className="Profile-active"
+                      onClick={() => this.updateTabAndComponent(0)}
+                    >
+                      Posts
+                    </li>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(1)}
+                    >
+                      About Me
+                    </li>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(2)}
+                    >
+                      Interests
+                    </li>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(3)}
+                    >
+                      Friends
+                    </li>
+                  </React.Fragment>
+                ) : null}
+                {this.props.currentComponent === 1 ? (
+                  <React.Fragment>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(0)}
+                    >
+                      Posts
+                    </li>
+                    <li
+                      className="Profile-active"
+                      onClick={() => this.updateTabAndComponent(1)}
+                    >
+                      About Me
+                    </li>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(2)}
+                    >
+                      Interests
+                    </li>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(3)}
+                    >
+                      Friends
+                    </li>
+                  </React.Fragment>
+                ) : null}
+                {this.props.currentComponent === 2 ? (
+                  <React.Fragment>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(0)}
+                    >
+                      Posts
+                    </li>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(1)}
+                    >
+                      About Me
+                    </li>
+                    <li
+                      className="Profile-active"
+                      onClick={() => this.updateTabAndComponent(2)}
+                    >
+                      Interests
+                    </li>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(3)}
+                    >
+                      Friends
+                    </li>
+                  </React.Fragment>
+                ) : null}
+                {this.props.currentComponent === 3 ? (
+                  <React.Fragment>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(0)}
+                    >
+                      Posts
+                    </li>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(1)}
+                    >
+                      About Me
+                    </li>
+                    <li
+                      className="Profile-not_active"
+                      onClick={() => this.updateTabAndComponent(2)}
+                    >
+                      Interests
+                    </li>
+                    <li
+                      className="Profile-active"
                       onClick={() => this.updateTabAndComponent(3)}
                     >
                       Friends

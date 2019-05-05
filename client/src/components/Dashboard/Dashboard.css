@@ -65,10 +65,6 @@
     background-color: var(--main-bg-color);
   }
 
-  .post-buttons-container {
-    visibility: visible !important;
-  }
-
   .global-button-hidden {
     visibility: visible;
     position: static;
@@ -76,10 +72,14 @@
 
   #posts-button {
     display: inline-block;
+    visibility: visible !important;
+    position: static !important;
   }
 
   #global-button {
     display: inline-block;
+    visibility: visible !important;
+    position: static !important;
   }
 
   .Dashboard-post_buttons_and_create_post {
@@ -101,5 +101,6 @@
 
   .active {
     background-color: black !important;
+    color: var(--secondary-bg-color);
   }
 }
