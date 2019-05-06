@@ -7,14 +7,18 @@ export default function Avatar(props) {
     <div className="Avatar-container">
       <img
         id="Avatar-avatar"
-        src={`http://localhost:5000/uploads/avatars/${props.currentAvatar}`}
+        src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
+          props.currentAvatar
+        }`}
         alt="Avatar"
       />
     </div>
   ) : (
     <div className="Avatar-container">
       <img
-        src={`http://localhost:5000/uploads/avatars/${props.currentAvatar}`}
+        src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
+          props.currentAvatar
+        }`}
         alt="Avatar"
       />
     </div>

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const postSchema = require("./posts");
 const userSchema = require("./users");
-const defaultHeaders = require("./../public/uploads/defaults/defaultHeaders");
+const defaultHeaders = require("./../client/src/utilities/defaultHeaders");
 
 const Schema = mongoose.Schema;
 

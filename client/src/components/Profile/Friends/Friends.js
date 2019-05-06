@@ -17,21 +17,21 @@ class Friends extends Component {
           className={`Friends-container ${this.props.className}`}
           id={this.props.id}
         >
-          {this.props.friendThumbnails.map((friends) => {
+          {this.props.friendThumbnails.map(friends => {
             return (
-                <div
-                  className="friend-icon"
-                  onClick={() => this.handleFriendClick(friends.profileId)}
-                  key={friends.profileId}
-                >
-                  <img
-                    src={`http://localhost:5000/uploads/avatars/${
-                      friends.avatar
-                    }`}
-                    alt="Friend"
-                  />
-                  <p>{friends.name}</p>
-                </div>
+              <div
+                className="friend-icon"
+                onClick={() => this.handleFriendClick(friends.profileId)}
+                key={friends.profileId}
+              >
+                <img
+                  src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
+                    friends.avatar
+                  }`}
+                  alt="Friend"
+                />
+                <p>{friends.name}</p>
+              </div>
             );
           })}
         </div>

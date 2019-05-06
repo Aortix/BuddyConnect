@@ -35,8 +35,6 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 
-app.use(express.static("public"));
-
 //Route to make calls to user
 app.use("/api/user", userRoute);
 app.use("/api/post", postRoute);

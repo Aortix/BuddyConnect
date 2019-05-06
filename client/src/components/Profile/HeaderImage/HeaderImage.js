@@ -32,7 +32,7 @@ class HeaderImage extends Component {
         <div className="HeaderImage-container" onClick={this.handleHeaderClick}>
           <img
             id="HeaderImage-profile"
-            src={`http://localhost:5000/uploads/headers/${
+            src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
               this.props.currentHeaderImage
             }`}
             alt="header"
@@ -47,7 +47,7 @@ class HeaderImage extends Component {
                       id={header}
                       height="200"
                       width="400"
-                      src={`http://localhost:5000/uploads/headers/${header}`}
+                      src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${header}`}
                       value={header}
                       onClick={this.handleHeaderImageClick}
                       alt={`header-${header}`}
@@ -72,7 +72,7 @@ class HeaderImage extends Component {
           />
           <img
             id="HeaderImage-profile"
-            src={`http://localhost:5000/uploads/headers/${
+            src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
               this.props.currentHeaderImage
             }`}
             alt="header"
@@ -84,7 +84,7 @@ class HeaderImage extends Component {
       return (
         <div className="HeaderImage-container">
           <img
-            src={`http://localhost:5000/uploads/headers/${
+            src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
               this.props.currentHeaderImage
             }`}
             alt="header"

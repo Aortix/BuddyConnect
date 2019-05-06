@@ -6,6 +6,7 @@ import "./Login.css";
 
 class Login extends Component {
   componentDidMount = () => {
+    console.log(this.props.authErrors);
     if (this.props.authenticated === true) {
       this.props.history.push("/dashboard");
     }

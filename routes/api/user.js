@@ -3,12 +3,13 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const multer = require("multer");
+const multerS3 = require("multer-s3");
 const path = require("path");
 const fs = require("fs");
+const aws = require("aws-sdk");
 
 const router = express.Router();
 
-const defaultHeaders = require("./../../public/uploads/defaults/defaultHeaders");
 const userSchema = require("../../schemas/users.js");
 const postSchema = require("../../schemas/posts.js");
 const profileSchema = require("../../schemas/profiles.js");
@@ -21,6 +22,12 @@ const settingsPageValidation = require("./../../validation/settingsPageValidatio
 require("./../../auth/jwtStrategy")(passport);
 
 const saltRounds = 12;
+
+const s3 = new aws.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  Bucket: process.env.BUCKET_NAME
+});
 
 //Public Route
 //Create a new user - Hash password and store necessary information in DB
@@ -39,8 +46,6 @@ router.post("/sign-up", (req, res, next) => {
         return res.status(500).send(errors);
       }
 
-      const newHeader = defaultHeaders[Math.floor(Math.random() * 4)];
-
       const newUser = new userSchema({
         name: req.body.name,
         email: req.body.email,
@@ -50,7 +55,6 @@ router.post("/sign-up", (req, res, next) => {
 
       const newProfile = new profileSchema({
         name: req.body.name,
-        header: newHeader,
         user: newUser
       });
 
@@ -330,7 +334,7 @@ router.post(
       }
     };
 
-    let storage = multer.diskStorage({
+    /*let storage = multer.diskStorage({
       destination: (req, file, cb) => {
         cb(null, "./public/uploads/avatars");
       },
@@ -340,51 +344,81 @@ router.post(
           file.fieldname + "-" + Date.now() + path.extname(file.originalname)
         );
       }
-    });
+    });*/
 
     let upload = multer({
-      storage: storage,
+      storage: multerS3({
+        s3: s3,
+        bucket: "buddyconnectbucket",
+        acl: "public-read",
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        key: (req, file, cb) => {
+          cb(
+            null,
+            file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+          );
+        }
+      }),
       limits: { fileSize: 900000 },
       fileFilter: (req, file, cb) => {
         checkAvatarUpload(req, file, cb);
       }
     }).single("avatar");
 
+    /*let upload = multer({
+      storage: storage,
+      limits: { fileSize: 900000 },
+      fileFilter: (req, file, cb) => {
+        checkAvatarUpload(req, file, cb);
+      }
+    }).single("avatar");*/
+
     upload(req, res, err => {
       if (err instanceof multer.MulterError) {
-        errors.errors.misc =
+        errors.misc =
           "Something went wrong with the image uploading software. Try again.";
+        console.log(err);
         return res.status(500).send(errors);
       } else if (err) {
-        errors.errors.misc =
+        errors.misc =
           "Something went wrong with the image uploading. Try again.";
+        console.log(err);
         return res.status(500).send(errors);
       } else if (req.avatarValidation) {
         return res.status(400).send(errors);
       } else {
         userSchema.findById(req.user.id, (err, response) => {
           if (err) {
-            errors.errors.misc =
-              "Can't find user account to update. Try again.";
+            errors.misc = "Can't find user account to update. Try again.";
             return res.status(500).send(errors);
           } else {
             if (response.avatar === "standard.png") {
               console.log("Cant delete the standard avatar!");
             } else {
-              fs.unlink(pathToFile + response.avatar, err => {
-                if (err) throw err;
-                console.log("Deletion successful.");
-              });
+              s3.deleteObject(
+                {
+                  Bucket: process.env.BUCKET_NAME,
+                  Key: response.avatar
+                },
+                (err, data) => {
+                  if (err) {
+                    errors.misc = "Error deleting previous avatar.";
+                    return res.status(500).send(errors);
+                  } else {
+                    console.log(data);
+                  }
+                }
+              );
             }
           }
         });
+
         userSchema.findByIdAndUpdate(
           req.user.id,
-          { avatar: req.file.filename },
+          { avatar: req.file.key },
           (err, response) => {
             if (err) {
-              errors.errors.misc =
-                "Can't find user account to update. Try again.";
+              errors.misc = "Can't find user account to update. Try again.";
               return res.status(500).send(errors);
             } else {
               return console.log("Avatar updated in user database.");
@@ -393,21 +427,20 @@ router.post(
         );
         profileSchema.findOneAndUpdate(
           { user: req.user.id },
-          { avatar: req.file.filename },
+          { avatar: req.file.key },
           (err, response) => {
             if (err) {
-              errors.errors.misc = "Can't find profile to update. Try again.";
+              errors.misc = "Can't find profile to update. Try again.";
               return res.status(500).send(errors);
             } else {
               console.log("Avatar updated in profile database.");
 
               postSchema.updateMany(
                 { p_id: response._id },
-                { avatar: req.file.filename },
+                { avatar: req.file.key },
                 (err, response2) => {
                   if (err) {
-                    errors.errors.misc =
-                      "Can't update avatar on posts. Try again.";
+                    errors.misc = "Can't update avatar on posts. Try again.";
                     return res.status(500).send(errors);
                   } else {
                     console.log("Avatar updated in the post database.");
@@ -416,11 +449,10 @@ router.post(
               );
               commentsSchema.updateMany(
                 { commenterP_id: response._id },
-                { commenterAvatar: req.file.filename },
+                { commenterAvatar: req.file.key },
                 (err, response3) => {
                   if (err) {
-                    errors.errors.misc =
-                      "Can't update avatar on comments. Try again.";
+                    errors.misc = "Can't update avatar on comments. Try again.";
                     return res.status(500).send(errors);
                   } else {
                     console.log("Avatar updated in the comments database.");
@@ -431,7 +463,7 @@ router.post(
           }
         );
       }
-      return res.send(req.file.filename);
+      return res.send(req.file.key);
     });
   }
 );

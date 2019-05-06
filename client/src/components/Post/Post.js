@@ -110,7 +110,7 @@ class Post extends Component {
                         className="post-avatar_image"
                         width="27"
                         height="30"
-                        src={`http://localhost:5000/uploads/avatars/${
+                        src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
                           post.avatar
                         }`}
                         alt="avatar"
@@ -156,7 +156,7 @@ class Post extends Component {
                             className="comment-avatar_image"
                             width="25"
                             height="27.5"
-                            src={`http://localhost:5000/uploads/avatars/${
+                            src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
                               comments.commenterAvatar
                             }`}
                             alt="avatar"

@@ -16,7 +16,7 @@ export const HeaderAuth = props => {
           <img
             height="22"
             width="20"
-            src={`http://localhost:5000/uploads/avatars/${window.localStorage.getItem(
+            src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${window.localStorage.getItem(
               "avatar"
             )}`}
             alt="myavatar"
