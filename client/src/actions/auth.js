@@ -36,7 +36,7 @@ export const authLogin = (email, password) => dispatch => {
     password
   };
   axios
-    .post("http://localhost:5000/api/user/login", requestBody)
+    .post("/api/user/login", requestBody)
     .then(data => {
       dispatch({
         type: LOGIN,
