@@ -32,9 +32,9 @@ class Login extends Component {
             onChange={this.props.handleChange}
             value={this.props.loginEmail}
           />
-          {isEmpty(this.props.authErrors.email) === true ? null : (
+          {this.props.authErrors.email !== undefined ? (
             <div className="Login-errors">{this.props.authErrors.email}</div>
-          )}
+          ) : null}
           <p>Password:</p>
           <input
             type="password"
@@ -42,16 +42,16 @@ class Login extends Component {
             onChange={this.props.handleChange}
             value={this.props.loginPassword}
           />
-          {isEmpty(this.props.authErrors.password) === true ? null : (
+          {this.props.authErrors.password !== undefined ? (
             <div className="Login-errors">{this.props.authErrors.password}</div>
-          )}
+          ) : null}
           {this.props.userSignedUp === 1 ? (
             <div className="Login-successes">User successfully registered!</div>
           ) : null}
           <br />
-          {isEmpty(this.props.authErrors.misc) === true ? null : (
+          {this.props.authErrors.misc !== undefined ? (
             <div className="Login-errors">{this.props.authErrors.misc}</div>
-          )}
+          ) : null}
           <input type="submit" name="Submit" value="GO" formNoValidate />
         </form>
         <Link to="/sign-up">

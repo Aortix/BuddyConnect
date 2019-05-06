@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./SideBar.css";
 
 export default function SideBar(props) {
-  document.addEventListener("click", e => {
+  /*document.addEventListener("click", e => {
     if (e.target.className === "dropdown-image") {
     } else if (
       e.target.id !== "SideBar" &&
@@ -15,7 +15,7 @@ export default function SideBar(props) {
         .getElementById("SideBar")
         .classList.toggle("SideBar-container-visible");
     }
-  });
+  });*/
   if (props.authenticated !== true) {
     return (
       <div className="SideBar-container" id="SideBar">
