@@ -24,7 +24,7 @@ export const getAndStoreAllPosts = () => dispatch => {
       }
     };
     axios
-      .get("http://localhost:5000/api/post/global-posts", config)
+      .get("/api/post/global-posts", config)
       .then(data => {
         console.log("Calling global posts");
         dispatch({ type: GET_ALL_POSTS, payload: data.data });
@@ -46,7 +46,7 @@ export const getAndStoreFriendsPosts = () => dispatch => {
       }
     };
     axios
-      .get("http://localhost:5000/api/post/friends-posts", config)
+      .get("/api/post/friends-posts", config)
       .then(data => {
         console.log("Calling friends posts!");
         dispatch({ type: GET_FRIENDS_POSTS, payload: data.data });
@@ -68,11 +68,7 @@ export const getAndStoreProfilePosts = profileId => dispatch => {
       }
     };
     axios
-      .post(
-        "http://localhost:5000/api/post/profile-posts",
-        { profileId: profileId },
-        config
-      )
+      .post("/api/post/profile-posts", { profileId: profileId }, config)
       .then(data => {
         console.log("Calling profile posts!");
         dispatch({ type: GET_PROFILE_POSTS, payload: data.data });
@@ -96,7 +92,7 @@ export const createPost = (postText, profileId) => dispatch => {
     datePosted: Date.now()
   };
   axios
-    .post("http://localhost:5000/api/post/create-post", requestBody, config)
+    .post("/api/post/create-post", requestBody, config)
     .then(data => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
@@ -127,11 +123,7 @@ export const createPostOnDifferentProfile = (
     datePosted: Date.now()
   };
   axios
-    .post(
-      "http://localhost:5000/api/post/create-post-on-different-profile",
-      requestBody,
-      config
-    )
+    .post("/api/post/create-post-on-different-profile", requestBody, config)
     .then(data => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
@@ -162,7 +154,7 @@ export const createComment = (commentText, postId, profileId) => dispatch => {
     datePosted: Date.now()
   };
   axios
-    .post("http://localhost:5000/api/post/create-comment", requestBody, config)
+    .post("/api/post/create-comment", requestBody, config)
     .then(data => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
@@ -186,7 +178,7 @@ export const deletePost = (postId, currentProfile) => dispatch => {
     postId: postId
   };
   axios
-    .put("http://localhost:5000/api/post/delete-post", requestBody, config)
+    .put("/api/post/delete-post", requestBody, config)
     .then(data => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());
@@ -214,7 +206,7 @@ export const deleteComment = (
     postId: postId
   };
   axios
-    .put("http://localhost:5000/api/post/delete-comment", requestBody, config)
+    .put("/api/post/delete-comment", requestBody, config)
     .then(data => {
       dispatch(getAndStoreAllPosts());
       dispatch(getAndStoreFriendsPosts());

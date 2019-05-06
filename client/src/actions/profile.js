@@ -30,7 +30,7 @@ export const getAndStoreAProfile = profileId => dispatch => {
       }
     };
     axios
-      .get(`http://localhost:5000/api/profile/${profileId}`, config)
+      .get(`/api/profile/${profileId}`, config)
       .then(data => {
         dispatch({
           type: GET_AND_STORE_A_PROFILE,
@@ -57,7 +57,7 @@ export const getAndStoreMyProfile = profileId => dispatch => {
       }
     };
     axios
-      .get("http://localhost:5000/api/profile/my/profile", config)
+      .get("/api/profile/my/profile", config)
       .then(data => {
         dispatch({ type: GET_AND_STORE_MY_PROFILE, payload: data.data });
         console.log(profileId);
@@ -89,7 +89,7 @@ export const showFriends = profileId => dispatch => {
     };
     axios
       .post(
-        "http://localhost:5000/api/profile/friends/friend-thumbnails",
+        "/api/profile/friends/friend-thumbnails",
         { profileId: profileId },
         config
       )
@@ -114,11 +114,7 @@ export const addFriend = profileId => dispatch => {
       }
     };
     axios
-      .put(
-        `http://localhost:5000/api/profile/friends/add-friend/`,
-        { profileId: profileId },
-        config
-      )
+      .put(`/api/profile/friends/add-friend/`, { profileId: profileId }, config)
       .then(data => {
         console.log("Added a friend!");
         dispatch({ type: ADD_FRIEND, payload: 1 });
@@ -141,7 +137,7 @@ export const checkForFriend = profileId => dispatch => {
     };
     axios
       .post(
-        "http://localhost:5000/api/profile/friends/check-for-friend",
+        "/api/profile/friends/check-for-friend",
         { profileId: profileId },
         config
       )
@@ -176,7 +172,7 @@ export const changeAvatar = (fileData, profileId) => dispatch => {
       }
     };
     axios
-      .post("http://localhost:5000/api/user/update-avatar", newFormData, config)
+      .post("/api/user/update-avatar", newFormData, config)
       .then(data => {
         console.log("Avatar uploaded.");
         dispatch(getAndStoreAProfile(profileId));
@@ -204,11 +200,7 @@ export const changeHeader = (headerData, profileId) => dispatch => {
       }
     };
     axios
-      .put(
-        "http://localhost:5000/api/profile/update/update-header",
-        { header: headerData },
-        config
-      )
+      .put("/api/profile/update/update-header", { header: headerData }, config)
       .then(() => {
         console.log("Header updated.");
         dispatch(getAndStoreAProfile(profileId));
@@ -231,7 +223,7 @@ export const changeAboutMe = (aboutMeData, profileId) => dispatch => {
     };
     axios
       .put(
-        "http://localhost:5000/api/profile/update/update-aboutMe",
+        "/api/profile/update/update-aboutMe",
         { aboutMe: aboutMeData },
         config
       )
@@ -262,7 +254,7 @@ export const changeInterests = (interestsData, profileId) => dispatch => {
     };
     axios
       .put(
-        "http://localhost:5000/api/profile/update/update-interests",
+        "/api/profile/update/update-interests",
         { interests: interestsData },
         config
       )
@@ -292,11 +284,7 @@ export const deleteFriend = friendId => dispatch => {
       }
     };
     axios
-      .put(
-        "http://localhost:5000/api/profile/friends/delete-friend",
-        { friendId: friendId },
-        config
-      )
+      .put("/api/profile/friends/delete-friend", { friendId: friendId }, config)
       .then(data => {
         dispatch(checkForFriend(friendId));
         dispatch(getAndStoreFriendsPosts());

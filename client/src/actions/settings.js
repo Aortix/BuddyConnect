@@ -23,7 +23,7 @@ export const changeName = name => dispatch => {
       }
     };
     axios
-      .put("http://localhost:5000/api/user/update-name", { name: name }, config)
+      .put("/api/user/update-name", { name: name }, config)
       .then(data => {
         window.localStorage.setItem("name", data.data);
         dispatch(getAndStoreAllPosts());
@@ -50,7 +50,7 @@ export const changeEmail = (email, password2) => dispatch => {
     };
     axios
       .put(
-        "http://localhost:5000/api/user/update-email",
+        "/api/user/update-email",
         { email: email, emailPassword: password2 },
         config
       )
@@ -76,7 +76,7 @@ export const changePassword = (password, password2) => dispatch => {
     };
     axios
       .put(
-        "http://localhost:5000/api/user/update-password",
+        "/api/user/update-password",
         { passwordPassword: password, passwordPassword2: password2 },
         config
       )
@@ -102,7 +102,7 @@ export const deleteAccount = password2 => dispatch => {
     };
     axios
       .put(
-        "http://localhost:5000/api/user/delete-user",
+        "/api/user/delete-user",
         { deleteAccountPassword: password2 },
         config
       )

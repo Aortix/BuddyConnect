@@ -20,7 +20,7 @@ export const authSignUp = (
     password2: confirmPassword
   };
   axios
-    .post("http://localhost:5000/api/user/sign-up", requestBody)
+    .post("/api/user/sign-up", requestBody)
     .then(data => {
       console.log("User should have been added.");
       dispatch({ type: USER_SIGNED_UP, payload: 1 });
@@ -94,7 +94,7 @@ export const authCheck = () => dispatch => {
 
     //Make the call to this route on the backend to ensure token corresponds to a user
     axios
-      .post("http://localhost:5000/api/user/verify-user", requestBody, config)
+      .post("/api/user/verify-user", requestBody, config)
       .then(() => {
         //Authenticate the user in redux state
         dispatch({
