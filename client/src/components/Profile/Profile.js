@@ -68,6 +68,7 @@ class Profile extends Component {
             profileErrors={this.props.profileErrors}
             clearProfileErrors={this.props.clearProfileErrors}
             getAndStoreMyProfile={this.props.getAndStoreMyProfile}
+            avatarUploading={this.props.avatarUploading}
           />
           <CreatePost
             createPost={this.props.createPost}

@@ -22,8 +22,8 @@ export const authSignUp = (
   axios
     .post("/api/user/sign-up", requestBody)
     .then(data => {
-      console.log("User should have been added.");
       dispatch({ type: USER_SIGNED_UP, payload: 1 });
+      dispatch({ type: USER_SIGNED_UP, payload: 0 });
     })
     .catch(err => {
       dispatch({ type: ERROR, payload: err.response.data.errors });
@@ -53,14 +53,12 @@ export const authLogin = (email, password) => dispatch => {
       ) {
         window.localStorage.setItem("location", "/dashboard");
       }
-      console.log("Token should be in localstorage.");
     })
     .then(() => {
       dispatch(authCheck());
-      dispatch({ type: USER_SIGNED_UP, payload: 0 });
+      dispatch({ type: USER_SIGNED_UP, payload: 2 });
     })
     .catch(err => {
-      console.log(err.response.data.errors);
       dispatch({ type: ERROR, payload: err.response.data.errors });
     });
 };
@@ -69,7 +67,7 @@ export const authLogout = () => dispatch => {
   window.localStorage.removeItem("token");
   dispatch({
     type: LOGOUT,
-    payload: false
+    payload: 0
   });
   dispatch({ type: USER_SIGNED_UP, payload: 0 });
 };
@@ -109,7 +107,6 @@ export const authCheck = () => dispatch => {
           type: AUTHENTICATED,
           payload: 0
         });
-        console.log(err);
       });
   }
 };

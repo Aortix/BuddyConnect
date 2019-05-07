@@ -5,8 +5,10 @@ const passport = require("passport");
 const profileSchema = require("../../schemas/profiles.js");
 const router = express.Router();
 
-const settingsValidation = require("./../../validation/settingsPageValidation");
 const profileValidation = require("./../../validation/profileValidation");
+const commonRegex = require("./../../validation/regex");
+
+const { textAreaRequirements } = commonRegex;
 
 require("./../../auth/jwtStrategy")(passport);
 
@@ -16,6 +18,12 @@ router.get(
   "/:profileId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.params.profileId);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
     profileSchema.findById(req.params.profileId, (err, data) => {
       if (err) {
         return res.status(500).send("Cannot find profile.");
@@ -29,6 +37,12 @@ router.get(
   "/my/profile",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.user.id);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
     profileSchema.findOne({ user: req.user.id }, (err, data) => {
       if (err) {
         return res.status(500).send("Cannot find profile.");
@@ -45,6 +59,18 @@ router.put(
   "/friends/add-friend",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.user.id);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
+    const errors2 = profileValidation.profileIdValidation(req.body.profileId);
+
+    if (errors2.noErrors === false) {
+      return res.status(400).send();
+    }
+
     profileSchema.findOneAndUpdate(
       { user: req.user.id },
       { $push: { friends: req.body.profileId } },
@@ -67,6 +93,18 @@ router.put(
   "/friends/delete-friend",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.user.id);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
+    const errors2 = profileValidation.profileIdValidation(req.body.friendId);
+
+    if (errors2.noErrors === false) {
+      return res.status(400).send();
+    }
+
     profileSchema.findOneAndUpdate(
       { user: req.user.id },
       { $pull: { friends: req.body.friendId } },
@@ -87,6 +125,12 @@ router.post(
   "/friends/check-for-friend",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.user.id);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
     profileSchema.findOne({ user: req.user.id }, (err, response) => {
       let returnArray = [];
       if (err) {
@@ -111,6 +155,12 @@ router.post(
   "/friends/friend-thumbnails",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.body.profileId);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
     let returnArray = [];
     profileSchema
       .findById(req.body.profileId)
@@ -140,6 +190,16 @@ router.put(
   "/update/update-header",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.user.id);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
+    if (textAreaRequirements.test(req.body.header) !== true) {
+      return res.status(400).send();
+    }
+
     profileSchema.findOneAndUpdate(
       { user: req.user.id },
       { header: req.body.header },

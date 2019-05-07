@@ -9,6 +9,7 @@ const commentSchema = require("../../schemas/comments.js");
 
 const postValidation = require("../../validation/postValidation");
 const commentValidation = require("../../validation/commentValidation");
+const profileValidation = require("./../../validation/profileValidation");
 
 require("../../auth/jwtStrategy")(passport);
 
@@ -21,6 +22,7 @@ router.get(
     postSchema
       .find({})
       .populate("comments")
+      .limit(30)
       .sort({ datePosted: "desc" })
       .exec((err, posts) => {
         if (err) {
@@ -51,6 +53,7 @@ router.get(
         postSchema
           .find({})
           .populate("comments")
+          .limit(30)
           .sort({ datePosted: "desc" })
           .exec((err, response3) => {
             if (err) {
@@ -71,6 +74,12 @@ router.post(
   "/profile-posts",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.body.profileId);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
     let returnArray = [];
     profileSchema.findById(req.body.profileId).exec((err, profile) => {
       if (err) {
@@ -82,6 +91,7 @@ router.post(
         postSchema
           .find({})
           .populate("comments")
+          .limit(30)
           .sort({ datePosted: "desc" })
           .exec((err, response) => {
             if (err) {
@@ -259,6 +269,12 @@ router.put(
   "/delete-post",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.body.postId);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
     postSchema.findById(req.body.postId, (err, response) => {
       if (err) {
         return res.status(500).send("Error finding post.");
@@ -305,6 +321,12 @@ router.put(
   "/delete-comment",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = profileValidation.profileIdValidation(req.body.commentId);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send();
+    }
+
     commentSchema.findByIdAndDelete(req.body.commentId, (err, response) => {
       if (err) {
         return res.status(500).send("Error finding comment to delete");

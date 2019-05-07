@@ -140,10 +140,6 @@ router.post("/login", (req, res) => {
           );
         }
       });
-    })
-    .catch(err => {
-      errors.errors.misc = `There was an uncaught error: ${err.toString()}`;
-      return res.status(500).send(errors);
     });
 });
 
@@ -315,8 +311,6 @@ router.post(
   (req, res) => {
     const errors = {};
 
-    const pathToFile = "./public/uploads/avatars/";
-
     //Function for filtering uploaded avatars so that only an image is uploaded
     checkAvatarUpload = (req, file, cb) => {
       const filetypes = /jpeg|jpg|png/;
@@ -333,18 +327,6 @@ router.post(
         return cb(null, false);
       }
     };
-
-    /*let storage = multer.diskStorage({
-      destination: (req, file, cb) => {
-        cb(null, "./public/uploads/avatars");
-      },
-      filename: (req, file, cb) => {
-        cb(
-          null,
-          file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-        );
-      }
-    });*/
 
     let upload = multer({
       storage: multerS3({
@@ -365,24 +347,14 @@ router.post(
       }
     }).single("avatar");
 
-    /*let upload = multer({
-      storage: storage,
-      limits: { fileSize: 900000 },
-      fileFilter: (req, file, cb) => {
-        checkAvatarUpload(req, file, cb);
-      }
-    }).single("avatar");*/
-
     upload(req, res, err => {
       if (err instanceof multer.MulterError) {
         errors.misc =
           "Something went wrong with the image uploading software. Try again.";
-        console.log(err);
         return res.status(500).send(errors);
       } else if (err) {
         errors.misc =
           "Something went wrong with the image uploading. Try again.";
-        console.log(err);
         return res.status(500).send(errors);
       } else if (req.avatarValidation) {
         return res.status(400).send(errors);
@@ -393,7 +365,6 @@ router.post(
             return res.status(500).send(errors);
           } else {
             if (response.avatar === "standard.png") {
-              console.log("Cant delete the standard avatar!");
             } else {
               s3.deleteObject(
                 {
@@ -405,7 +376,6 @@ router.post(
                     errors.misc = "Error deleting previous avatar.";
                     return res.status(500).send(errors);
                   } else {
-                    console.log(data);
                   }
                 }
               );
@@ -421,7 +391,6 @@ router.post(
               errors.misc = "Can't find user account to update. Try again.";
               return res.status(500).send(errors);
             } else {
-              return console.log("Avatar updated in user database.");
             }
           }
         );
@@ -433,8 +402,6 @@ router.post(
               errors.misc = "Can't find profile to update. Try again.";
               return res.status(500).send(errors);
             } else {
-              console.log("Avatar updated in profile database.");
-
               postSchema.updateMany(
                 { p_id: response._id },
                 { avatar: req.file.key },
@@ -443,7 +410,6 @@ router.post(
                     errors.misc = "Can't update avatar on posts. Try again.";
                     return res.status(500).send(errors);
                   } else {
-                    console.log("Avatar updated in the post database.");
                   }
                 }
               );
@@ -455,7 +421,6 @@ router.post(
                     errors.misc = "Can't update avatar on comments. Try again.";
                     return res.status(500).send(errors);
                   } else {
-                    console.log("Avatar updated in the comments database.");
                   }
                 }
               );
@@ -477,11 +442,10 @@ router.post(
       process.env.SECRET_KEY,
       (err, decoded) => {
         if (err) {
-          return res.status(500).send("What happened?");
+          return res.status(500).send();
         } else if (decoded === undefined) {
           return res.status(401).send("Invalid token.");
         } else {
-          console.log("Valid token");
           return res.send("Valid.");
         }
       }
@@ -491,7 +455,6 @@ router.post(
 
 //Private Route
 //Removes user account and profile; still deciding on whether or not to remove posts and comments from the past...
-//Will come back to this...
 router.put(
   "/delete-user",
   passport.authenticate("jwt", { session: false }),
@@ -521,7 +484,7 @@ router.put(
             } else {
               profileSchema.findOneAndRemove(
                 { user: req.user.id },
-                (err, response2) => {
+                (err, response3) => {
                   if (err) {
                     errors.errors.misc =
                       "Cannot find profile to delete. Try again.";
@@ -529,7 +492,7 @@ router.put(
                   } else {
                     console.log("Profile deleted.");
                     commentsSchema.deleteMany(
-                      { commenterP_id: response2._id },
+                      { commenterP_id: response3._id },
                       (err, response) => {
                         if (err) {
                           errors.errors.misc =
@@ -541,7 +504,7 @@ router.put(
                       }
                     );
                     postSchema.deleteMany(
-                      { p_id: response2._id },
+                      { p_id: response3._id },
                       (err, response) => {
                         if (err) {
                           errors.errors.misc =

@@ -12,7 +12,8 @@ import {
   INTERESTS_UPDATED,
   CLEAR_INTERESTS_UPDATED,
   CURRENT_TAB,
-  CURRENT_COMPONENT
+  CURRENT_COMPONENT,
+  AVATAR_UPLOADING
 } from "./../actions/types";
 
 const initialState = {
@@ -27,7 +28,8 @@ const initialState = {
   interestsUpdated: 0,
   // 0 = Posts, 1 = About Me, 2 = Interests, 3 = Friends, 4 = All tabs at once
   currentTab: 0,
-  currentComponent: 0
+  currentComponent: 0,
+  avatarUploading: 0
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -103,6 +105,11 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         currentComponent: action.payload
+      };
+    case AVATAR_UPLOADING:
+      return {
+        ...state,
+        avatarUploading: action.payload
       };
     default:
       return state;

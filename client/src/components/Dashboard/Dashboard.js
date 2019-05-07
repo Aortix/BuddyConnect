@@ -7,7 +7,7 @@ import "./Dashboard.css";
 class Dashboard extends Component {
   componentDidMount = () => {
     window.localStorage.setItem("location", "/dashboard");
-    console.log("When does this remount?");
+    
     this.setState({ postsToSee: this.props.postsToSee });
   };
 

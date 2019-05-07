@@ -31,7 +31,7 @@ export default class UploadAvatar extends Component {
 
   render() {
     if (this.props.currentProfile === this.props.myProfile) {
-      return (
+      return this.props.avatarUploading !== 1 ? (
         <div className="UploadAvatar-container">
           <form encType="multipart/form-data">
             <label>
@@ -58,6 +58,14 @@ export default class UploadAvatar extends Component {
               {this.props.profileErrors.misc}
             </p>
           ) : null}
+        </div>
+      ) : (
+        <div className="UploadAvatar-container UploadAvatar-loading">
+          <Avatar
+            currentProfile={this.props.currentProfile}
+            myProfile={this.props.myProfile}
+            currentAvatar="standard.png"
+          />
         </div>
       );
     } else {

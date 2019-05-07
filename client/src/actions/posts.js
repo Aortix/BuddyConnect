@@ -26,12 +26,9 @@ export const getAndStoreAllPosts = () => dispatch => {
     axios
       .get("/api/post/global-posts", config)
       .then(data => {
-        console.log("Calling global posts");
         dispatch({ type: GET_ALL_POSTS, payload: data.data });
       })
-      .catch(err => {
-        return console.log(err);
-      });
+      .catch(err => {});
   }
 };
 
@@ -48,12 +45,9 @@ export const getAndStoreFriendsPosts = () => dispatch => {
     axios
       .get("/api/post/friends-posts", config)
       .then(data => {
-        console.log("Calling friends posts!");
         dispatch({ type: GET_FRIENDS_POSTS, payload: data.data });
       })
-      .catch(err => {
-        return console.log(err);
-      });
+      .catch(err => {});
   }
 };
 
@@ -70,12 +64,9 @@ export const getAndStoreProfilePosts = profileId => dispatch => {
     axios
       .post("/api/post/profile-posts", { profileId: profileId }, config)
       .then(data => {
-        console.log("Calling profile posts!");
         dispatch({ type: GET_PROFILE_POSTS, payload: data.data });
       })
-      .catch(err => {
-        return console.log(err);
-      });
+      .catch(err => {});
   }
 };
 
@@ -185,9 +176,7 @@ export const deletePost = (postId, currentProfile) => dispatch => {
       dispatch(getAndStoreProfilePosts(currentProfile));
       dispatch({ type: POST_DELETED, payload: 1 });
     })
-    .catch(err => {
-      console.log(err);
-    });
+    .catch(err => {});
 };
 
 export const deleteComment = (
@@ -213,7 +202,5 @@ export const deleteComment = (
       dispatch(getAndStoreProfilePosts(currentProfile));
       dispatch({ type: COMMENT_DELETED, payload: 1 });
     })
-    .catch(err => {
-      console.log(err);
-    });
+    .catch(err => {});
 };

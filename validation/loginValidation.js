@@ -1,10 +1,16 @@
 const validator = require("validator");
 const isEmpty = require("./../client/src/utilities/isEmpty");
+const commonRegex = require("./regex");
 
-var alphanumberic = /^[a-z\d\-_\s]+$/i;
+const { passwordRequirements } = commonRegex;
 
 const loginValidation = data => {
   const errors = {};
+
+  if (data == undefined || data == null) {
+    errors.misc =
+      "The data sent to the server is undefined. Please wait a minute and try again.";
+  }
 
   if (!validator.isLength(data.email, { min: 5, max: 30 })) {
     errors.email = "Email must be between 5 and 30 characters.";
@@ -16,6 +22,11 @@ const loginValidation = data => {
 
   if (validator.isEmpty(data.email)) {
     errors.email = "Email is empty.";
+  }
+
+  if (passwordRequirements.test(data.password) !== true) {
+    errors.password =
+      "Passwords can only contain numbers, letters, spaces, and -_$&";
   }
 
   if (!validator.isLength(data.password, { min: 6, max: 30 })) {

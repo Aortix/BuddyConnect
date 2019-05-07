@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
 import CreateComment from "./../CreateComment/CreateComment";
-import CreatePost from "./../CreatePost/CreatePost";
 
 import isEmpty from "./../../utilities/isEmpty";
 import "./Post.css";

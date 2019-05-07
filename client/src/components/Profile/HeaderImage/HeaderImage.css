@@ -57,6 +57,10 @@
   cursor: pointer;
 }
 
+.HeaderImage-name {
+  cursor: pointer;
+}
+
 @media screen and (min-width: 860px) {
   .HeaderImage-container {
     height: 380px;

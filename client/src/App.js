@@ -69,7 +69,6 @@ import Settings from "./components/Settings/Settings";
 class App extends Component {
   componentDidMount = () => {
     //Check to see if the user is already logged in (checks through a JSON token in localstorage)
-    console.log("App component mounted!");
     this.props.authCheck();
 
     //Makes sure that the user is redirected to the login page if they go to the standard "/"
@@ -85,7 +84,6 @@ class App extends Component {
       prevProps.authenticated !== this.props.authenticated &&
       this.props.authenticated !== false
     ) {
-      console.log("App component updated!");
       this.props.getAndStoreAllPosts();
       this.props.getAndStoreFriendsPosts();
 
@@ -93,11 +91,9 @@ class App extends Component {
         /^\/profile\//.test(window.localStorage.getItem("location")) === true
       ) {
         let pastProfile = window.localStorage.getItem("location");
-        console.log("Starting on a profile page.");
         this.props.getAndStoreMyProfile(pastProfile.replace("/profile/", ""));
         this.props.history.push(pastProfile);
       } else {
-        console.log("Not starting on a profile page.");
         this.props.getAndStoreMyProfile(null);
         this.props.history.push(window.localStorage.getItem("location"));
       }
@@ -105,7 +101,6 @@ class App extends Component {
 
     //This will grab the necessary friend information and profile posts for the current user
     if (prevProps.currentProfile !== this.props.currentProfile) {
-      console.log("App component is getting friends and profile posts!");
       this.props.showFriends(this.props.currentProfile);
       this.props.getAndStoreProfilePosts(this.props.currentProfile);
       this.props.checkForFriend(this.props.currentProfile);
@@ -293,6 +288,7 @@ class App extends Component {
               updateCurrentTab={this.props.updateCurrentTab}
               currentComponent={this.props.currentComponent}
               updateCurrentComponent={this.props.updateCurrentComponent}
+              avatarUploading={this.props.avatarUploading}
               {...props}
             />
           )}
@@ -395,7 +391,8 @@ const mapStateToProps = state => ({
   deleteAccountChanged: state.settingsReducer.deleteAccountChanged,
   postsToSee: state.postsReducer.postsToSee,
   currentTab: state.profileReducer.currentTab,
-  currentComponent: state.profileReducer.currentComponent
+  currentComponent: state.profileReducer.currentComponent,
+  avatarUploading: state.profileReducer.avatarUploading
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -18,7 +18,7 @@ class HeaderImage extends Component {
   };
 
   handleHeaderImageClick = e => {
-    console.log("header image has been clicked");
+    
     this.props.changeHeader(
       document.getElementById(e.target.id).getAttribute("value"),
       this.props.currentProfile
@@ -44,6 +44,7 @@ class HeaderImage extends Component {
                 {Object.values(defaultHeaders).map(header => {
                   return (
                     <img
+                      key={header}
                       id={header}
                       height="200"
                       width="400"
@@ -57,6 +58,7 @@ class HeaderImage extends Component {
               </div>
             </div>
           </div>
+
           <Name currentName={this.props.currentName} />
         </div>
       ) : (
@@ -77,7 +79,9 @@ class HeaderImage extends Component {
             }`}
             alt="header"
           />
-          <Name currentName={this.props.currentName} />
+          <div className="HeaderImage-name">
+            <Name currentName={this.props.currentName} />
+          </div>
         </div>
       );
     } else {

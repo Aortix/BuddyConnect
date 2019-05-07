@@ -1,21 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import isEmpty from "./../../utilities/isEmpty";
 import "./Login.css";
 
 class Login extends Component {
   componentDidMount = () => {
-    console.log(this.props.authErrors);
     if (this.props.authenticated === true) {
       this.props.history.push("/dashboard");
     }
-    setTimeout(() => {
-      this.props.userHasSignedUp();
-    }, 3000);
   };
 
-  componentDidUpdate = () => {
+  componentDidUpdate = prevProps => {
     if (this.props.authenticated === true) {
       this.props.history.push("/dashboard");
     }

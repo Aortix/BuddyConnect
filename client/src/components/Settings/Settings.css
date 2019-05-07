@@ -1,6 +1,7 @@
 .Settings-container {
   height: 100%;
   padding-bottom: 15px;
+  margin: 0 auto;
 }
 
 .Settings-successes {

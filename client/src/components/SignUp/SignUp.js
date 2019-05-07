@@ -9,7 +9,6 @@ class SignUp extends Component {
     if (this.props.authenticated === true) {
       this.props.history.push("/dashboard");
     }
-    console.log(this.props.authErrors);
   };
 
   componentDidUpdate = prevProps => {

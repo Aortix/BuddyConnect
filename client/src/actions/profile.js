@@ -10,7 +10,8 @@ import {
   ABOUT_ME_UPDATED,
   INTERESTS_UPDATED,
   CLEAR_INTERESTS_UPDATED,
-  CLEAR_ABOUT_ME_UPDATED
+  CLEAR_ABOUT_ME_UPDATED,
+  AVATAR_UPLOADING
 } from "./types";
 import axios from "axios";
 import {
@@ -40,9 +41,7 @@ export const getAndStoreAProfile = profileId => dispatch => {
           }
         });
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   }
 };
 
@@ -60,20 +59,16 @@ export const getAndStoreMyProfile = profileId => dispatch => {
       .get("/api/profile/my/profile", config)
       .then(data => {
         dispatch({ type: GET_AND_STORE_MY_PROFILE, payload: data.data });
-        console.log(profileId);
+
         if (profileId !== undefined && profileId !== null) {
-          console.log("Someones profile was called.");
           dispatch(getAndStoreProfilePosts(profileId));
           dispatch(getAndStoreAProfile(profileId));
         } else {
-          console.log("My profile was called.");
           dispatch(getAndStoreProfilePosts(data.data._id));
           dispatch(getAndStoreAProfile(data.data._id));
         }
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   }
 };
 
@@ -94,12 +89,9 @@ export const showFriends = profileId => dispatch => {
         config
       )
       .then(data => {
-        console.log("Getting your friends!");
         dispatch({ type: GET_FRIEND_THUMBNAIL, payload: data.data });
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   }
 };
 
@@ -116,12 +108,9 @@ export const addFriend = profileId => dispatch => {
     axios
       .put(`/api/profile/friends/add-friend/`, { profileId: profileId }, config)
       .then(data => {
-        console.log("Added a friend!");
         dispatch({ type: ADD_FRIEND, payload: 1 });
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   }
 };
 
@@ -148,9 +137,7 @@ export const checkForFriend = profileId => dispatch => {
           dispatch({ type: CHECK_FOR_FRIEND, payload: 0 });
         }
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   }
 };
 
@@ -159,6 +146,7 @@ export const reverseAddedFriend = () => dispatch => {
 };
 
 export const changeAvatar = (fileData, profileId) => dispatch => {
+  dispatch({ type: AVATAR_UPLOADING, payload: 1 });
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -174,16 +162,18 @@ export const changeAvatar = (fileData, profileId) => dispatch => {
     axios
       .post("/api/user/update-avatar", newFormData, config)
       .then(data => {
-        console.log("Avatar uploaded.");
-        dispatch(getAndStoreAProfile(profileId));
-        window.localStorage.setItem("avatar", data.data);
-        dispatch(getAndStoreAllPosts());
-        dispatch(getAndStoreFriendsPosts());
-        dispatch(getAndStoreProfilePosts(profileId));
-        dispatch({ type: CLEAR_PROFILE_ERRORS });
+        setTimeout(() => {
+          dispatch(getAndStoreAProfile(profileId));
+          window.localStorage.setItem("avatar", data.data);
+          dispatch(getAndStoreAllPosts());
+          dispatch(getAndStoreFriendsPosts());
+          dispatch(getAndStoreProfilePosts(profileId));
+          dispatch({ type: CLEAR_PROFILE_ERRORS });
+          dispatch({ type: AVATAR_UPLOADING, payload: 0 });
+        }, 4000);
       })
       .catch(err => {
-        console.log("This is NOT an image!");
+        dispatch({ type: AVATAR_UPLOADING, payload: 0 });
         dispatch({ type: PROFILE_ERRORS, payload: err.response.data });
       });
   }
@@ -202,12 +192,9 @@ export const changeHeader = (headerData, profileId) => dispatch => {
     axios
       .put("/api/profile/update/update-header", { header: headerData }, config)
       .then(() => {
-        console.log("Header updated.");
         dispatch(getAndStoreAProfile(profileId));
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   }
 };
 
@@ -228,7 +215,6 @@ export const changeAboutMe = (aboutMeData, profileId) => dispatch => {
         config
       )
       .then(() => {
-        console.log("AboutMe updated.");
         dispatch(getAndStoreAProfile(profileId));
         dispatch({ type: ABOUT_ME_UPDATED, payload: 1 });
         setTimeout(() => {
@@ -259,7 +245,6 @@ export const changeInterests = (interestsData, profileId) => dispatch => {
         config
       )
       .then(() => {
-        console.log("Interests updated.");
         dispatch(getAndStoreAProfile(profileId));
         dispatch({ type: INTERESTS_UPDATED, payload: 1 });
         setTimeout(() => {
@@ -289,8 +274,6 @@ export const deleteFriend = friendId => dispatch => {
         dispatch(checkForFriend(friendId));
         dispatch(getAndStoreFriendsPosts());
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   }
 };

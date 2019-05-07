@@ -1,10 +1,15 @@
 const validator = require("validator");
 const isEmpty = require("./../client/src/utilities/isEmpty");
+const commonRegex = require("./regex");
 
-var alphanumberic = /^[a-z\d\-_\s]+$/i;
+const { nameRequirements, passwordRequirements } = commonRegex;
 
 const signUpValidation = data => {
   const errors = {};
+
+  if (nameRequirements.test(data.name) !== true) {
+    errors.name = "Your name can only contain letters and spaces.";
+  }
 
   if (!validator.isLength(data.name, { min: 3, max: 60 })) {
     errors.name = "Name must be between 3 and 60 characters.";
@@ -26,12 +31,22 @@ const signUpValidation = data => {
     errors.email = "Email is empty.";
   }
 
+  if (passwordRequirements.test(data.password) !== true) {
+    errors.password =
+      "Passwords can only contain numbers, letters, spaces, and -_$&";
+  }
+
   if (!validator.isLength(data.password, { min: 6, max: 30 })) {
     errors.password = "Password must be between 6 and 30 characters.";
   }
 
   if (validator.isEmpty(data.password)) {
     errors.password = "Password is empty.";
+  }
+
+  if (passwordRequirements.test(data.password2) !== true) {
+    errors.password2 =
+      "Passwords can only contain numbers, letters, spaces, and -_$&";
   }
 
   if (validator.isEmpty(data.password2)) {
