@@ -18,7 +18,6 @@ class HeaderImage extends Component {
   };
 
   handleHeaderImageClick = e => {
-    
     this.props.changeHeader(
       document.getElementById(e.target.id).getAttribute("value"),
       this.props.currentProfile
@@ -46,8 +45,6 @@ class HeaderImage extends Component {
                     <img
                       key={header}
                       id={header}
-                      height="200"
-                      width="400"
                       src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${header}`}
                       value={header}
                       onClick={this.handleHeaderImageClick}

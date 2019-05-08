@@ -38,47 +38,58 @@ router.post("/sign-up", (req, res, next) => {
     return res.status(400).send(errors);
   }
 
-  if (req.body.password === req.body.password2) {
-    bcrypt.hash(req.body.password, saltRounds, (err, salt) => {
-      if (err) {
-        errors.errors.password =
-          "Problem with hashing the password on our server.";
-        return res.status(500).send(errors);
-      }
+  userSchema.find({ email: req.body.email }).exec((err, response) => {
+    if (err) {
+      errors.errors.email = "Problem checking users for this email. Try again.";
+      return res.status(400).send(errors);
+    }
+    if (response !== null) {
+      errors.errors.email = "This email is already attached to an account.";
+      return res.status(400).send(errors);
+    } else {
+      if (req.body.password === req.body.password2) {
+        bcrypt.hash(req.body.password, saltRounds, (err, salt) => {
+          if (err) {
+            errors.errors.password =
+              "Problem with hashing the password on our server.";
+            return res.status(500).send(errors);
+          }
 
-      const newUser = new userSchema({
-        name: req.body.name,
-        email: req.body.email,
-        password: salt,
-        password2: salt
-      });
+          const newUser = new userSchema({
+            name: req.body.name,
+            email: req.body.email,
+            password: salt,
+            password2: salt
+          });
 
-      const newProfile = new profileSchema({
-        name: req.body.name,
-        user: newUser
-      });
+          const newProfile = new profileSchema({
+            name: req.body.name,
+            user: newUser
+          });
 
-      newUser.save(err => {
-        if (err) {
-          errors.errors.misc =
-            "Problem with saving the user to the database. Try again.";
-          return res.status(500).send(errors);
-        } else {
-          newProfile.save((err, data) => {
+          newUser.save(err => {
             if (err) {
               errors.errors.misc =
-                "Problem with saving the user's profile to the database. Try again.";
+                "Problem with saving the user to the database. Try again.";
               return res.status(500).send(errors);
             } else {
-              return res
-                .status(200)
-                .send("New User and Profile have been created.");
+              newProfile.save((err, data) => {
+                if (err) {
+                  errors.errors.misc =
+                    "Problem with saving the user's profile to the database. Try again.";
+                  return res.status(500).send(errors);
+                } else {
+                  return res
+                    .status(200)
+                    .send("New User and Profile have been created.");
+                }
+              });
             }
           });
-        }
-      });
-    });
-  }
+        });
+      }
+    }
+  });
 });
 
 //Public route
@@ -217,38 +228,51 @@ router.put(
     if (errors.noErrors === false) {
       return res.status(400).send(errors);
     }
-    userSchema.findById(req.user.id, (err, response) => {
+
+    userSchema.find({ email: req.body.email }).exec((err, iniResponse) => {
       if (err) {
-        errors.errors.misc = "Could not find user to update. Try again.";
-        return res.status(500).send(errors);
+        errors.errors.email =
+          "Problem checking users for this email. Try again.";
+        return res.status(400).send(errors);
       }
-      bcrypt.compare(
-        req.body.emailPassword,
-        response.password,
-        (err, response2) => {
+      if (iniResponse !== null) {
+        errors.errors.email = "This email is already attached to an account.";
+        return res.status(400).send(errors);
+      } else {
+        userSchema.findById(req.user.id, (err, response) => {
           if (err) {
-            return res.send(err);
-          } else if (response2 == false) {
-            errors.errors.emailPassword = "Incorrect Password.";
-            return res.status(400).send(errors);
-          } else {
-            userSchema.findByIdAndUpdate(
-              req.user.id,
-              { email: req.body.email },
-              (err,
-              response3 => {
-                if (err) {
-                  errors.errors.misc =
-                    "Could not update email for the user. Try again.";
-                  return res.status(500).send(errors);
-                } else {
-                  return res.send("Email changed!");
-                }
-              })
-            );
+            errors.errors.misc = "Could not find user to update. Try again.";
+            return res.status(500).send(errors);
           }
-        }
-      );
+          bcrypt.compare(
+            req.body.emailPassword,
+            response.password,
+            (err, response2) => {
+              if (err) {
+                return res.send(err);
+              } else if (response2 == false) {
+                errors.errors.emailPassword = "Incorrect Password.";
+                return res.status(400).send(errors);
+              } else {
+                userSchema.findByIdAndUpdate(
+                  req.user.id,
+                  { email: req.body.email },
+                  (err,
+                  response3 => {
+                    if (err) {
+                      errors.errors.misc =
+                        "Could not update email for the user. Try again.";
+                      return res.status(500).send(errors);
+                    } else {
+                      return res.send("Email changed!");
+                    }
+                  })
+                );
+              }
+            }
+          );
+        });
+      }
     });
   }
 );

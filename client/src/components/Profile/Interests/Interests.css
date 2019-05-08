@@ -12,7 +12,7 @@
 
 .Interests-container textarea {
   word-wrap: break-word;
-  min-width: 320px;
+  min-width: 200px;
   min-height: 50px;
 }
 
@@ -27,5 +27,10 @@
   .Interests-container {
     text-align: left;
     font-size: 1.4rem;
+  }
+
+  .Interests-container textarea {
+    min-width: 300px;
+    min-height: 70px;
   }
 }

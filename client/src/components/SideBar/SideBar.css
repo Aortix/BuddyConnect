@@ -2,11 +2,12 @@
   visibility: hidden;
   position: absolute;
   border-right: 1px solid black;
-  width: 30%;
-  max-width: 280px;
-  height: calc(100% - 80px);
+  border-bottom: 1px solid black;
+  width: 35%;
+  min-width: 180px;
+  height: 100%;
   z-index: 2;
-  font-size: 2rem;
+  font-size: 1.8rem;
   background-color: var(--secondary-bg-color);
 }
 
@@ -18,14 +19,27 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
-  padding-top: 15px;
 }
 
 .SideBar-container ul li {
-  padding-bottom: 20px;
+  padding-bottom: 15px;
+  padding-top: 15px;
   cursor: pointer;
+  font-weight: 400;
+  text-align: left;
+  padding-left: 13px;
 }
 
 .SideBar-container ul li:hover {
-  text-decoration: underline;
+  background-color: white;
+}
+
+.SideBar-container a:hover {
+  text-decoration: none;
+}
+
+@media screen and (min-width: 860px) {
+  .SideBar-container {
+    max-width: 15%;
+  }
 }

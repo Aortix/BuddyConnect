@@ -5,7 +5,7 @@
 }
 
 .Settings-container {
-  margin-bottom: 60px;
+  margin-bottom: 180px;
 }
 
 .Settings-successes {
@@ -27,7 +27,7 @@
   width: 100%;
   margin: 0 auto;
   bottom: 0;
-  margin-top: 50px;
+  left: 0;
 }
 
 @media screen and (min-width: 860px) {
@@ -41,6 +41,5 @@
   }
 
   .Settings-DeleteAccount {
-    width: 80%;
   }
 }

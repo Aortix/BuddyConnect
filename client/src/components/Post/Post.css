@@ -17,7 +17,7 @@
 
 .no-posts-text {
   position: relative;
-  line-height: 60px;
+  line-height: 50px;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 25%;
@@ -45,7 +45,7 @@
 
 .no-posts-text p {
   font-weight: 300;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .no-posts-text-profile p {
@@ -332,6 +332,10 @@
   .postDeleted::before {
     font-size: 1.2rem;
     font-weight: 300;
+  }
+
+  .fa-comment {
+    margin-left: 0px;
   }
 
   .commentDeleted {

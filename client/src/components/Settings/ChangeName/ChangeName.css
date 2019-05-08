@@ -13,7 +13,7 @@
 .ChangeName-user_input {
   border: none;
   border-bottom: 1px solid black;
-  min-width: calc(100% - 87px);
+  min-width: calc(100% - 137px);
 }
 
 .ChangeName-user_input:focus {

@@ -7,7 +7,7 @@
 .Avatar-container img {
   width: 140px;
   height: 154px;
-  border: 2px solid var(--secondary-bg-color);
+  border: 1px solid var(--secondary-bg-color);
   margin: 0 auto;
 }
 

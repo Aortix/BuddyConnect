@@ -8,7 +8,7 @@
 .DeleteAccount-user_input {
   border: none;
   border-bottom: 1px solid black;
-  width: calc(100% - 132px);
+  width: calc(100% - 182px);
 }
 
 .DeleteAccount-user_input:focus {

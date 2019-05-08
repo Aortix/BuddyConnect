@@ -13,7 +13,7 @@
 .ChangeEmail-user_input_email {
   border: none;
   border-bottom: 1px solid black;
-  width: calc(100% - 82px);
+  width: calc(100% - 132px);
 }
 
 .ChangeEmail-user_input_email:focus {
@@ -23,7 +23,7 @@
 .ChangeEmail-user_input_password {
   border: none;
   border-bottom: 1px solid black;
-  width: calc(100% - 132px);
+  width: calc(100% - 182px);
   margin-top: 10px;
 }
 
