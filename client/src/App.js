@@ -171,6 +171,7 @@ class App extends Component {
 
   render() {
     return (
+      <div className="App-with-footer">
       <div className="App">
         <Route
           path="/"
@@ -354,7 +355,7 @@ class App extends Component {
               {...props}
             />
           )}
-        />
+        /></div>
         <Route path="/" render={props => <Footer {...props} />} />
       </div>
     );

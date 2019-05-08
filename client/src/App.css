@@ -38,8 +38,9 @@ a:hover {
 
 .App {
   min-height: 100vh;
+  max-height: calc(100% - 6%);
   position: relative;
-  padding-bottom: 60px;
+  margin-bottom: 1%;
 }
 
 :focus {

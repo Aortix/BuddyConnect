@@ -23,6 +23,7 @@ class SignUp extends Component {
   render() {
     return (
       <div className="SignUp-container">
+      <div className="SignUp-block">
         <h1>Sign Up</h1>
         <form onSubmit={this.props.handleSignUpSubmit}>
           <p>Name:</p>
@@ -86,6 +87,7 @@ class SignUp extends Component {
         <Link to="/login">
           <p>Already have an account? Login here.</p>
         </Link>
+        </div>
       </div>
     );
   }

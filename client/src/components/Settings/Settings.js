@@ -131,12 +131,14 @@ export default class Settings extends Component {
             Password successfully changed!
           </div>
         ) : null}
+        <div className="Settings-DeleteAccount">
         <DeleteAccount
           deleteAccountPassword2={this.state.deleteAccountPassword2}
           handleInput={this.handleInput}
           handleDeleteAccount={this.handleDeleteAccount}
           settingsErrors={this.props.settingsErrors}
         />
+        </div>
         {this.props.deleteAccountChanged === 1 ? (
           <div className="Settings-successes">
             Account successfully deleted!

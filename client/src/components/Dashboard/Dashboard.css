@@ -85,18 +85,18 @@
   .Dashboard-post_buttons_and_create_post {
     min-height: 100vh;
     min-width: 350px;
+    padding-left: 5%;
   }
 
   .Dashboard-post_buttons_and_create_post-inner {
     position: fixed;
     top: 30%;
-    left: 14%;
     font-size: 1.2rem;
   }
 
   .Dashboard-Post_component {
     margin-top: 10px;
-    width: calc(100% - 350px);
+    min-width: calc(100% - 350px - 5%);
   }
 
   .active {

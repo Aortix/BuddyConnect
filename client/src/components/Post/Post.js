@@ -65,15 +65,16 @@ class Post extends Component {
         <div className="no-posts-container">
           <div className="no-posts-text">
             <span>Hey there!&nbsp;</span>
-            <i className="far fa-hand-peace" />
+            <i className="far fa-hand-peace fa-2x" />
 
             <p>
               I'm glad you're with us! This place might seem a little empty at
               the moment, but if you head over to the global tab and add some
               friends, you'll be surprised at how fast it fills up!
             </p>
+            <i className="far fa-smile-beam fa-3x" />
           </div>
-          <i className="far fa-smile-beam fa-3x" />
+          
         </div>
       );
     } else {
