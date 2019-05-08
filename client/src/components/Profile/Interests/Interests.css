@@ -4,6 +4,7 @@
   padding: 0;
   width: 75%;
   font-size: 1.2rem;
+  margin-bottom: 15px;
 }
 
 .Interests-container span {
@@ -12,7 +13,7 @@
 
 .Interests-container textarea {
   word-wrap: break-word;
-  min-width: 200px;
+  min-width: 230px;
   min-height: 50px;
 }
 
