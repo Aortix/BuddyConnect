@@ -11,7 +11,7 @@ const postRoute = require("./routes/api/post.js");
 const profileRoute = require("./routes/api/profile.js");
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 //Uses bodyparser to parse incoming request bodies and make info available under req.body
 app.use(bodyParser.json());
