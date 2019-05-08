@@ -4,6 +4,15 @@
   margin-left: 60px;
   margin-right: 60px;
   padding: 0 auto;
+  margin-bottom: 15px;
+}
+
+.no-posts-container-profile {
+  border: 1px dotted black;
+  margin-left: 60px;
+  margin-right: 60px;
+  padding: 0 auto;
+  margin-bottom: 15px;
 }
 
 .no-posts-text {
@@ -15,12 +24,31 @@
   padding-bottom: 25%;
 }
 
+.no-posts-text-profile {
+  position: relative;
+  line-height: 60px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
+
 .no-posts-text span {
   font-weight: 600;
   font-size: 2rem;
 }
 
+.no-posts-text-profile span {
+  font-weight: 600;
+  font-size: 2rem;
+}
+
 .no-posts-text p {
+  font-weight: 300;
+  font-size: 2rem;
+}
+
+.no-posts-text-profile p {
   font-weight: 300;
   font-size: 2rem;
 }
@@ -55,10 +83,12 @@
 }
 
 .post-avatar_image {
-  display: inline;
+  display: inline-block;
   padding-bottom: 0px;
   vertical-align: middle;
   padding-left: 5px;
+  width: 27px;
+  height: 30px;
 }
 
 .post-name {
@@ -131,6 +161,8 @@
   padding-bottom: 0px;
   vertical-align: middle;
   padding-left: 5px;
+  width: 25px;
+  height: 27.5px;
 }
 
 .comment-name {
@@ -218,4 +250,97 @@
   font-weight: 300;
   color: var(--main-bg-color);
   background-color: #1e90ff;
+}
+
+@media screen and (min-width: 860px) {
+  .no-posts-text span {
+    font-weight: 600;
+    font-size: 2.5rem;
+  }
+
+  .no-posts-text p {
+    font-weight: 300;
+    font-size: 2.5rem;
+  }
+
+  .post-date {
+    font-size: 0.7rem;
+  }
+
+  #post-delete_icon {
+    left: calc(100% - 16px);
+    bottom: calc(100% - 18px);
+  }
+
+  .post-avatar_image {
+    width: 31.5px;
+    height: 35px;
+  }
+
+  .post-name {
+    display: inline;
+    font-size: 1.6rem;
+  }
+
+  #post-delete_comment {
+    left: calc(100% - 10px);
+  }
+
+  .post-post_content {
+    font-size: 1.45rem;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    line-height: 30px;
+  }
+
+  .post-post_information {
+    padding-bottom: 6px;
+  }
+
+  .comment-date {
+    font-size: 0.6rem;
+  }
+
+  .comment-avatar_image {
+    width: 29.7px;
+    height: 33px;
+  }
+
+  .comment-name {
+    font-size: 1.3rem;
+  }
+
+  .comment-comment_information {
+    padding-bottom: 4px;
+    padding-top: 2px;
+  }
+
+  .comment-comment_content {
+    font-size: 1.15rem;
+    padding-bottom: 3px;
+    padding-top: 3px;
+  }
+
+  .add-comment-button-container {
+    height: 30px;
+  }
+
+  .open_and_close-comment {
+    font-size: 1.3rem;
+  }
+
+  .postDeleted::before {
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+
+  .commentDeleted {
+    visibility: hidden;
+    height: 35px;
+  }
+
+  .commentDeleted::before {
+    font-size: 1.1rem;
+    font-weight: 300;
+  }
 }

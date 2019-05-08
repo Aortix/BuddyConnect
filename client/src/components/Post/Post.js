@@ -44,17 +44,16 @@ class Post extends Component {
       /profile/.test(window.localStorage.getItem("location")) === true
     ) {
       return (
-        <div className="no-posts-container">
-          <div className="no-posts-text">
+        <div className="no-posts-container-profile">
+          <div className="no-posts-text-profile">
             <span>Hello.&nbsp;</span>
-            <i className="far fa-hand-paper" />
-
+            <i className="far fa-hand-paper fa-2x" />
             <p>
               This user has no profile posts to display at the moment,
               unfortunately.
             </p>
+            <i className="far fa-frown fa-3x" />
           </div>
-          <i className="far fa-frown fa-3x" />
         </div>
       );
     } else if (
@@ -74,7 +73,6 @@ class Post extends Component {
             </p>
             <i className="far fa-smile-beam fa-3x" />
           </div>
-          
         </div>
       );
     } else {
@@ -108,8 +106,6 @@ class Post extends Component {
                     >
                       <img
                         className="post-avatar_image"
-                        width="27"
-                        height="30"
                         src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
                           post.avatar
                         }`}
@@ -154,8 +150,6 @@ class Post extends Component {
                         >
                           <img
                             className="comment-avatar_image"
-                            width="25"
-                            height="27.5"
                             src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
                               comments.commenterAvatar
                             }`}

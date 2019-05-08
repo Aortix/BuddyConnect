@@ -55,3 +55,6 @@
   color: var(--main-bg-color);
   background-color: #1e90ff;
 }
+
+@media screen and (min-width: 860px) {
+}

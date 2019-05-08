@@ -3,10 +3,17 @@
   margin: 0 auto;
   padding: 0;
   width: 75%;
+  font-size: 1.2rem;
 }
 
 .Interests-container span {
   word-wrap: break-word;
+}
+
+.Interests-container textarea {
+  word-wrap: break-word;
+  min-width: 320px;
+  min-height: 50px;
 }
 
 .Interests-submit_button {
@@ -19,5 +26,6 @@
 @media screen and (min-width: 860px) {
   .Interests-container {
     text-align: left;
+    font-size: 1.4rem;
   }
 }

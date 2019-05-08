@@ -1,7 +1,11 @@
-.Settings-container {
+.Settings-container-absolute {
   min-height: 100vh;
   padding-bottom: 30px;
   margin: 0 auto;
+}
+
+.Settings-container {
+  margin-bottom: 60px;
 }
 
 .Settings-successes {
@@ -18,13 +22,25 @@
   background-color: #1e90ff;
 }
 
+.Settings-DeleteAccount {
+  position: absolute;
+  width: 100%;
+  margin: 0 auto;
+  bottom: 0;
+  margin-top: 50px;
+}
+
 @media screen and (min-width: 860px) {
-  .Settings-container {
+  .Settings-container-absolute {
     margin: 0 auto;
     width: 80%;
     background-color: var(--main-bg-color);
     border: 1px solid black;
     border-top: none;
     padding-top: 1px;
+  }
+
+  .Settings-DeleteAccount {
+    width: 80%;
   }
 }

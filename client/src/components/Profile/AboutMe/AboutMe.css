@@ -2,10 +2,17 @@
   margin: 0 auto;
   padding: 0;
   width: 75%;
+  font-size: 1.2rem;
 }
 
 .AboutMe-container span {
   word-wrap: break-word;
+}
+
+.AboutMe-container textarea {
+  word-wrap: break-word;
+  min-width: 320px;
+  min-height: 50px;
 }
 
 .AboutMe-submit_button {
@@ -22,5 +29,6 @@
 @media screen and (min-width: 860px) {
   .AboutMe-container {
     text-align: left;
+    font-size: 1.4rem;
   }
 }

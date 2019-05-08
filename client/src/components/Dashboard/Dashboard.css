@@ -53,6 +53,11 @@
   display: none !important;
 }
 
+.active {
+  background-color: black !important;
+  color: var(--secondary-bg-color);
+}
+
 @media only screen and (min-width: 860px) {
   .Dashboard-container {
     display: flex;
@@ -85,12 +90,12 @@
   .Dashboard-post_buttons_and_create_post {
     min-height: 100vh;
     min-width: 350px;
-    padding-left: 5%;
+    padding-left: 6%;
   }
 
   .Dashboard-post_buttons_and_create_post-inner {
     position: fixed;
-    top: 30%;
+    top: 34%;
     font-size: 1.2rem;
   }
 

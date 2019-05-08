@@ -3,11 +3,10 @@
   position: absolute;
   border-right: 1px solid black;
   width: 30%;
-  max-width: 200px;
+  max-width: 280px;
   height: calc(100% - 80px);
-  background-color: var(--main-overlay-color);
   z-index: 2;
-  font-size: 1.4rem;
+  font-size: 2rem;
   background-color: var(--secondary-bg-color);
 }
 
@@ -19,10 +18,11 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+  padding-top: 15px;
 }
 
 .SideBar-container ul li {
-  padding-bottom: 8px;
+  padding-bottom: 20px;
   cursor: pointer;
 }
 
