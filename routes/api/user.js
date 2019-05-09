@@ -236,7 +236,7 @@ router.put(
           "Problem checking users for this email. Try again.";
         return res.status(400).send(errors);
       }
-      if (iniResponse !== null) {
+      if (isEmpty(iniResponse) === false) {
         errors.errors.email = "This email is already attached to an account.";
         return res.status(400).send(errors);
       } else {
