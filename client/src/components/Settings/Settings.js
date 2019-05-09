@@ -142,12 +142,13 @@ export default class Settings extends Component {
             handleDeleteAccount={this.handleDeleteAccount}
             settingsErrors={this.props.settingsErrors}
           />
+
+          {this.props.deleteAccountChanged === 1 ? (
+            <div className="Settings-successes">
+              Account successfully deleted!
+            </div>
+          ) : null}
         </div>
-        {this.props.deleteAccountChanged === 1 ? (
-          <div className="Settings-successes">
-            Account successfully deleted!
-          </div>
-        ) : null}
       </div>
     );
   }
