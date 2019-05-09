@@ -117,7 +117,7 @@ class Profile extends Component {
                     className="ppp"
                     onClick={() => this.updateTabAndComponent(3)}
                   >
-                    Friends
+                    Buddies
                   </li>
                 ) : null}
                 {this.props.currentTab === 4 ? (
@@ -144,7 +144,7 @@ class Profile extends Component {
                       className="Profile-hidden_tab_perm"
                       onClick={() => this.updateTabAndComponent(3)}
                     >
-                      Friends
+                      Buddies
                     </li>
                   </React.Fragment>
                 ) : null}
@@ -172,7 +172,7 @@ class Profile extends Component {
                       className="Profile-not_active"
                       onClick={() => this.updateTabAndComponent(3)}
                     >
-                      Friends
+                      Buddies
                     </li>
                   </React.Fragment>
                 ) : null}
@@ -200,7 +200,7 @@ class Profile extends Component {
                       className="Profile-not_active"
                       onClick={() => this.updateTabAndComponent(3)}
                     >
-                      Friends
+                      Buddies
                     </li>
                   </React.Fragment>
                 ) : null}
@@ -228,7 +228,7 @@ class Profile extends Component {
                       className="Profile-not_active"
                       onClick={() => this.updateTabAndComponent(3)}
                     >
-                      Friends
+                      Buddies
                     </li>
                   </React.Fragment>
                 ) : null}
@@ -256,7 +256,7 @@ class Profile extends Component {
                       className="Profile-active"
                       onClick={() => this.updateTabAndComponent(3)}
                     >
-                      Friends
+                      Buddies
                     </li>
                   </React.Fragment>
                 ) : null}

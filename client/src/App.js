@@ -55,7 +55,8 @@ import {
   CLEAR_ACCOUNT_DELETED_CHANGED,
   UPDATE_POSTS_TO_SEE,
   CURRENT_TAB,
-  CURRENT_COMPONENT
+  CURRENT_COMPONENT,
+  NEW_POSTS
 } from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
@@ -86,6 +87,7 @@ class App extends Component {
     ) {
       this.props.getAndStoreAllPosts();
       this.props.getAndStoreFriendsPosts();
+      setTimeout(() => {this.props.getNewPosts(1)}, 8000)
 
       if (
         /^\/profile\//.test(window.localStorage.getItem("location")) === true
@@ -99,6 +101,9 @@ class App extends Component {
       }
     }
 
+    if (prevProps.newPosts !== this.props.newPosts && this.props.newPosts !== 1) {
+      setTimeout(() => {this.props.getNewPosts(1)}, 8000)
+    }
     //This will grab the necessary friend information and profile posts for the current user
     if (prevProps.currentProfile !== this.props.currentProfile) {
       this.props.showFriends(this.props.currentProfile);
@@ -207,6 +212,8 @@ class App extends Component {
               friendsPosts={this.props.friendsPosts}
               allPosts={this.props.allPosts}
               getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
+              getAndStoreFriendsPosts={this.props.getAndStoreFriendsPosts}
+              getAndStoreAllPosts={this.props.getAndStoreAllPosts}
               changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
               changeLocation={this.changeLocation}
               currentPost={this.props.currentPost}
@@ -230,6 +237,8 @@ class App extends Component {
               commentAlreadyDeleted={this.props.commentAlreadyDeleted}
               postsToSee={this.props.postsToSee}
               updatePostsToSee={this.props.updatePostsToSee}
+              newPosts={this.props.newPosts}
+              getNewPosts={this.props.getNewPosts}
               {...props}
             />
           )}
@@ -393,7 +402,8 @@ const mapStateToProps = state => ({
   postsToSee: state.postsReducer.postsToSee,
   currentTab: state.profileReducer.currentTab,
   currentComponent: state.profileReducer.currentComponent,
-  avatarUploading: state.profileReducer.avatarUploading
+  avatarUploading: state.profileReducer.avatarUploading,
+  newPosts: state.postsReducer.newPosts
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -531,6 +541,9 @@ const mapDispatchToProps = dispatch => ({
   },
   updateCurrentComponent: component => {
     dispatch({ type: CURRENT_COMPONENT, payload: component });
+  },
+  getNewPosts: number => {
+    dispatch({type: NEW_POSTS, payload: number})
   }
 });
 

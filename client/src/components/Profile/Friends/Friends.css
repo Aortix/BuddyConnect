@@ -1,21 +1,24 @@
 .Friends-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
   width: 80%;
   margin: 0 auto;
-  justify-content: center;
 }
 
 .friend-icon {
   display: inline-block;
   margin-bottom: 20px;
-  margin-right: 20px;
+  margin-right: 5%;
+  margin-left: 5%;
+  padding-left: 8px;
+  padding-right: 8px;
   cursor: pointer;
   border: 2px solid var(--secondary-bg-color);
 }
 
 .friend-icon:hover {
-  box-shadow: 0px 0px 1px;
+  box-shadow: 0px 0px 2px;
 }
 
 .friend-icon p {
@@ -26,4 +29,34 @@
 .friend-icon img {
   height: 110px;
   width: 100px;
+}
+
+@media screen and (min-width: 300px) {
+  .Friends-container {
+    grid-template-columns: 1fr 1fr; 
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .Friends-container {
+    grid-template-columns: 1fr 1fr 1fr; 
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .Friends-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  .Friends-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr; 
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .Friends-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; 
+  }
 }

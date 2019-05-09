@@ -10,7 +10,8 @@ import {
   POST_CREATED,
   POST_DELETED,
   COMMENT_DELETED,
-  UPDATE_POSTS_TO_SEE
+  UPDATE_POSTS_TO_SEE,
+  NEW_POSTS
 } from "./../actions/types";
 
 const initialState = {
@@ -24,7 +25,8 @@ const initialState = {
   commentErrors: {},
   postCreated: 0,
   postDeleted: 0,
-  commentDeleted: 0
+  commentDeleted: 0,
+  newPosts: 0
 };
 
 export const postsReducer = (state = initialState, action) => {
@@ -89,6 +91,11 @@ export const postsReducer = (state = initialState, action) => {
         ...state,
         postsToSee: action.payload
       };
+      case NEW_POSTS:
+      return {
+        ...state,
+        newPosts: action.payload
+      }
     default:
       return state;
   }

@@ -11,6 +11,12 @@ class Dashboard extends Component {
     this.setState({ postsToSee: this.props.postsToSee });
   };
 
+  componentWillUpdate = (prevProps) => {
+    if (prevProps.newPosts !== this.props.newPosts) {
+      console.log('this changed!');
+    }
+  }
+
   state = {
     postsToSee: 0
   };
@@ -102,6 +108,10 @@ class Dashboard extends Component {
               postCreated={this.props.postCreated}
               postAlreadyCreated={this.props.postAlreadyCreated}
             />
+            {this.props.newPosts === 1 ? <div className="Dashboard-new_posts_button" onClick={() => {      this.props.getAndStoreAllPosts();
+      this.props.getAndStoreFriendsPosts();
+      this.props.getNewPosts(0); window.scrollTo(0,0);}}><i className="fas fa-comments"></i>&nbsp;
+      <span>Check For Posts</span></div> : null}
           </div>
         </div>
         {this.props.postsToSee !== 1 ? (
