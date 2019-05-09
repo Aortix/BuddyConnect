@@ -23,7 +23,7 @@ export const authSignUp = (
     .post("/api/user/sign-up", requestBody)
     .then(data => {
       dispatch({ type: USER_SIGNED_UP, payload: 1 });
-      dispatch({ type: USER_SIGNED_UP, payload: 0 });
+      setTimeout(() => dispatch({ type: USER_SIGNED_UP, payload: 0 }), 3000);
     })
     .catch(err => {
       dispatch({ type: ERROR, payload: err.response.data.errors });

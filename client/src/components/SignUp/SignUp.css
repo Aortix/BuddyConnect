@@ -10,6 +10,9 @@
 #SignUp-notification {
   display: inline-block;
   font-weight: 300;
+  font-size: 1.4rem;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .SignUp-container h1 {

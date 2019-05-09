@@ -17,7 +17,7 @@ const CommentSchema = new Schema({
   },
   commenterAvatar: {
     type: String,
-    default: "standard.png",
+    default: "newstandard3.png",
     required: true
   },
   commenterComment: {

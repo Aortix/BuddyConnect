@@ -18,6 +18,7 @@ const commentsSchema = require("../../schemas/comments.js");
 const signUpValidation = require("./../../validation/signUpValidation");
 const loginValidation = require("./../../validation/loginValidation");
 const settingsPageValidation = require("./../../validation/settingsPageValidation");
+const isEmpty = require("./../../client/src/utilities/isEmpty");
 
 require("./../../auth/jwtStrategy")(passport);
 
@@ -43,7 +44,7 @@ router.post("/sign-up", (req, res, next) => {
       errors.errors.email = "Problem checking users for this email. Try again.";
       return res.status(400).send(errors);
     }
-    if (response !== null) {
+    if (isEmpty(response) === false) {
       errors.errors.email = "This email is already attached to an account.";
       return res.status(400).send(errors);
     } else {
@@ -365,7 +366,7 @@ router.post(
           );
         }
       }),
-      limits: { fileSize: 4000000 },
+      limits: { fileSize: 1000000 },
       fileFilter: (req, file, cb) => {
         checkAvatarUpload(req, file, cb);
       }
@@ -373,8 +374,8 @@ router.post(
 
     upload(req, res, err => {
       if (err instanceof multer.MulterError) {
-        errors.misc = "File is too big. 4MB max size.";
-        return res.status(500).send(errors);
+        errors.misc = "Image is too big. 1MB max size.";
+        return res.status(400).send(errors);
       } else if (err) {
         errors.misc =
           "Something went wrong with the image uploading. Try again.";
@@ -387,7 +388,7 @@ router.post(
             errors.misc = "Can't find user account to update. Try again.";
             return res.status(500).send(errors);
           } else {
-            if (response.avatar === "standard.png") {
+            if (response.avatar === "newstandard3.png") {
             } else {
               s3.deleteObject(
                 {

@@ -6,7 +6,7 @@
 
 .Avatar-container img {
   width: 140px;
-  height: 154px;
+  height: 182px;
   border: 1px solid var(--secondary-bg-color);
   margin: 0 auto;
 }
@@ -23,6 +23,6 @@
 
   .Avatar-container img {
     width: 170px;
-    height: 187px;
+    height: 220px;
   }
 }

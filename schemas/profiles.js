@@ -13,7 +13,7 @@ const ProfileSchema = new Schema({
     required: true
   },
   name: { type: String, required: true },
-  avatar: { type: String, default: "standard.png", required: true },
+  avatar: { type: String, default: "newstandard3.png", required: true },
   header: {
     type: String,
     default: defaultHeaders[Math.floor(Math.random() * 7)],
