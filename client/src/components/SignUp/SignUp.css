@@ -7,6 +7,11 @@
 .SignUp-block {
 }
 
+#SignUp-notification {
+  display: inline-block;
+  font-weight: 300;
+}
+
 .SignUp-container h1 {
   margin-top: 15px;
   margin-bottom: 25px;

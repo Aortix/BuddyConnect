@@ -365,7 +365,7 @@ router.post(
           );
         }
       }),
-      limits: { fileSize: 900000 },
+      limits: { fileSize: 4000000 },
       fileFilter: (req, file, cb) => {
         checkAvatarUpload(req, file, cb);
       }
@@ -373,8 +373,7 @@ router.post(
 
     upload(req, res, err => {
       if (err instanceof multer.MulterError) {
-        errors.misc =
-          "Something went wrong with the image uploading software. Try again.";
+        errors.misc = "File is too big. 4MB max size.";
         return res.status(500).send(errors);
       } else if (err) {
         errors.misc =
