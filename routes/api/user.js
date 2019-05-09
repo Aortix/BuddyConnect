@@ -547,11 +547,32 @@ router.put(
                             "Cannot find user to delete. Try again.";
                           return res.status(500).send(errors);
                         } else {
+                          if (response.avatar === "newstandard3.png") {
+                            return res.send("Everything should be deleted.");
+                          } else {
+                            s3.deleteObject(
+                              {
+                                Bucket: process.env.BUCKET_NAME,
+                                Key: response.avatar
+                              },
+                              (err, data) => {
+                                if (err) {
+                                  errors.misc =
+                                    "Error deleting previous avatar.";
+                                  return res.status(500).send(errors);
+                                } else {
+                                  return res.send(
+                                    "Everything should be deleted."
+                                  );
+                                }
+                              }
+                            );
+                          }
                           console.log("User deleted.");
                         }
                       }
                     );
-                    return res.send("Everything should be deleted.");
+                    //return res.send("Everything should be deleted.");
                   }
                 }
               );
