@@ -3,7 +3,7 @@
 https://protected-wildwood-18595.herokuapp.com/
 
 ## A Social Media Website
-#### Created using the MERN Stack (MongoDB, Express, React + Redux, Node.js)
+#### Created using the MERN Stack (MongoDB, Express.js, React + Redux, Node.js)
 
 Took me some time to figure out how to create an application of this scale, but I feel like I learned a lot during the process and I feel more confident now moving forward as an aspiring developer.
 
