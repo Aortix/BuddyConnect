@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ElementDropdownImage from "./../../../images/elementDropdownImage.svg";
 
 import "./Title.css";
 
