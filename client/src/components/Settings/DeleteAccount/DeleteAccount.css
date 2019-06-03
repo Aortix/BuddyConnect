@@ -9,6 +9,7 @@
   border: none;
   border-bottom: 1px solid black;
   width: calc(100% - 182px);
+  border-radius: 0;
 }
 
 .DeleteAccount-user_input:focus {

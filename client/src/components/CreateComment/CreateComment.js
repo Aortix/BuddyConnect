@@ -75,11 +75,11 @@ class CreateComment extends Component {
               {this.props.commentErrors.misc}
             </div>
           )}
-          <input
+          <button
             type="submit"
             value="Submit"
             onClick={this.submitCommentForm}
-          />
+          >Submit</button>
         </form>
       </div>
     );

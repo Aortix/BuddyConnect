@@ -14,6 +14,7 @@ export default function ChangeEmail(props) {
           name="email"
           value={props.email}
           onChange={props.handleInput}
+          autoComplete="new-password"
           required
         />
         <br />
@@ -27,6 +28,7 @@ export default function ChangeEmail(props) {
           name="emailPassword2"
           value={props.emailPassword2}
           onChange={props.handleInput}
+          autoComplete="new-password"
           required
         />
         {props.settingsErrors.emailPassword !== undefined ? (
@@ -34,13 +36,13 @@ export default function ChangeEmail(props) {
             {props.settingsErrors.emailPassword}
           </div>
         ) : null}
-        <input
+        <button
           className="ChangeEmail-submit_button"
           type="submit"
           name="Submit"
           value="Save"
           formNoValidate
-        />
+        >Save</button>
         <br />
       </form>
     </div>

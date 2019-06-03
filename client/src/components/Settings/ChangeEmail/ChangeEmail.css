@@ -14,6 +14,7 @@
   border: none;
   border-bottom: 1px solid black;
   width: calc(100% - 132px);
+  border-radius: 0;
 }
 
 .ChangeEmail-user_input_email:focus {
@@ -25,6 +26,7 @@
   border-bottom: 1px solid black;
   width: calc(100% - 182px);
   margin-top: 10px;
+  border-radius: 0;
 }
 
 .ChangeEmail-user_input_password {

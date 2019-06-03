@@ -36,13 +36,13 @@ export default function ChangePassword(props) {
             {props.settingsErrors.passwordPassword2}
           </div>
         ) : null}
-        <input
+        <button
           className="ChangePassword-submit_button"
           type="submit"
           name="Submit"
           value="Save"
           formNoValidate
-        />
+        >Save</button>
         <br />
       </form>
     </div>

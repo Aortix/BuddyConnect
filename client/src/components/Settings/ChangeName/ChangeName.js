@@ -21,13 +21,13 @@ export default function ChangeName(props) {
         {props.settingsErrors.name !== undefined ? (
           <div className="ChangeName-errors">{props.settingsErrors.name}</div>
         ) : null}
-        <input
+        <button
           className="ChangeName-submit_button"
           type="submit"
           name="Submit"
           value="Save"
           formNoValidate
-        />
+        >Save</button>
         <br />
       </form>
     </div>

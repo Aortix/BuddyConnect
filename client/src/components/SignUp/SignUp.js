@@ -46,6 +46,7 @@ class SignUp extends Component {
               name="email"
               onChange={this.props.handleChange}
               value={this.props.email}
+              autoComplete="new-password"
             />
             {isEmpty(this.props.authErrors.email) === true ? null : (
               <div className="SignUp-errors">{this.props.authErrors.email}</div>
@@ -56,6 +57,7 @@ class SignUp extends Component {
               name="password"
               onChange={this.props.handleChange}
               value={this.props.password}
+              autoComplete="new-password"
             />
             {isEmpty(this.props.authErrors.password) === true ? null : (
               <div className="SignUp-errors">
@@ -78,12 +80,12 @@ class SignUp extends Component {
               <div className="SignUp-errors">{this.props.authErrors.misc}</div>
             )}
             <br />
-            <input
+            <button
               type="submit"
               name="Submit"
               onClick={this.props.handleSignUpSubmit}
               value="CREATE ACCOUNT"
-            />
+            >Submit</button>
           </form>
           {isEmpty(this.props.authErrors.misc) === true ? null : (
             <div className="SignUp-errors">{this.props.authErrors.misc}</div>

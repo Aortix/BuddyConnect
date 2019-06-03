@@ -4,7 +4,7 @@ import "./SideBar.css";
 
 export default function SideBar(props) {
   document.addEventListener("click", e => {
-    if (e.target.className === "dropdown-image") {
+    if (e.target.id === "dropdown-image") {
     } else if (
       e.target.id !== "SideBar" &&
       document
