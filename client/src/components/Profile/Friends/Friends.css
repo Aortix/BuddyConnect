@@ -11,8 +11,7 @@
   margin-bottom: 20px;
   margin-right: 5%;
   margin-left: 5%;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding: 8px;
   cursor: pointer;
   border: 2px solid var(--secondary-bg-color);
 }

@@ -44,10 +44,8 @@ export default function SideBar(props) {
               Sign Up
             </li>
           </Link>
-          <li>
-            <DarkTheme />
-          </li>
         </ul>
+        <DarkTheme />
       </div>
     );
   } else {
@@ -100,10 +98,8 @@ export default function SideBar(props) {
               Sign Out
             </li>
           </Link>
-          <li>
-            <DarkTheme />
-          </li>
         </ul>
+        <DarkTheme />
       </div>
     );
   }

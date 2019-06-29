@@ -1,5 +1,11 @@
 .DarkTheme-container {
   font-size: 1.1rem;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  cursor: pointer;
+  font-weight: 400;
+  text-align: left;
+  padding-left: 13px;
 }
 
 .fa-toggle-on {
