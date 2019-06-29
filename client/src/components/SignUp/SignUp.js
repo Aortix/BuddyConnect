@@ -85,13 +85,15 @@ class SignUp extends Component {
               name="Submit"
               onClick={this.props.handleSignUpSubmit}
               value="CREATE ACCOUNT"
-            >Submit</button>
+            >
+              Submit
+            </button>
           </form>
           {isEmpty(this.props.authErrors.misc) === true ? null : (
             <div className="SignUp-errors">{this.props.authErrors.misc}</div>
           )}
           <Link to="/login">
-            <p>Already have an account? Login here.</p>
+            <p className="SignUp-login">Already have an account? Login here.</p>
           </Link>
         </div>
       </div>

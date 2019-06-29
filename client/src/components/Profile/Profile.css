@@ -12,8 +12,8 @@
 }
 
 .profile-tabs-container li {
-  border: 1px solid black;
-  border-top: 1px solid black;
+  border: 1px solid var(--border-color-black);
+  border-top: 1px solid var(--border-color-black);
   list-style-type: none;
   margin: 0 auto;
   padding-bottom: 3px;
@@ -35,7 +35,7 @@
   font-weight: 400;
   width: 140px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #1e90ff;
 }
 
@@ -46,20 +46,19 @@
   padding-top: 3px;
   padding-bottom: 3px;
   display: block;
-  color: red;
   font-size: 0.8rem;
   font-weight: 300;
   width: 160px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #dc143c;
 }
 
 .Profile-active {
   visibility: hidden;
   position: absolute;
-  background-color: black;
-  color: var(--main-bg-color);
+  background-color: var(--secondary-bg-color);
+  color: var(--main-text-color);
 }
 
 .Profile-not_active {
@@ -67,18 +66,13 @@
   position: absolute;
 }
 
-.ppp {
-  background-color: black;
-  color: var(--main-bg-color);
-}
-
 @media screen and (min-width: 860px) {
   .Profile-container {
     width: 80%;
     margin: 0 auto;
     position: relative;
-    border-right: 1px solid black;
-    border-left: 1px solid black;
+    border-right: 1px solid var(--border-color-black);
+    border-left: 1px solid var(--border-color-black);
     background-color: var(--main-bg-color);
   }
 
@@ -87,7 +81,7 @@
     font-size: 2.4rem;
     font-weight: 500;
     height: 100%;
-    border-right: 1px solid black;
+    border-right: 1px solid var(--border-color-black);
   }
 
   .profile-tabs-container li {
@@ -109,8 +103,8 @@
   .Profile-desktop_flex {
     display: flex;
     flex-wrap: nowrap;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    border-top: 1px solid var(--border-color-black);
+    border-bottom: 1px solid var(--border-color-black);
   }
 
   .Profile-tabs_desktop {

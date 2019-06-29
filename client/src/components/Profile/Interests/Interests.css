@@ -19,7 +19,8 @@
 
 .Interests-submit_button {
   background-color: var(--main-bg-color);
-  border: 1px solid black;
+  color: var(--main-text-color);
+  border: 1px solid var(--border-color-black);
   padding-left: 15px;
   padding-right: 15px;
 }

@@ -48,10 +48,14 @@ class Login extends Component {
           {this.props.authErrors.misc !== undefined ? (
             <div className="Login-errors">{this.props.authErrors.misc}</div>
           ) : null}
-          <button type="submit" name="Submit" value="GO" formNoValidate >Submit</button>
+          <button type="submit" name="Submit" value="GO" formNoValidate>
+            Submit
+          </button>
         </form>
         <Link to="/sign-up">
-          <p>Need to create an account? Click here.</p>
+          <p className="Login-create_account">
+            Need to create an account? Click here.
+          </p>
         </Link>
       </div>
     );

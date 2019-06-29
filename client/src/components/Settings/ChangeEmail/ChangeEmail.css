@@ -11,8 +11,10 @@
 }
 
 .ChangeEmail-user_input_email {
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--border-color-black);
   width: calc(100% - 132px);
   border-radius: 0;
 }
@@ -22,8 +24,10 @@
 }
 
 .ChangeEmail-user_input_password {
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--border-color-black);
   width: calc(100% - 182px);
   margin-top: 10px;
   border-radius: 0;
@@ -35,8 +39,9 @@
 
 .ChangeEmail-submit_button {
   display: block;
-  border: 1px solid black;
+  border: 1px solid var(--border-color-black);
   background-color: var(--secondary-bg-color);
+  color: var(--main-text-color);
   margin: 0 auto;
   margin-top: 13px;
   width: 80px;
@@ -54,6 +59,6 @@
   font-weight: 300;
   width: 160px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #dc143c;
 }

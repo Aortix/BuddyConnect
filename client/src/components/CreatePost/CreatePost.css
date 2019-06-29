@@ -20,9 +20,13 @@
   margin-bottom: 40px;
   margin-top: 10px;
   background-color: var(--main-bg-color);
-  border: 1px solid black;
+  border: 1px solid var(--border-color-black);
   font-size: 0.9rem;
   cursor: pointer;
+}
+
+.fa-paper-plane {
+  color: var(--font-awesome-color);
 }
 
 .CreatePost-errors {
@@ -32,12 +36,11 @@
   padding-top: 3px;
   padding-bottom: 3px;
   display: block;
-  color: red;
   font-size: 0.8rem;
   font-weight: 300;
   width: 160px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #dc143c;
 }
 
@@ -52,9 +55,6 @@
   font-weight: 400;
   width: 140px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #1e90ff;
-}
-
-@media screen and (min-width: 860px) {
 }

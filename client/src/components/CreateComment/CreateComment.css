@@ -9,15 +9,17 @@
   min-height: 40px;
   max-height: 50vh;
   width: 100%;
-  border: 1px solid black;
+  border: 1px solid var(--border-color-black);
   vertical-align: top;
   margin-top: 5px;
   margin-bottom: 2px;
+  font-size: 0.9rem;
 }
 
 .CreateComment-container button {
-  border: 1px solid black;
+  border: 1px solid var(--border-color-black);
   background-color: var(--secondary-bg-color);
+  color: var(--main-text-color);
   font-size: 1.1rem;
   cursor: pointer;
 }
@@ -33,11 +35,10 @@
   padding-bottom: 3px;
   padding-left: 10px;
   display: block;
-  color: red;
   font-size: 0.8rem;
   font-weight: 300;
   width: 180px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #dc143c;
 }

@@ -1,0 +1,7 @@
+.DarkTheme-container {
+  font-size: 1.1rem;
+}
+
+.fa-toggle-on {
+  color: var(--font-awesome-color);
+}

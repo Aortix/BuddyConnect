@@ -1,13 +1,13 @@
 .SideBar-container {
   visibility: hidden;
   position: absolute;
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
+  border-right: 1px solid var(--border-color-black);
+  border-bottom: 1px solid var(--border-color-black);
   width: 35%;
   min-width: 180px;
   height: 100%;
   z-index: 2;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   background-color: var(--secondary-bg-color);
 }
 
@@ -31,7 +31,7 @@
 }
 
 .SideBar-container ul li:hover {
-  background-color: white;
+  background-color: var(--main-bg-color);
 }
 
 .SideBar-container a:hover {

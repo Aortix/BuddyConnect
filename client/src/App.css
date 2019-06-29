@@ -1,9 +1,11 @@
 :root {
   --main-bg-color: #ffffff;
   --main-text-color: #282828;
-  --main-overlay-color: #ffffff;
   --secondary-bg-color: #fafafa;
   --secondary-text-color: #a9a9a9;
+  --border-color-black: #000000;
+  --border-color-white: #ffffff;
+  --font-awesome-color: #000000;
   font-size: 16px;
 }
 
@@ -19,6 +21,15 @@ body {
   margin: 0 auto;
   font-family: "Segoe UI", Helvetica, sans-serif;
   text-align: center;
+}
+
+textarea {
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+}
+
+textarea::placeholder {
+  color: var(--main-text-color);
 }
 
 h1 {

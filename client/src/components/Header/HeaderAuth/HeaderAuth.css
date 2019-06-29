@@ -1,6 +1,6 @@
 .HeaderAuth-container {
   margin-right: 15px;
-  color: black;
+  color: var(--main-text-color);
 }
 
 .HeaderAuth-container img {

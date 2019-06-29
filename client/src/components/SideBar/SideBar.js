@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./SideBar.css";
 
+import DarkTheme from "./DarkTheme/DarkTheme";
+
 export default function SideBar(props) {
   document.addEventListener("click", e => {
     if (e.target.id === "dropdown-image") {
@@ -42,6 +44,9 @@ export default function SideBar(props) {
               Sign Up
             </li>
           </Link>
+          <li>
+            <DarkTheme />
+          </li>
         </ul>
       </div>
     );
@@ -95,6 +100,9 @@ export default function SideBar(props) {
               Sign Out
             </li>
           </Link>
+          <li>
+            <DarkTheme />
+          </li>
         </ul>
       </div>
     );

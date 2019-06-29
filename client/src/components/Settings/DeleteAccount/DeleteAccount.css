@@ -6,8 +6,10 @@
 }
 
 .DeleteAccount-user_input {
+  color: var(--main-text-color);
+  background-color: var(--main-bg-color);
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--border-color-black);
   width: calc(100% - 182px);
   border-radius: 0;
 }
@@ -18,8 +20,9 @@
 
 .DeleteAccount-container button {
   display: block;
-  border: 1px solid black;
+  border: 1px solid var(--border-color-black);
   background-color: var(--main-bg-color);
+  color: var(--main-text-color);
   font-size: 1.3rem;
   margin: 0 auto;
   margin-top: 10px;
@@ -45,6 +48,6 @@
   font-weight: 300;
   width: 160px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #dc143c;
 }

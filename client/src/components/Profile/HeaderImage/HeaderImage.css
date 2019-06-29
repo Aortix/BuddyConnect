@@ -22,7 +22,7 @@
   width: 70%;
   z-index: 3;
   box-shadow: 0px 0px 2px;
-  background-color: white;
+  background-color: var(--main-bg-color);
   margin: 0 auto;
   padding-bottom: 15px;
 }
@@ -34,7 +34,7 @@
   margin-bottom: 0px;
   margin-top: 0px;
   padding-left: 10px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--border-color-black);
   text-align: left;
   font-weight: 300;
   font-style: italic;
@@ -45,7 +45,7 @@
 }
 
 .choosing-a-header img {
-  border: 1px solid black;
+  border: 1px solid var(--border-color-black);
   margin-top: 25px;
   margin-left: 10px;
   margin-right: 10px;
@@ -69,7 +69,7 @@
   }
 
   .choosing-a-header img {
-    border: 1px solid black;
+    border: 1px solid var(--border-color-black);
     margin-top: 25px;
     margin-left: 10px;
     margin-right: 10px;

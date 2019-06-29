@@ -65,7 +65,9 @@ class CreatePost extends Component {
               onClick={this.submitPostForm}
             >
               <i className="fas fa-paper-plane" />
-              <span>&nbsp;Submit</span>
+              <span style={{ color: "var(--main-text-color)" }}>
+                &nbsp;Submit
+              </span>
             </button>
           </div>
         </form>

@@ -5,9 +5,6 @@
   margin-bottom: 50px;
 }
 
-.SignUp-block {
-}
-
 #SignUp-notification {
   display: inline-block;
   font-weight: 300;
@@ -30,8 +27,9 @@
   margin-top: 10px;
   margin-bottom: 5px;
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--border-color-black);
   background-color: var(--main-bg-color);
+  color: var(--main-text-color);
   border-radius: 0;
 }
 
@@ -40,18 +38,29 @@
   margin-bottom: 0px;
   font-size: 1.6rem;
   font-weight: 500;
-  border: 1px solid black;
+  border: 1px solid var(--border-color-black);
+  cursor: pointer;
   height: 50px;
   box-shadow: 0.25px 0.25px;
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
 }
 
-.SignUp-container button {
-  background-color: white;
-  cursor: pointer;
+.SignUp-container button:hover {
+  color: var(--main-bg-color);
+  background-color: var(--main-text-color);
 }
 
 .SignUp-container input:focus {
   outline: none;
+}
+
+.SignUp-login {
+  display: inline-block;
+}
+
+.SignUp-login:hover {
+  text-decoration: underline;
 }
 
 .SignUp-errors {
@@ -61,12 +70,11 @@
   margin-top: 0px;
   margin-bottom: 20px;
   display: block;
-  color: red;
   font-size: 0.8rem;
   font-weight: 300;
   width: 140px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #dc143c;
 }
 

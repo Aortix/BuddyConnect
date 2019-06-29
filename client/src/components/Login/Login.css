@@ -17,8 +17,9 @@
 .Login-container form input {
   margin-top: 15px;
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--border-color-black);
   background-color: var(--main-bg-color);
+  color: var(--main-text-color);
   border-radius: 0;
 }
 
@@ -27,19 +28,29 @@
   margin-bottom: 5px;
   font-size: 1.6rem;
   font-weight: 500;
-  border: 1px solid black;
+  border: 1px solid var(--border-color-black);
   height: 45px;
   box-shadow: 0.25px 0.25px;
   background-color: var(--main-bg-color);
+  color: var(--main-text-color);
 }
 
 .Login-container button:hover {
-  background-color: white;
+  color: var(--main-bg-color);
+  background-color: var(--main-text-color);
   cursor: pointer;
 }
 
 .Login-container input:focus {
   outline: none;
+}
+
+.Login-create_account {
+  display: inline-block;
+}
+
+.Login-create_account:hover {
+  text-decoration: underline;
 }
 
 .Login-errors {
@@ -49,12 +60,11 @@
   padding-top: 3px;
   padding-bottom: 3px;
   display: block;
-  color: red;
   font-size: 0.8rem;
   font-weight: 300;
   width: 140px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #dc143c;
 }
 
@@ -69,7 +79,7 @@
   font-weight: 400;
   width: 140px;
   border-radius: 7px;
-  color: var(--main-bg-color);
+  color: var(--border-color-white);
   background-color: #1e90ff;
 }
 

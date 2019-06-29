@@ -10,5 +10,5 @@
 }
 
 .fa-bars {
-  color: black;
+  color: var(--font-awesome-color);
 }
