@@ -68,8 +68,8 @@
 }
 
 .active {
-  background-color: var(--main-text-color) !important;
-  color: var(--main-bg-color) !important;
+  background-color: var(--secondary-bg-color) !important;
+  color: var(--main-text-color) !important;
 }
 
 @media only screen and (min-width: 860px) {

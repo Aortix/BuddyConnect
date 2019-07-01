@@ -1,7 +1,7 @@
 .Avatar-container {
   position: absolute;
   left: calc(50% - 70px);
-  top: 62.5px;
+  top: 5px;
 }
 
 .Avatar-container img {

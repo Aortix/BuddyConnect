@@ -4,14 +4,14 @@
 }
 
 .HeaderAuth-container img {
-  display: inline;
   box-shadow: 0 0 0.5px;
   vertical-align: middle;
+  height: 26px;
+  width: 24px;
 }
 
 .HeaderAuth-name {
-  vertical-align: middle;
-  margin-left: 5px;
+  display: none;
 }
 
 .profile-link {
@@ -24,4 +24,12 @@
 
 .HeaderAuth-sign_out-text {
   display: none;
+}
+
+@media screen and (min-width: 860px) {
+  .HeaderAuth-name {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
 }
