@@ -5,6 +5,7 @@ dotenv.config();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const rateLimit = require("express-rate-limit");
 
 const userRoute = require("./routes/api/user.js");
 const postRoute = require("./routes/api/post.js");
@@ -35,6 +36,26 @@ app.use(passport.initialize());
 //Binds and listens to port for connections
 app.listen(port, () => {});
 
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 3, // limit each IP to 3 requests per windowMs
+  handler: function(req, res) {
+    const errors = { errors: { misc: "" } };
+    errors.errors.misc =
+      "Too many posts/comments in a short time. Please wait 1 minute before posting again.";
+    return res.status(429).send(errors);
+  },
+  onLimitReached: function(req, res) {
+    const errors = { errors: { misc: "" } };
+    errors.errors.misc =
+      "Too many posts/comments in a short time. Please wait 1 minute before posting again.";
+    return res.status(429).send(errors);
+  }
+});
+
+//  apply to all requests
+app.use("/api/post/create*", limiter);
+
 //Route to make calls to user
 app.use("/api/user", userRoute);
 app.use("/api/post", postRoute);
@@ -43,7 +64,7 @@ app.use("/api/profile", profileRoute);
 //Serve static assets in production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
-
+  
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
