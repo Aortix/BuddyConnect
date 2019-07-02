@@ -39,7 +39,7 @@ app.listen(port, () => {});
 app.set("trust proxy", 1);
 
 const limiter = rateLimit({
-  windowMs: 2 * 60 * 1000, // 1 minute
+  windowMs: 1 * 60 * 1000, // 1 minute
   max: 3, // limit each IP to 3 requests per windowMs
   handler: function(req, res) {
     const errors = { errors: { misc: "" } };

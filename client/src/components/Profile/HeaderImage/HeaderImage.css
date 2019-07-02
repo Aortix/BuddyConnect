@@ -56,7 +56,7 @@
 
 #HeaderImage-profile {
   cursor: pointer;
-  min-height: 240px;
+  height: 240px;
 }
 
 .HeaderImage-name {
@@ -82,5 +82,9 @@
   .choosing-a-header {
     left: 10%;
     width: 80%;
+  }
+
+  #HeaderImage-profile {
+    height: 100%;
   }
 }
