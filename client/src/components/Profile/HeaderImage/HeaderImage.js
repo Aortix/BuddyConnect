@@ -13,7 +13,6 @@ class HeaderImage extends Component {
   };
 
   handleHeaderClick = () => {
-    console.log("header has been clicked.");
     this.setState({ headerClicked: !this.state.headerClicked });
   };
 

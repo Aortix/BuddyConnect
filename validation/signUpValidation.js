@@ -58,6 +58,14 @@ const signUpValidation = data => {
     errors.password2 = "Passwords must match.";
   }
 
+  if (
+    data.captcha === null ||
+    data.captcha === undefined ||
+    data.captcha === ""
+  ) {
+    errors.misc = "Captcha Incorrect.";
+  }
+
   return {
     errors: errors,
     noErrors: isEmpty(errors)

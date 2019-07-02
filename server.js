@@ -33,9 +33,7 @@ if (process.env.NODE_ENV !== "production") {
 app.use(passport.initialize());
 
 //Binds and listens to port for connections
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+app.listen(port, () => {});
 
 //Route to make calls to user
 app.use("/api/user", userRoute);
@@ -54,9 +52,7 @@ if (process.env.NODE_ENV === "production") {
 //Connecting to mongodb database
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true })
-  .then(() => {
-    console.log("Connected to mongodb!");
-  })
+  .then(() => {})
   .catch(err => {
     console.log(`Connection to mongodb failed because ${err}`);
   });

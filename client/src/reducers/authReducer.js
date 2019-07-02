@@ -4,11 +4,13 @@ import {
   LOGOUT,
   USER_SIGNED_UP,
   ERROR,
-  CLEAR_AUTH_ERRORS
+  CLEAR_AUTH_ERRORS,
+  ATTEMPTS
 } from "./../actions/types";
 
 const initialState = {
   email: "",
+  attempts: 0,
   authenticated: false,
   userSignedUp: 0,
   errors: {}
@@ -45,6 +47,11 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         errors: {}
+      };
+    case ATTEMPTS:
+      return {
+        ...state,
+        attempts: action.payload === 0 ? 0 : state.attempts + action.payload
       };
     default:
       return state;

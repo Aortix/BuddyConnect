@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import isEmpty from "./../../utilities/isEmpty";
 import "./SignUp.css";
 
+import ReCaptcha from "react-google-recaptcha";
+
 class SignUp extends Component {
   componentDidMount = () => {
     if (this.props.authenticated === true) {
@@ -76,9 +78,14 @@ class SignUp extends Component {
                 {this.props.authErrors.password2}
               </div>
             )}
-            {isEmpty(this.props.authErrors.misc) === true ? null : (
-              <div className="SignUp-errors">{this.props.authErrors.misc}</div>
-            )}
+            <br />
+            <br />
+            <ReCaptcha
+              theme="dark"
+              sitekey="6Lc3YKsUAAAAAC7FT3QfUNx1AauT1wQelSw4NOxu"
+              onChange={this.props.captchaSignUpChange}
+              style={{ display: "inline-block" }}
+            />
             <br />
             <button
               type="submit"
@@ -88,10 +95,11 @@ class SignUp extends Component {
             >
               Submit
             </button>
+            <br />
+            {isEmpty(this.props.authErrors.misc) === true ? null : (
+              <div className="SignUp-errors">{this.props.authErrors.misc}</div>
+            )}
           </form>
-          {isEmpty(this.props.authErrors.misc) === true ? null : (
-            <div className="SignUp-errors">{this.props.authErrors.misc}</div>
-          )}
           <Link to="/login">
             <p className="SignUp-login">Already have an account? Login here.</p>
           </Link>

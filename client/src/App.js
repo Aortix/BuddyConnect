@@ -56,7 +56,8 @@ import {
   UPDATE_POSTS_TO_SEE,
   CURRENT_TAB,
   CURRENT_COMPONENT,
-  NEW_POSTS
+  NEW_POSTS,
+  ATTEMPTS
 } from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
@@ -158,12 +159,20 @@ class App extends Component {
     password: "",
     confirmPassword: "",
     loginEmail: "",
-    loginPassword: ""
+    loginPassword: "",
+    signUpCaptcha: null,
+    loginCaptcha: null
   };
 
   handleLoginSubmit = event => {
     event.preventDefault();
-    this.props.onLoginSubmit(this.state.loginEmail, this.state.loginPassword);
+    this.props.onLoginSubmit(
+      this.state.loginEmail,
+      this.state.loginPassword,
+      this.state.loginCaptcha,
+      this.props.attempts
+    );
+    this.setState({ loginCaptcha: null });
   };
 
   handleSignUpSubmit = event => {
@@ -172,7 +181,8 @@ class App extends Component {
       this.state.name,
       this.state.email,
       this.state.password,
-      this.state.confirmPassword
+      this.state.confirmPassword,
+      this.state.signUpCaptcha
     );
   };
 
@@ -180,6 +190,17 @@ class App extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
+  };
+
+  captchaSignUpChange = value => {
+    this.setState({ signUpCaptcha: value });
+  };
+
+  captchaLoginChange = value => {
+    this.setState({ loginCaptcha: value });
+    setTimeout(() => {
+      this.props.changeAttempts(0);
+    }, 1500);
   };
 
   render() {
@@ -354,6 +375,7 @@ class App extends Component {
                   authenticated={this.props.authenticated}
                   userSignedUp={this.props.userSignedUp}
                   authErrors={this.props.authErrors}
+                  captchaSignUpChange={this.captchaSignUpChange}
                   {...props}
                 />
               )}
@@ -372,6 +394,8 @@ class App extends Component {
                   authErrors={this.props.authErrors}
                   userSignedUp={this.props.userSignedUp}
                   userHasSignedUp={this.props.userHasSignedUp}
+                  captchaLoginChange={this.captchaLoginChange}
+                  attempts={this.props.attempts}
                   {...props}
                 />
               )}
@@ -387,6 +411,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   email: state.authReducer.email,
+  attempts: state.authReducer.attempts,
   authenticated: state.authReducer.authenticated,
   userSignedUp: state.authReducer.userSignedUp,
   allPosts: state.postsReducer.allPosts,
@@ -421,11 +446,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSignUpSubmit: (name, email, password, confirmPassword) => {
-    dispatch(authSignUp(name, email, password, confirmPassword));
+  onSignUpSubmit: (name, email, password, confirmPassword, captcha) => {
+    dispatch(authSignUp(name, email, password, confirmPassword, captcha));
   },
-  onLoginSubmit: (email, password) => {
-    dispatch(authLogin(email, password));
+  onLoginSubmit: (email, password, captcha, attempts) => {
+    dispatch(authLogin(email, password, captcha, attempts));
+  },
+  changeAttempts: number => {
+    dispatch({ type: ATTEMPTS, payload: number });
   },
   authCheck: () => {
     dispatch(authCheck());

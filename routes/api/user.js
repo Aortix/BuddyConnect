@@ -7,6 +7,8 @@ const multerS3 = require("multer-s3");
 const path = require("path");
 const fs = require("fs");
 const aws = require("aws-sdk");
+const fetch = require("node-fetch");
+const { URLSearchParams } = require("url");
 
 const router = express.Router();
 
@@ -39,58 +41,82 @@ router.post("/sign-up", (req, res, next) => {
     return res.status(400).send(errors);
   }
 
-  userSchema.find({ email: req.body.email }).exec((err, response) => {
-    if (err) {
-      errors.errors.email = "Problem checking users for this email. Try again.";
-      return res.status(400).send(errors);
-    }
-    if (isEmpty(response) === false) {
-      errors.errors.email = "This email is already attached to an account.";
-      return res.status(400).send(errors);
-    } else {
-      if (req.body.password === req.body.password2) {
-        bcrypt.hash(req.body.password, saltRounds, (err, salt) => {
+  const params = new URLSearchParams();
+  params.append("secret", process.env.RECAPTCHA_SECRET_KEY);
+  params.append("response", req.body.captcha);
+
+  fetch("https://www.google.com/recaptcha/api/siteverify", {
+    method: "POST",
+    body: params
+  })
+    .then(res => {
+      return res.json();
+    })
+    .then(json => {
+      if (json.success === true) {
+        userSchema.find({ email: req.body.email }).exec((err, response) => {
           if (err) {
-            errors.errors.password =
-              "Problem with hashing the password on our server.";
-            return res.status(500).send(errors);
+            errors.errors.email =
+              "Problem checking users for this email. Try again.";
+            return res.status(400).send(errors);
           }
-
-          const newUser = new userSchema({
-            name: req.body.name,
-            email: req.body.email,
-            password: salt,
-            password2: salt
-          });
-
-          const newProfile = new profileSchema({
-            name: req.body.name,
-            user: newUser
-          });
-
-          newUser.save(err => {
-            if (err) {
-              errors.errors.misc =
-                "Problem with saving the user to the database. Try again.";
-              return res.status(500).send(errors);
-            } else {
-              newProfile.save((err, data) => {
+          if (isEmpty(response) === false) {
+            errors.errors.email =
+              "This email is already attached to an account.";
+            return res.status(400).send(errors);
+          } else {
+            if (req.body.password === req.body.password2) {
+              bcrypt.hash(req.body.password, saltRounds, (err, salt) => {
                 if (err) {
-                  errors.errors.misc =
-                    "Problem with saving the user's profile to the database. Try again.";
+                  errors.errors.password =
+                    "Problem with hashing the password on our server.";
                   return res.status(500).send(errors);
-                } else {
-                  return res
-                    .status(200)
-                    .send("New User and Profile have been created.");
                 }
+
+                const newUser = new userSchema({
+                  name: req.body.name,
+                  email: req.body.email,
+                  password: salt,
+                  password2: salt
+                });
+
+                const newProfile = new profileSchema({
+                  name: req.body.name,
+                  user: newUser
+                });
+
+                newUser.save(err => {
+                  if (err) {
+                    errors.errors.misc =
+                      "Problem with saving the user to the database. Try again.";
+                    return res.status(500).send(errors);
+                  } else {
+                    newProfile.save((err, data) => {
+                      if (err) {
+                        errors.errors.misc =
+                          "Problem with saving the user's profile to the database. Try again.";
+                        return res.status(500).send(errors);
+                      } else {
+                        return res
+                          .status(200)
+                          .send("New User and Profile have been created.");
+                      }
+                    });
+                  }
+                });
               });
             }
-          });
+          }
         });
+      } else {
+        errors.errors.misc = "Captcha Incorrect.";
+        return res.status(400).send(errors);
       }
-    }
-  });
+    })
+    .catch(err => {
+      errors.errors.misc = "Issue with validating captcha.";
+      return res.status(500).send(errors);
+    });
 });
 
 //Public route
@@ -103,56 +129,139 @@ router.post("/login", (req, res) => {
     return res.status(400).send(errors);
   }
 
-  userSchema
-    .findOne({ email: req.body.email }, (err, response) => {
-      if (response == null || response == undefined) {
-        errors.errors.email = "Email doesn't exist in our database.";
-        return res.status(400).send(errors);
-      } else if (err) {
-        errors.errors.email =
-          "Problem with searching the database for this email. Try again.";
-        return res.status(400).send(errors);
-      } else {
-        return response;
-      }
+  if (req.body.attempts > 3) {
+    const params = new URLSearchParams();
+    params.append("secret", process.env.RECAPTCHA_SECRET_KEY);
+    params.append("response", req.body.captcha);
+
+    fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      body: params
     })
-    .then(response => {
-      bcrypt.compare(req.body.password, response.password, (err, data) => {
-        if (data !== true) {
-          errors.errors.password = "Password is incorrect.";
-          return res.status(400).send(errors);
-        } else if (err) {
-          errors.errors.password =
-            "Problem with searching for the password in our database. Try again.";
-          return res.status(500).send(errors);
-        } else {
-          let query = {
-            id: response._id,
-            name: response.name
-          };
-          jwt.sign(
-            query,
-            process.env.SECRET_KEY,
-            {
-              expiresIn: "4h"
-            },
-            (err, token) => {
-              if (err) {
-                errors.errors.misc =
-                  "Error generating the token on our server. Try again.";
-                return res.status(500).send(errors);
+      .then(res => {
+        return res.json();
+      })
+      .then(json => {
+        if (json.success === true) {
+          userSchema
+            .findOne({ email: req.body.email }, (err, response) => {
+              if (response == null || response == undefined) {
+                errors.errors.email = "Email doesn't exist in our database.";
+                return res.status(400).send(errors);
+              } else if (err) {
+                errors.errors.email =
+                  "Problem with searching the database for this email. Try again.";
+                return res.status(400).send(errors);
               } else {
-                return res.send({
-                  token: "Bearer " + token,
-                  avatar: response.avatar,
-                  name: response.name
-                });
+                return response;
               }
-            }
-          );
+            })
+            .then(response => {
+              bcrypt.compare(
+                req.body.password,
+                response.password,
+                (err, data) => {
+                  if (data !== true) {
+                    errors.errors.password = "Password is incorrect.";
+                    return res.status(400).send(errors);
+                  } else if (err) {
+                    errors.errors.password =
+                      "Problem with searching for the password in our database. Try again.";
+                    return res.status(500).send(errors);
+                  } else {
+                    let query = {
+                      id: response._id,
+                      name: response.name
+                    };
+                    jwt.sign(
+                      query,
+                      process.env.SECRET_KEY,
+                      {
+                        expiresIn: "4h"
+                      },
+                      (err, token) => {
+                        if (err) {
+                          errors.errors.misc =
+                            "Error generating the token on our server. Try again.";
+                          return res.status(500).send(errors);
+                        } else {
+                          return res.send({
+                            token: "Bearer " + token,
+                            avatar: response.avatar,
+                            name: response.name
+                          });
+                        }
+                      }
+                    );
+                  }
+                }
+              );
+            })
+            .catch(err => {
+              errors.errors.misc = "Error signing in as this user";
+              return res.status(500).send(errors);
+            });
+        } else {
+          errors.errors.misc = "Captcha Incorrect.";
+          return res.status(400).send(errors);
         }
       });
-    });
+  } else {
+    userSchema
+      .findOne({ email: req.body.email }, (err, response) => {
+        if (response == null || response == undefined) {
+          errors.errors.email = "Email doesn't exist in our database.";
+          return res.status(400).send(errors);
+        } else if (err) {
+          errors.errors.email =
+            "Problem with searching the database for this email. Try again.";
+          return res.status(400).send(errors);
+        } else {
+          return response;
+        }
+      })
+      .then(response => {
+        bcrypt.compare(req.body.password, response.password, (err, data) => {
+          if (data !== true) {
+            errors.errors.password = "Password is incorrect.";
+            return res.status(400).send(errors);
+          } else if (err) {
+            errors.errors.password =
+              "Problem with searching for the password in our database. Try again.";
+            return res.status(500).send(errors);
+          } else {
+            let query = {
+              id: response._id,
+              name: response.name
+            };
+            jwt.sign(
+              query,
+              process.env.SECRET_KEY,
+              {
+                expiresIn: "4h"
+              },
+              (err, token) => {
+                if (err) {
+                  errors.errors.misc =
+                    "Error generating the token on our server. Try again.";
+                  return res.status(500).send(errors);
+                } else {
+                  return res.send({
+                    token: "Bearer " + token,
+                    avatar: response.avatar,
+                    name: response.name
+                  });
+                }
+              }
+            );
+          }
+        });
+      })
+      .catch(err => {
+        errors.errors.misc = "Error signing in as this user";
+        return res.status(500).send(errors);
+      });
+  }
 });
 
 //Private Route
@@ -514,7 +623,6 @@ router.put(
                       "Cannot find profile to delete. Try again.";
                     return res.status(500).send(errors);
                   } else {
-                    console.log("Profile deleted.");
                     commentsSchema.deleteMany(
                       { commenterP_id: response3._id },
                       (err, response) => {
@@ -523,7 +631,6 @@ router.put(
                             "Cannot find comments to delete. Try again.";
                           return res.status(500).send(errors);
                         } else {
-                          console.log("Comments deleted.");
                         }
                       }
                     );
@@ -535,7 +642,6 @@ router.put(
                             "Cannot find posts to delete. Try again.";
                           return res.status(500).send(errors);
                         } else {
-                          console.log("Posts deleted.");
                         }
                       }
                     );
@@ -568,11 +674,9 @@ router.put(
                               }
                             );
                           }
-                          console.log("User deleted.");
                         }
                       }
                     );
-                    //return res.send("Everything should be deleted.");
                   }
                 }
               );

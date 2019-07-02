@@ -7,15 +7,8 @@ import "./Dashboard.css";
 class Dashboard extends Component {
   componentDidMount = () => {
     window.localStorage.setItem("location", "/dashboard");
-    
     this.setState({ postsToSee: this.props.postsToSee });
   };
-
-  componentWillUpdate = (prevProps) => {
-    if (prevProps.newPosts !== this.props.newPosts) {
-      console.log('this changed!');
-    }
-  }
 
   state = {
     postsToSee: 0

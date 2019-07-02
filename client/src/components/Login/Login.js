@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import "./Login.css";
+import ReCaptcha from "react-google-recaptcha";
 
 class Login extends Component {
   componentDidMount = () => {
@@ -44,13 +45,24 @@ class Login extends Component {
           {this.props.userSignedUp === 1 ? (
             <div className="Login-successes">User successfully registered!</div>
           ) : null}
-          <br />
-          {this.props.authErrors.misc !== undefined ? (
-            <div className="Login-errors">{this.props.authErrors.misc}</div>
+          {this.props.attempts > 3 ? (
+            <React.Fragment>
+              <br />
+              <br />
+              <ReCaptcha
+                theme="dark"
+                sitekey="6Lc3YKsUAAAAAC7FT3QfUNx1AauT1wQelSw4NOxu"
+                onChange={this.props.captchaLoginChange}
+                style={{ display: "inline-block" }}
+              />
+            </React.Fragment>
           ) : null}
           <button type="submit" name="Submit" value="GO" formNoValidate>
             Submit
           </button>
+          {this.props.authErrors.misc !== undefined ? (
+            <div className="Login-errors">{this.props.authErrors.misc}</div>
+          ) : null}
         </form>
         <Link to="/sign-up">
           <p className="Login-create_account">

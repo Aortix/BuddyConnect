@@ -4,20 +4,23 @@ import {
   AUTHENTICATED,
   LOGOUT,
   USER_SIGNED_UP,
-  ERROR
+  ERROR,
+  ATTEMPTS
 } from "./../actions/types";
 
 export const authSignUp = (
   name,
   email,
   password,
-  confirmPassword
+  confirmPassword,
+  captcha
 ) => dispatch => {
   const requestBody = {
     name,
     email,
     password,
-    password2: confirmPassword
+    password2: confirmPassword,
+    captcha
   };
   axios
     .post("/api/user/sign-up", requestBody)
@@ -30,10 +33,12 @@ export const authSignUp = (
     });
 };
 
-export const authLogin = (email, password) => dispatch => {
+export const authLogin = (email, password, captcha, attempts) => dispatch => {
   const requestBody = {
     email,
-    password
+    password,
+    captcha,
+    attempts
   };
   axios
     .post("/api/user/login", requestBody)
@@ -56,9 +61,11 @@ export const authLogin = (email, password) => dispatch => {
     })
     .then(() => {
       dispatch(authCheck());
+      dispatch({ type: ATTEMPTS, payload: 0 });
       dispatch({ type: USER_SIGNED_UP, payload: 2 });
     })
     .catch(err => {
+      dispatch({ type: ATTEMPTS, payload: 1 });
       dispatch({ type: ERROR, payload: err.response.data.errors });
     });
 };

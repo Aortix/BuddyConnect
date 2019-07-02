@@ -249,7 +249,6 @@ router.post(
                         "Cannot save the comment in the database.";
                       return res.status(500).send(errors);
                     } else {
-                      console.log("Comment was added!");
                       return res.send(data);
                     }
                   });
@@ -287,7 +286,7 @@ router.put(
               .status(500)
               .send("Error finding comment under post to delete.");
           } else {
-            return console.log("Comment Deleted");
+            return;
           }
         });
       });
@@ -295,7 +294,7 @@ router.put(
         if (err) {
           return res.status(500).send("Error finding post to delete.");
         }
-        return console.log("Post deleted.");
+        return;
       });
       profileSchema.findByIdAndUpdate(
         response.p_id,
@@ -306,7 +305,6 @@ router.put(
               .status(500)
               .send("Error finding profile to update posts.");
           } else {
-            console.log("Post from profile deleted.");
             return res.send(response4);
           }
         }
@@ -331,7 +329,6 @@ router.put(
       if (err) {
         return res.status(500).send("Error finding comment to delete");
       }
-      console.log("Comment deleted!");
       postSchema.findByIdAndUpdate(
         req.body.postId,
         { $pull: { comments: response._id } },

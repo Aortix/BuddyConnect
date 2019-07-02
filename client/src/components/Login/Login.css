@@ -24,6 +24,8 @@
 }
 
 .Login-container button {
+  display: block;
+  margin: 0 auto;
   margin-top: 20px;
   margin-bottom: 5px;
   font-size: 1.6rem;
@@ -55,8 +57,8 @@
 
 .Login-errors {
   margin: 0 auto;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 10px;
   padding-top: 3px;
   padding-bottom: 3px;
   display: block;

@@ -5,6 +5,7 @@ export const LOGOUT = "LOGOUT";
 export const USER_SIGNED_UP = "USER_SIGNED_UP";
 export const ERROR = "ERROR";
 export const CLEAR_AUTH_ERRORS = "CLEAR_AUTH_ERRORS";
+export const ATTEMPTS = "ATTEMPTS";
 
 export const GET_ALL_POSTS = "GET_ALL_POSTS";
 export const GET_FRIENDS_POSTS = "GET_FRIENDS_POSTS";
