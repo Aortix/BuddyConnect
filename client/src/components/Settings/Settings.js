@@ -31,7 +31,12 @@ export default class Settings extends Component {
 
   handleNameSubmit = e => {
     e.preventDefault();
-    this.props.changeName(this.state.name);
+    this.props.changeName(
+      this.state.name,
+      this.props.allPosts.length,
+      this.props.friendsPosts.length,
+      this.props.profilePosts.length
+    );
     this.setState({
       name: "",
       email: "",

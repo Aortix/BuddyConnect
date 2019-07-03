@@ -12,7 +12,12 @@ import { getAndStoreAllPosts, getAndStoreFriendsPosts } from "./posts";
 import { getAndStoreMyProfile } from "./profile";
 import { authLogout } from "./auth";
 
-export const changeName = name => dispatch => {
+export const changeName = (
+  name,
+  allPostsAmount,
+  friendsPostsAmount,
+  profilePostsAmount
+) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -26,9 +31,9 @@ export const changeName = name => dispatch => {
       .put("/api/user/update-name", { name: name }, config)
       .then(data => {
         window.localStorage.setItem("name", data.data);
-        dispatch(getAndStoreAllPosts());
-        dispatch(getAndStoreFriendsPosts());
-        dispatch(getAndStoreMyProfile());
+        dispatch(getAndStoreAllPosts(allPostsAmount));
+        dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
+        dispatch(getAndStoreMyProfile(null, profilePostsAmount));
         dispatch({ type: NAME_CHANGED, payload: 1 });
         dispatch({ type: CLEAR_SETTINGS_ERRORS });
       })

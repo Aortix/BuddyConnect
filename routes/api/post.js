@@ -13,31 +13,78 @@ const profileValidation = require("./../../validation/profileValidation");
 
 require("../../auth/jwtStrategy")(passport);
 
+mongoose.Promise = global.Promise;
+
 //Private route
 //Shows all posts that are available - for use with global tab
-router.get(
+router.post(
   "/global-posts",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    postSchema
-      .find({})
-      .populate("comments")
-      .limit(30)
-      .sort({ datePosted: "desc" })
-      .exec((err, posts) => {
-        if (err) {
-          return res
-            .status(500)
-            .send(`There was an error finding the posts - ${err}`);
-        }
-        return res.send(posts);
-      });
+    const errors = { errors: { misc: "" } };
+
+    if (req.body.amount % 5 !== 0 || req.body.amount > 100) {
+      errors.errors.misc = "No more posts after this one.";
+      return res.status(400).send(errors);
+    }
+
+    const getPosts = (
+      skipAmount = 0,
+      limitAmount = 5,
+      postsToReturn = [],
+      idsToSkip = []
+    ) => {
+      postSchema
+        .find({})
+        .skip(skipAmount)
+        .limit(limitAmount)
+        .populate("comments")
+        .sort({ datePosted: "desc" })
+        .exec()
+        .then(posts => {
+          if (postsToReturn.length < limitAmount && skipAmount < 200) {
+            let filteredArray = posts.map(post => {
+              return post.p_id.toString();
+            });
+            let filteredArrayToSet = new Set(filteredArray);
+            let filteredArrayBackToArray = Array.from(filteredArrayToSet);
+            for (let i = 0; i < filteredArrayBackToArray.length; i++) {
+              if (
+                idsToSkip.includes(filteredArrayBackToArray[i]) === false &&
+                postsToReturn.length !== limitAmount
+              ) {
+                postsToReturn.push(
+                  posts[filteredArray.indexOf(filteredArrayBackToArray[i])]
+                );
+                idsToSkip.push(filteredArrayBackToArray[i]);
+              }
+            }
+            getPosts(
+              skipAmount + limitAmount,
+              limitAmount,
+              postsToReturn,
+              idsToSkip
+            );
+          } else {
+            return res.send(postsToReturn);
+          }
+        })
+        .catch(err => {
+          if (err) {
+            return res
+              .status(500)
+              .send(`There was an error finding the posts.`);
+          }
+        });
+    };
+
+    getPosts(0, req.body.amount, [], []);
   }
 );
 
 //Private Route
 //Just testing finding a specific post with an array field and updating it
-router.get(
+router.post(
   "/friends-posts",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
@@ -53,7 +100,7 @@ router.get(
         postSchema
           .find({})
           .populate("comments")
-          .limit(30)
+          .limit(100)
           .sort({ datePosted: "desc" })
           .exec((err, response3) => {
             if (err) {
@@ -62,7 +109,7 @@ router.get(
               let newArray = response3.filter(posts => {
                 return returnArray.includes(posts.p_id.toString());
               });
-              return res.send(newArray);
+              return res.send(newArray.slice(0, req.body.amount));
             }
           });
       }
@@ -91,7 +138,7 @@ router.post(
         postSchema
           .find({})
           .populate("comments")
-          .limit(30)
+          .limit(100)
           .sort({ datePosted: "desc" })
           .exec((err, response) => {
             if (err) {
@@ -100,7 +147,7 @@ router.post(
               let newArray = response.filter(posts => {
                 return returnArray.includes(posts._id.toString());
               });
-              return res.send(newArray);
+              return res.send(newArray.slice(0, req.body.amount));
             }
           });
       }
