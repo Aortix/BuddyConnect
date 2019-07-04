@@ -10,10 +10,11 @@ import {
   CLEAR_COMMENT_ERRORS,
   POST_CREATED,
   POST_DELETED,
-  COMMENT_DELETED
+  COMMENT_DELETED,
+  RECEIVING_POSTS
 } from "./types";
 
-export const getAndStoreAllPosts = (amount = 5) => dispatch => {
+export const getAndStoreAllPosts = (amount = 15) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -27,12 +28,13 @@ export const getAndStoreAllPosts = (amount = 5) => dispatch => {
       .post("/api/post/global-posts", { amount: amount }, config)
       .then(data => {
         dispatch({ type: GET_ALL_POSTS, payload: data.data });
+        dispatch({ type: RECEIVING_POSTS, payload: 0 });
       })
       .catch(err => {});
   }
 };
 
-export const getAndStoreFriendsPosts = (amount = 5) => dispatch => {
+export const getAndStoreFriendsPosts = (amount = 15) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -46,12 +48,13 @@ export const getAndStoreFriendsPosts = (amount = 5) => dispatch => {
       .post("/api/post/friends-posts", { amount: amount }, config)
       .then(data => {
         dispatch({ type: GET_FRIENDS_POSTS, payload: data.data });
+        dispatch({ type: RECEIVING_POSTS, payload: 0 });
       })
       .catch(err => {});
   }
 };
 
-export const getAndStoreProfilePosts = (profileId, amount = 5) => dispatch => {
+export const getAndStoreProfilePosts = (profileId, amount = 15) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -69,6 +72,7 @@ export const getAndStoreProfilePosts = (profileId, amount = 5) => dispatch => {
       )
       .then(data => {
         dispatch({ type: GET_PROFILE_POSTS, payload: data.data });
+        dispatch({ type: RECEIVING_POSTS, payload: 0 });
       })
       .catch(err => {});
   }
@@ -96,8 +100,18 @@ export const createPost = (
     .post("/api/post/create-post", requestBody, config)
     .then(data => {
       dispatch(getAndStoreAllPosts(allPostsAmount));
-      dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
-      dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
+      if (friendsPostsAmount < 5) {
+        dispatch(getAndStoreFriendsPosts(5));
+      } else {
+        dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
+      }
+
+      if (profilePostsAmount < 5) {
+        dispatch(getAndStoreProfilePosts(profileId, 5));
+      } else {
+        dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
+      }
+
       dispatch({ type: POST_CREATED, payload: 1 });
       dispatch({ type: CLEAR_POST_ERRORS });
       window.scrollTo(0, 0);
@@ -130,8 +144,18 @@ export const createPostOnDifferentProfile = (
     .post("/api/post/create-post-on-different-profile", requestBody, config)
     .then(data => {
       dispatch(getAndStoreAllPosts(allPostsAmount));
-      dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
-      dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
+      if (friendsPostsAmount < 5) {
+        dispatch(getAndStoreFriendsPosts(5));
+      } else {
+        dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
+      }
+
+      if (profilePostsAmount < 5) {
+        dispatch(getAndStoreProfilePosts(profileId, 5));
+      } else {
+        dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
+      }
+
       dispatch({ type: POST_CREATED, payload: 1 });
       dispatch({ type: CLEAR_POST_ERRORS });
     })
@@ -168,8 +192,18 @@ export const createComment = (
     .post("/api/post/create-comment", requestBody, config)
     .then(data => {
       dispatch(getAndStoreAllPosts(allPostsAmount));
-      dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
-      dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
+      if (friendsPostsAmount < 5) {
+        dispatch(getAndStoreFriendsPosts(5));
+      } else {
+        dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
+      }
+
+      if (profilePostsAmount < 5) {
+        dispatch(getAndStoreProfilePosts(profileId, 5));
+      } else {
+        dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
+      }
+
       dispatch(changeCurrentFocusedPost(""));
       dispatch({ type: CLEAR_COMMENT_ERRORS });
     })

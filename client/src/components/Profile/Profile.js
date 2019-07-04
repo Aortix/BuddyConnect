@@ -323,6 +323,8 @@ class Profile extends Component {
                       posts={this.props.profilePosts}
                       getAndStorePosts={this.props.getAndStoreProfilePosts}
                       currentProfile={this.props.currentProfile}
+                      receivingPosts={this.props.receivingPosts}
+                      getReceivingPosts={this.props.getReceivingPosts}
                     />
                   )}
                 </React.Fragment>

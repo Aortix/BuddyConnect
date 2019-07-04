@@ -12,7 +12,8 @@ class Dashboard extends Component {
   };
 
   state = {
-    postsToSee: 0
+    postsToSee: 0,
+    receivingPosts: 0
   };
 
   updatePostsToPosts = number => {
@@ -153,6 +154,8 @@ class Dashboard extends Component {
               <LoadMorePosts
                 getAndStorePosts={this.props.getAndStoreFriendsPosts}
                 posts={this.props.friendsPosts}
+                receivingPosts={this.props.receivingPosts}
+                getReceivingPosts={this.props.getReceivingPosts}
               />
             )}
           </div>
@@ -185,6 +188,8 @@ class Dashboard extends Component {
               <LoadMorePosts
                 getAndStorePosts={this.props.getAndStoreAllPosts}
                 posts={this.props.allPosts}
+                receivingPosts={this.props.receivingPosts}
+                getReceivingPosts={this.props.getReceivingPosts}
               />
             )}
           </div>

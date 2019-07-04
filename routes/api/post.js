@@ -7,7 +7,10 @@ const profileSchema = require("../../schemas/profiles.js");
 const postSchema = require("../../schemas/posts.js");
 const commentSchema = require("../../schemas/comments.js");
 
-const postValidation = require("../../validation/postValidation");
+const {
+  getPostsValidation,
+  postValidation
+} = require("../../validation/postValidation");
 const commentValidation = require("../../validation/commentValidation");
 const profileValidation = require("./../../validation/profileValidation");
 
@@ -21,16 +24,19 @@ router.post(
   "/global-posts",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const errors = { errors: { misc: "" } };
+    const errors = getPostsValidation(req.body);
 
-    if (req.body.amount % 5 !== 0 || req.body.amount > 100) {
-      errors.errors.misc = "No more posts after this one.";
+    if (errors.noErrors === false) {
       return res.status(400).send(errors);
+    }
+
+    if (req.body.amount > 200) {
+      return res.status(200).send();
     }
 
     const getPosts = (
       skipAmount = 0,
-      limitAmount = 5,
+      limitAmount = 15,
       postsToReturn = [],
       idsToSkip = []
     ) => {
@@ -88,6 +94,16 @@ router.post(
   "/friends-posts",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const errors = getPostsValidation(req.body);
+
+    if (errors.noErrors === false) {
+      return res.status(400).send(errors);
+    }
+
+    if (req.body.amount > 100) {
+      return res.status(200).send();
+    }
+
     let returnArray = [];
     profileSchema.findOne({ user: req.user.id }, (err, response) => {
       if (err) {
@@ -125,6 +141,10 @@ router.post(
 
     if (errors.noErrors === false) {
       return res.status(400).send();
+    }
+
+    if (req.body.amount > 100) {
+      return res.status(200).send();
     }
 
     let returnArray = [];

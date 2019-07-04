@@ -57,7 +57,8 @@ import {
   CURRENT_TAB,
   CURRENT_COMPONENT,
   NEW_POSTS,
-  ATTEMPTS
+  ATTEMPTS,
+  RECEIVING_POSTS
 } from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
@@ -87,8 +88,8 @@ class App extends Component {
       prevProps.authenticated !== this.props.authenticated &&
       this.props.authenticated !== false
     ) {
-      this.props.getAndStoreAllPosts(5);
-      this.props.getAndStoreFriendsPosts(5);
+      this.props.getAndStoreAllPosts(15);
+      this.props.getAndStoreFriendsPosts(15);
       setTimeout(() => {
         this.props.getNewPosts(1);
       }, 8000);
@@ -99,11 +100,11 @@ class App extends Component {
         let pastProfile = window.localStorage.getItem("location");
         this.props.getAndStoreMyProfile(
           pastProfile.replace("/profile/", ""),
-          5
+          15
         );
         this.props.history.push(pastProfile);
       } else {
-        this.props.getAndStoreMyProfile(null, 5);
+        this.props.getAndStoreMyProfile(null, 15);
         this.props.history.push(window.localStorage.getItem("location"));
       }
     }
@@ -119,7 +120,7 @@ class App extends Component {
     //This will grab the necessary friend information and profile posts for the current user
     if (prevProps.currentProfile !== this.props.currentProfile) {
       this.props.showFriends(this.props.currentProfile);
-      this.props.getAndStoreProfilePosts(this.props.currentProfile, 5);
+      this.props.getAndStoreProfilePosts(this.props.currentProfile, 15);
       this.props.checkForFriend(this.props.currentProfile);
     }
 
@@ -273,6 +274,8 @@ class App extends Component {
                   updatePostsToSee={this.props.updatePostsToSee}
                   newPosts={this.props.newPosts}
                   getNewPosts={this.props.getNewPosts}
+                  receivingPosts={this.props.receivingPosts}
+                  getReceivingPosts={this.props.getReceivingPosts}
                   {...props}
                 />
               )}
@@ -335,6 +338,8 @@ class App extends Component {
                   currentComponent={this.props.currentComponent}
                   updateCurrentComponent={this.props.updateCurrentComponent}
                   avatarUploading={this.props.avatarUploading}
+                  receivingPosts={this.props.receivingPosts}
+                  getReceivingPosts={this.props.getReceivingPosts}
                   {...props}
                 />
               )}
@@ -451,7 +456,8 @@ const mapStateToProps = state => ({
   currentTab: state.profileReducer.currentTab,
   currentComponent: state.profileReducer.currentComponent,
   avatarUploading: state.profileReducer.avatarUploading,
-  newPosts: state.postsReducer.newPosts
+  newPosts: state.postsReducer.newPosts,
+  receivingPosts: state.postsReducer.receivingPosts
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -690,6 +696,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getNewPosts: number => {
     dispatch({ type: NEW_POSTS, payload: number });
+  },
+  getReceivingPosts: number => {
+    dispatch({ type: RECEIVING_POSTS, payload: number });
   }
 });
 
