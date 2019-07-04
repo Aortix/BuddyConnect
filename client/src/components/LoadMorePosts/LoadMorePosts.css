@@ -1,0 +1,8 @@
+.LoadMorePosts-text {
+  display: inline-block;
+  border: 1px solid var(--border-color-black);
+  padding: 10px 25px;
+  cursor: pointer;
+  margin-bottom: 25px;
+  max-width: 60%;
+}

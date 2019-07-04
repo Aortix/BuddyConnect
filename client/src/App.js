@@ -57,7 +57,8 @@ import {
   CURRENT_TAB,
   CURRENT_COMPONENT,
   NEW_POSTS,
-  ATTEMPTS
+  ATTEMPTS,
+  RECEIVING_POSTS
 } from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
@@ -87,8 +88,8 @@ class App extends Component {
       prevProps.authenticated !== this.props.authenticated &&
       this.props.authenticated !== false
     ) {
-      this.props.getAndStoreAllPosts();
-      this.props.getAndStoreFriendsPosts();
+      this.props.getAndStoreAllPosts(15);
+      this.props.getAndStoreFriendsPosts(15);
       setTimeout(() => {
         this.props.getNewPosts(1);
       }, 8000);
@@ -97,10 +98,13 @@ class App extends Component {
         /^\/profile\//.test(window.localStorage.getItem("location")) === true
       ) {
         let pastProfile = window.localStorage.getItem("location");
-        this.props.getAndStoreMyProfile(pastProfile.replace("/profile/", ""));
+        this.props.getAndStoreMyProfile(
+          pastProfile.replace("/profile/", ""),
+          15
+        );
         this.props.history.push(pastProfile);
       } else {
-        this.props.getAndStoreMyProfile(null);
+        this.props.getAndStoreMyProfile(null, 15);
         this.props.history.push(window.localStorage.getItem("location"));
       }
     }
@@ -116,12 +120,12 @@ class App extends Component {
     //This will grab the necessary friend information and profile posts for the current user
     if (prevProps.currentProfile !== this.props.currentProfile) {
       this.props.showFriends(this.props.currentProfile);
-      this.props.getAndStoreProfilePosts(this.props.currentProfile);
+      this.props.getAndStoreProfilePosts(this.props.currentProfile, 15);
       this.props.checkForFriend(this.props.currentProfile);
     }
 
     if (this.props.addedFriend === 1) {
-      this.props.getAndStoreFriendsPosts();
+      this.props.getAndStoreFriendsPosts(this.props.profilePosts.length);
       this.props.reverseAddedFriend();
     }
 
@@ -237,6 +241,7 @@ class App extends Component {
               path="/dashboard"
               component={props => (
                 <Dashboard
+                  profilePosts={this.props.profilePosts}
                   createPost={this.props.createPost}
                   currentProfile={this.props.currentProfile}
                   friendsPosts={this.props.friendsPosts}
@@ -269,6 +274,8 @@ class App extends Component {
                   updatePostsToSee={this.props.updatePostsToSee}
                   newPosts={this.props.newPosts}
                   getNewPosts={this.props.getNewPosts}
+                  receivingPosts={this.props.receivingPosts}
+                  getReceivingPosts={this.props.getReceivingPosts}
                   {...props}
                 />
               )}
@@ -278,6 +285,8 @@ class App extends Component {
               path="/profile/:profileId"
               component={props => (
                 <Profile
+                  allPosts={this.props.allPosts}
+                  friendsPosts={this.props.friendsPosts}
                   profilePosts={this.props.profilePosts}
                   getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
                   currentProfileData={this.props.currentProfileData}
@@ -329,6 +338,8 @@ class App extends Component {
                   currentComponent={this.props.currentComponent}
                   updateCurrentComponent={this.props.updateCurrentComponent}
                   avatarUploading={this.props.avatarUploading}
+                  receivingPosts={this.props.receivingPosts}
+                  getReceivingPosts={this.props.getReceivingPosts}
                   {...props}
                 />
               )}
@@ -338,6 +349,9 @@ class App extends Component {
               path="/settings"
               component={props => (
                 <Settings
+                  allPosts={this.props.allPosts}
+                  friendsPosts={this.props.friendsPosts}
+                  profilePosts={this.props.profilePosts}
                   changeName={this.props.changeName}
                   changeEmail={this.props.changeEmail}
                   changePassword={this.props.changePassword}
@@ -442,7 +456,8 @@ const mapStateToProps = state => ({
   currentTab: state.profileReducer.currentTab,
   currentComponent: state.profileReducer.currentComponent,
   avatarUploading: state.profileReducer.avatarUploading,
-  newPosts: state.postsReducer.newPosts
+  newPosts: state.postsReducer.newPosts,
+  receivingPosts: state.postsReducer.receivingPosts
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -461,23 +476,67 @@ const mapDispatchToProps = dispatch => ({
   authLogout: () => {
     dispatch(authLogout());
   },
-  getAndStoreAllPosts: () => {
-    dispatch(getAndStoreAllPosts());
+  getAndStoreAllPosts: amount => {
+    dispatch(getAndStoreAllPosts(amount));
   },
-  getAndStoreFriendsPosts: () => {
-    dispatch(getAndStoreFriendsPosts());
+  getAndStoreFriendsPosts: amount => {
+    dispatch(getAndStoreFriendsPosts(amount));
   },
-  getAndStoreProfilePosts: profileId => {
-    dispatch(getAndStoreProfilePosts(profileId));
+  getAndStoreProfilePosts: (profileId, amount) => {
+    dispatch(getAndStoreProfilePosts(profileId, amount));
   },
-  createPost: (postText, profileId) => {
-    dispatch(createPost(postText, profileId));
+  createPost: (
+    postText,
+    profileId,
+    allPostsAmount,
+    friendsPostsAmount,
+    profilePostsAmount
+  ) => {
+    dispatch(
+      createPost(
+        postText,
+        profileId,
+        allPostsAmount,
+        friendsPostsAmount,
+        profilePostsAmount
+      )
+    );
   },
-  createPostOnDifferentProfile: (postText, profileId) => {
-    dispatch(createPostOnDifferentProfile(postText, profileId));
+  createPostOnDifferentProfile: (
+    postText,
+    profileId,
+    allPostsAmount,
+    friendsPostsAmount,
+    profilePostsAmount
+  ) => {
+    dispatch(
+      createPostOnDifferentProfile(
+        postText,
+        profileId,
+        allPostsAmount,
+        friendsPostsAmount,
+        profilePostsAmount
+      )
+    );
   },
-  createComment: (commentText, postId, profileId) => {
-    dispatch(createComment(commentText, postId, profileId));
+  createComment: (
+    commentText,
+    postId,
+    profileId,
+    allPostsAmount,
+    friendsPostsAmount,
+    profilePostsAmount
+  ) => {
+    dispatch(
+      createComment(
+        commentText,
+        postId,
+        profileId,
+        allPostsAmount,
+        friendsPostsAmount,
+        profilePostsAmount
+      )
+    );
   },
   changeCurrentFocusedPost: postId => {
     dispatch(changeCurrentFocusedPost(postId));
@@ -485,8 +544,8 @@ const mapDispatchToProps = dispatch => ({
   getAndStoreAProfile: profileId => {
     dispatch(getAndStoreAProfile(profileId));
   },
-  getAndStoreMyProfile: profileId => {
-    dispatch(getAndStoreMyProfile(profileId));
+  getAndStoreMyProfile: (profileId, amount) => {
+    dispatch(getAndStoreMyProfile(profileId, amount));
   },
   showFriends: profileId => {
     dispatch(showFriends(profileId));
@@ -503,8 +562,15 @@ const mapDispatchToProps = dispatch => ({
   reverseAddedFriend: () => {
     dispatch(reverseAddedFriend());
   },
-  changeName: name => {
-    dispatch(changeName(name));
+  changeName: (
+    name,
+    allPostsAmount,
+    friendsPostsAmount,
+    profilePostsAmount
+  ) => {
+    dispatch(
+      changeName(name, allPostsAmount, friendsPostsAmount, profilePostsAmount)
+    );
   },
   changeEmail: (email, password2) => {
     dispatch(changeEmail(email, password2));
@@ -512,8 +578,22 @@ const mapDispatchToProps = dispatch => ({
   changePassword: (password, password2) => {
     dispatch(changePassword(password, password2));
   },
-  changeAvatar: (fileData, profileId) => {
-    dispatch(changeAvatar(fileData, profileId));
+  changeAvatar: (
+    fileData,
+    profileId,
+    allPostsAmount,
+    friendsPostsAmount,
+    profilePostsAmount
+  ) => {
+    dispatch(
+      changeAvatar(
+        fileData,
+        profileId,
+        allPostsAmount,
+        friendsPostsAmount,
+        profilePostsAmount
+      )
+    );
   },
   changeHeader: (headerData, profileId) => {
     dispatch(changeHeader(headerData, profileId));
@@ -539,11 +619,41 @@ const mapDispatchToProps = dispatch => ({
   clearProfileErrors: () => {
     dispatch({ type: CLEAR_PROFILE_ERRORS });
   },
-  deletePost: (postId, currentProfile) => {
-    dispatch(deletePost(postId, currentProfile));
+  deletePost: (
+    postId,
+    currentProfile,
+    allPostsAmount,
+    friendsPostsAmount,
+    profilePostsAmount
+  ) => {
+    dispatch(
+      deletePost(
+        postId,
+        currentProfile,
+        allPostsAmount,
+        friendsPostsAmount,
+        profilePostsAmount
+      )
+    );
   },
-  deleteComment: (commentId, postId, currentProfile) => {
-    dispatch(deleteComment(commentId, postId, currentProfile));
+  deleteComment: (
+    commentId,
+    postId,
+    currentProfile,
+    allPostsAmount,
+    friendsPostsAmount,
+    profilePostsAmount
+  ) => {
+    dispatch(
+      deleteComment(
+        commentId,
+        postId,
+        currentProfile,
+        allPostsAmount,
+        friendsPostsAmount,
+        profilePostsAmount
+      )
+    );
   },
   deleteFriend: friendId => {
     dispatch(deleteFriend(friendId));
@@ -586,6 +696,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getNewPosts: number => {
     dispatch({ type: NEW_POSTS, payload: number });
+  },
+  getReceivingPosts: number => {
+    dispatch({ type: RECEIVING_POSTS, payload: number });
   }
 });
 

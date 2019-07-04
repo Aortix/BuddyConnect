@@ -24,11 +24,20 @@ class CreatePost extends Component {
     if (regex.test(window.location.pathname) === true) {
       this.props.createPostOnDifferentProfile(
         this.state.postText,
-        this.props.currentProfile
+        this.props.currentProfile,
+        this.props.allPosts.length,
+        this.props.friendsPosts.length,
+        this.props.profilePosts.length
       );
       this.setState({ postText: "" });
     } else {
-      this.props.createPost(this.state.postText, this.props.currentProfile);
+      this.props.createPost(
+        this.state.postText,
+        this.props.currentProfile,
+        this.props.allPosts.length,
+        this.props.friendsPosts.length,
+        this.props.profilePosts.length
+      );
       this.setState({ postText: "" });
     }
   };

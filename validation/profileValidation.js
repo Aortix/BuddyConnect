@@ -11,6 +11,10 @@ const profileIdValidation = data => {
     errors.error = "Should not contain some of these characters.";
   }
 
+  if (data.amount && !validator.isNumeric(data.amount.toString())) {
+    errors.misc = "Amount must be a number.";
+  }
+
   return {
     errors: errors,
     noErrors: isEmpty(errors)

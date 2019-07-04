@@ -41,7 +41,10 @@ class CreateComment extends Component {
       this.props.createComment(
         this.state.commentText,
         this.props.currentPost,
-        this.props.myProfile
+        this.props.myProfile,
+        this.props.allPosts.length,
+        this.props.friendsPosts.length,
+        this.props.profilePosts.length
       );
       //this.props.changeCurrentFocusedPost("");
       this.setState({ commentText: "" });
@@ -49,7 +52,10 @@ class CreateComment extends Component {
       this.props.createComment(
         this.state.commentText,
         this.props.currentPost,
-        this.props.currentProfile
+        this.props.currentProfile,
+        this.props.allPosts.length,
+        this.props.friendsPosts.length,
+        this.props.profilePosts.length
       );
       //this.props.changeCurrentFocusedPost("");
       this.setState({ commentText: "" });
@@ -75,11 +81,9 @@ class CreateComment extends Component {
               {this.props.commentErrors.misc}
             </div>
           )}
-          <button
-            type="submit"
-            value="Submit"
-            onClick={this.submitCommentForm}
-          >Submit</button>
+          <button type="submit" value="Submit" onClick={this.submitCommentForm}>
+            Submit
+          </button>
         </form>
       </div>
     );

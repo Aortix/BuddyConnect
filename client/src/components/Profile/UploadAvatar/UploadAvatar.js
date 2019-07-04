@@ -9,7 +9,13 @@ export default class UploadAvatar extends Component {
       prevState.fileUploaded !== this.state.fileUploaded &&
       this.state.fileUploaded !== 0
     ) {
-      this.props.changeAvatar(this.state.file, this.props.currentProfile);
+      this.props.changeAvatar(
+        this.state.file,
+        this.props.currentProfile,
+        this.props.allPosts.length,
+        this.props.friendsPosts.length,
+        this.props.profilePosts.length
+      );
     }
   };
 
@@ -23,10 +29,6 @@ export default class UploadAvatar extends Component {
       file: e.target.files[0],
       fileUploaded: this.state.fileUploaded + 1
     });
-  };
-
-  handleAvatarError = () => {
-    //this.props.getAndStoreMyProfile(this.props.currentProfile);
   };
 
   render() {
@@ -64,7 +66,7 @@ export default class UploadAvatar extends Component {
           <Avatar
             currentProfile={this.props.currentProfile}
             myProfile={this.props.myProfile}
-            currentAvatar="standard.png"
+            currentAvatar="newstandard3.png"
           />
         </div>
       );

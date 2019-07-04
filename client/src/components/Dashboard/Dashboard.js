@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Post from "./../Post/Post";
 import CreatePost from "./../CreatePost/CreatePost";
+import LoadMorePosts from "./../LoadMorePosts/LoadMorePosts";
 
 import "./Dashboard.css";
 
@@ -11,7 +12,8 @@ class Dashboard extends Component {
   };
 
   state = {
-    postsToSee: 0
+    postsToSee: 0,
+    receivingPosts: 0
   };
 
   updatePostsToPosts = number => {
@@ -91,6 +93,9 @@ class Dashboard extends Component {
               </div>
             )}
             <CreatePost
+              allPosts={this.props.allPosts}
+              friendsPosts={this.props.friendsPosts}
+              profilePosts={this.props.profilePosts}
               createPost={this.props.createPost}
               currentProfile={this.props.currentProfile}
               createPostOnDifferentProfile={
@@ -101,15 +106,31 @@ class Dashboard extends Component {
               postCreated={this.props.postCreated}
               postAlreadyCreated={this.props.postAlreadyCreated}
             />
-            {this.props.newPosts === 1 ? <div className="Dashboard-new_posts_button" onClick={() => {      this.props.getAndStoreAllPosts();
-      this.props.getAndStoreFriendsPosts();
-      this.props.getNewPosts(0); window.scrollTo(0,0);}}><i className="fas fa-comments"></i>&nbsp;
-      <span>Check For Posts</span></div> : null}
+            {this.props.newPosts === 1 ? (
+              <div
+                className="Dashboard-new_posts_button"
+                onClick={() => {
+                  this.props.getAndStoreAllPosts(this.props.allPosts.length);
+                  this.props.getAndStoreFriendsPosts(
+                    this.props.friendsPosts.length
+                  );
+                  this.props.getNewPosts(0);
+                  window.scrollTo(0, 0);
+                }}
+              >
+                <i className="fas fa-comments" />
+                &nbsp;
+                <span>Check For Posts</span>
+              </div>
+            ) : null}
           </div>
         </div>
         {this.props.postsToSee !== 1 ? (
           <div className="Dashboard-Post_component">
             <Post
+              allPosts={this.props.allPosts}
+              friendsPosts={this.props.friendsPosts}
+              profilePosts={this.props.profilePosts}
               posts={this.props.friendsPosts}
               getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
               currentProfile={this.props.currentProfile}
@@ -128,10 +149,22 @@ class Dashboard extends Component {
               commentDeleted={this.props.commentDeleted}
               commentAlreadyDeleted={this.props.commentAlreadyDeleted}
             />
+            {this.props.friendsPosts !== null &&
+            this.props.friendsPosts.length === 0 ? null : (
+              <LoadMorePosts
+                getAndStorePosts={this.props.getAndStoreFriendsPosts}
+                posts={this.props.friendsPosts}
+                receivingPosts={this.props.receivingPosts}
+                getReceivingPosts={this.props.getReceivingPosts}
+              />
+            )}
           </div>
         ) : (
           <div className="Dashboard-Post_component">
             <Post
+              allPosts={this.props.allPosts}
+              friendsPosts={this.props.friendsPosts}
+              profilePosts={this.props.profilePosts}
               posts={this.props.allPosts}
               getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
               currentProfile={this.props.currentProfile}
@@ -150,6 +183,15 @@ class Dashboard extends Component {
               commentDeleted={this.props.commentDeleted}
               commentAlreadyDeleted={this.props.commentAlreadyDeleted}
             />
+            {(this.props.allPosts !== null) &
+            (this.props.allPosts.length === 0) ? null : (
+              <LoadMorePosts
+                getAndStorePosts={this.props.getAndStoreAllPosts}
+                posts={this.props.allPosts}
+                receivingPosts={this.props.receivingPosts}
+                getReceivingPosts={this.props.getReceivingPosts}
+              />
+            )}
           </div>
         )}
       </div>

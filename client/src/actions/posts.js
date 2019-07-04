@@ -10,10 +10,11 @@ import {
   CLEAR_COMMENT_ERRORS,
   POST_CREATED,
   POST_DELETED,
-  COMMENT_DELETED
+  COMMENT_DELETED,
+  RECEIVING_POSTS
 } from "./types";
 
-export const getAndStoreAllPosts = () => dispatch => {
+export const getAndStoreAllPosts = (amount = 15) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -24,15 +25,16 @@ export const getAndStoreAllPosts = () => dispatch => {
       }
     };
     axios
-      .get("/api/post/global-posts", config)
+      .post("/api/post/global-posts", { amount: amount }, config)
       .then(data => {
         dispatch({ type: GET_ALL_POSTS, payload: data.data });
+        dispatch({ type: RECEIVING_POSTS, payload: 0 });
       })
       .catch(err => {});
   }
 };
 
-export const getAndStoreFriendsPosts = () => dispatch => {
+export const getAndStoreFriendsPosts = (amount = 15) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -43,15 +45,16 @@ export const getAndStoreFriendsPosts = () => dispatch => {
       }
     };
     axios
-      .get("/api/post/friends-posts", config)
+      .post("/api/post/friends-posts", { amount: amount }, config)
       .then(data => {
         dispatch({ type: GET_FRIENDS_POSTS, payload: data.data });
+        dispatch({ type: RECEIVING_POSTS, payload: 0 });
       })
       .catch(err => {});
   }
 };
 
-export const getAndStoreProfilePosts = profileId => dispatch => {
+export const getAndStoreProfilePosts = (profileId, amount = 15) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -62,15 +65,26 @@ export const getAndStoreProfilePosts = profileId => dispatch => {
       }
     };
     axios
-      .post("/api/post/profile-posts", { profileId: profileId }, config)
+      .post(
+        "/api/post/profile-posts",
+        { profileId: profileId, amount: amount },
+        config
+      )
       .then(data => {
         dispatch({ type: GET_PROFILE_POSTS, payload: data.data });
+        dispatch({ type: RECEIVING_POSTS, payload: 0 });
       })
       .catch(err => {});
   }
 };
 
-export const createPost = (postText, profileId) => dispatch => {
+export const createPost = (
+  postText,
+  profileId,
+  allPostsAmount,
+  friendsPostsAmount,
+  profilePostsAmount
+) => dispatch => {
   let token = window.localStorage.getItem("token");
   const config = {
     headers: {
@@ -85,9 +99,19 @@ export const createPost = (postText, profileId) => dispatch => {
   axios
     .post("/api/post/create-post", requestBody, config)
     .then(data => {
-      dispatch(getAndStoreAllPosts());
-      dispatch(getAndStoreFriendsPosts());
-      dispatch(getAndStoreProfilePosts(profileId));
+      dispatch(getAndStoreAllPosts(allPostsAmount));
+      if (friendsPostsAmount < 5) {
+        dispatch(getAndStoreFriendsPosts(5));
+      } else {
+        dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
+      }
+
+      if (profilePostsAmount < 5) {
+        dispatch(getAndStoreProfilePosts(profileId, 5));
+      } else {
+        dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
+      }
+
       dispatch({ type: POST_CREATED, payload: 1 });
       dispatch({ type: CLEAR_POST_ERRORS });
       window.scrollTo(0, 0);
@@ -99,7 +123,10 @@ export const createPost = (postText, profileId) => dispatch => {
 
 export const createPostOnDifferentProfile = (
   postText,
-  profileId
+  profileId,
+  allPostsAmount,
+  friendsPostsAmount,
+  profilePostsAmount
 ) => dispatch => {
   let token = window.localStorage.getItem("token");
   const config = {
@@ -116,9 +143,19 @@ export const createPostOnDifferentProfile = (
   axios
     .post("/api/post/create-post-on-different-profile", requestBody, config)
     .then(data => {
-      dispatch(getAndStoreAllPosts());
-      dispatch(getAndStoreFriendsPosts());
-      dispatch(getAndStoreProfilePosts(profileId));
+      dispatch(getAndStoreAllPosts(allPostsAmount));
+      if (friendsPostsAmount < 5) {
+        dispatch(getAndStoreFriendsPosts(5));
+      } else {
+        dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
+      }
+
+      if (profilePostsAmount < 5) {
+        dispatch(getAndStoreProfilePosts(profileId, 5));
+      } else {
+        dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
+      }
+
       dispatch({ type: POST_CREATED, payload: 1 });
       dispatch({ type: CLEAR_POST_ERRORS });
     })
@@ -131,7 +168,14 @@ export const changeCurrentFocusedPost = postId => dispatch => {
   dispatch({ type: CHANGE_CURRENT_FOCUSED_POST, payload: postId });
 };
 
-export const createComment = (commentText, postId, profileId) => dispatch => {
+export const createComment = (
+  commentText,
+  postId,
+  profileId,
+  allPostsAmount,
+  friendsPostsAmount,
+  profilePostsAmount
+) => dispatch => {
   let token = window.localStorage.getItem("token");
   const config = {
     headers: {
@@ -147,9 +191,19 @@ export const createComment = (commentText, postId, profileId) => dispatch => {
   axios
     .post("/api/post/create-comment", requestBody, config)
     .then(data => {
-      dispatch(getAndStoreAllPosts());
-      dispatch(getAndStoreFriendsPosts());
-      dispatch(getAndStoreProfilePosts(profileId));
+      dispatch(getAndStoreAllPosts(allPostsAmount));
+      if (friendsPostsAmount < 5) {
+        dispatch(getAndStoreFriendsPosts(5));
+      } else {
+        dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
+      }
+
+      if (profilePostsAmount < 5) {
+        dispatch(getAndStoreProfilePosts(profileId, 5));
+      } else {
+        dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
+      }
+
       dispatch(changeCurrentFocusedPost(""));
       dispatch({ type: CLEAR_COMMENT_ERRORS });
     })
@@ -158,7 +212,13 @@ export const createComment = (commentText, postId, profileId) => dispatch => {
     });
 };
 
-export const deletePost = (postId, currentProfile) => dispatch => {
+export const deletePost = (
+  postId,
+  currentProfile,
+  allPostsAmount,
+  friendsPostsAmount,
+  profilePostsAmount
+) => dispatch => {
   let token = window.localStorage.getItem("token");
   const config = {
     headers: {
@@ -171,9 +231,9 @@ export const deletePost = (postId, currentProfile) => dispatch => {
   axios
     .put("/api/post/delete-post", requestBody, config)
     .then(data => {
-      dispatch(getAndStoreAllPosts());
-      dispatch(getAndStoreFriendsPosts());
-      dispatch(getAndStoreProfilePosts(currentProfile));
+      dispatch(getAndStoreAllPosts(allPostsAmount));
+      dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
+      dispatch(getAndStoreProfilePosts(currentProfile, profilePostsAmount));
       dispatch({ type: POST_DELETED, payload: 1 });
     })
     .catch(err => {});
@@ -182,7 +242,10 @@ export const deletePost = (postId, currentProfile) => dispatch => {
 export const deleteComment = (
   commentId,
   postId,
-  currentProfile
+  currentProfile,
+  allPostsAmount,
+  friendsPostsAmount,
+  profilePostsAmount
 ) => dispatch => {
   let token = window.localStorage.getItem("token");
   const config = {
@@ -197,9 +260,9 @@ export const deleteComment = (
   axios
     .put("/api/post/delete-comment", requestBody, config)
     .then(data => {
-      dispatch(getAndStoreAllPosts());
-      dispatch(getAndStoreFriendsPosts());
-      dispatch(getAndStoreProfilePosts(currentProfile));
+      dispatch(getAndStoreAllPosts(allPostsAmount));
+      dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
+      dispatch(getAndStoreProfilePosts(currentProfile, profilePostsAmount));
       dispatch({ type: COMMENT_DELETED, payload: 1 });
     })
     .catch(err => {});

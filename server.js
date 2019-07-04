@@ -44,7 +44,7 @@ const limiter = rateLimit({
   handler: function(req, res) {
     const errors = { errors: { misc: "" } };
     errors.errors.misc =
-      "Too many posts/comments in a short time. Please wait 2 minute before posting again.";
+      "Too many posts/comments in a short time. Please wait 1 minute before posting again.";
     return res.status(429).send(errors);
   }
 });

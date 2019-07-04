@@ -4,6 +4,19 @@ const commonRegex = require("./regex");
 
 const { textAreaRequirements } = commonRegex;
 
+const getPostsValidation = data => {
+  const errors = {};
+
+  if (data.amount && !validator.isNumeric(data.amount.toString())) {
+    errors.misc = "Amount must be a number.";
+  }
+
+  return {
+    errors: errors,
+    noErrors: isEmpty(errors)
+  };
+};
+
 const postValidation = data => {
   const errors = {};
 
@@ -25,4 +38,4 @@ const postValidation = data => {
   };
 };
 
-module.exports = postValidation;
+module.exports = { getPostsValidation, postValidation };

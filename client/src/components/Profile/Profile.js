@@ -10,6 +10,7 @@ import AboutMe from "./AboutMe/AboutMe";
 import Friends from "./Friends/Friends";
 import Interests from "./Interests/Interests";
 import CreatePost from "./../CreatePost/CreatePost";
+import LoadMorePosts from "./../LoadMorePosts/LoadMorePosts";
 
 class Profile extends Component {
   componentDidMount = () => {
@@ -61,6 +62,9 @@ class Profile extends Component {
             addedFriend={this.props.addedFriend}
           />
           <UploadAvatar
+            allPosts={this.props.allPosts}
+            friendsPosts={this.props.friendsPosts}
+            profilePosts={this.props.profilePosts}
             currentProfile={this.props.currentProfile}
             myProfile={this.props.myProfile}
             currentAvatar={this.props.currentProfileData.avatar}
@@ -71,6 +75,9 @@ class Profile extends Component {
             avatarUploading={this.props.avatarUploading}
           />
           <CreatePost
+            allPosts={this.props.allPosts}
+            friendsPosts={this.props.friendsPosts}
+            profilePosts={this.props.profilePosts}
             createPost={this.props.createPost}
             currentProfile={this.props.currentProfile}
             createPostOnDifferentProfile={
@@ -285,25 +292,42 @@ class Profile extends Component {
                 </div>
               ) : null}
               {this.props.currentComponent === 0 ? (
-                <Post
-                  posts={this.props.profilePosts}
-                  getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
-                  currentProfile={this.props.currentProfile}
-                  changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
-                  changeLocation={this.props.changeLocation}
-                  currentPost={this.props.currentPost}
-                  createComment={this.props.createComment}
-                  getAndStoreAProfile={this.props.getAndStoreAProfile}
-                  commentErrors={this.props.commentErrors}
-                  clearCommentErrors={this.props.clearCommentErrors}
-                  deletePost={this.props.deletePost}
-                  deleteComment={this.props.deleteComment}
-                  myProfile={this.props.myProfile}
-                  postDeleted={this.props.postDeleted}
-                  postAlreadyDeleted={this.props.postAlreadyDeleted}
-                  commentDeleted={this.props.commentDeleted}
-                  commentAlreadyDeleted={this.props.commentAlreadyDeleted}
-                />
+                <React.Fragment>
+                  <Post
+                    allPosts={this.props.allPosts}
+                    friendsPosts={this.props.friendsPosts}
+                    profilePosts={this.props.profilePosts}
+                    posts={this.props.profilePosts}
+                    getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
+                    currentProfile={this.props.currentProfile}
+                    changeCurrentFocusedPost={
+                      this.props.changeCurrentFocusedPost
+                    }
+                    changeLocation={this.props.changeLocation}
+                    currentPost={this.props.currentPost}
+                    createComment={this.props.createComment}
+                    getAndStoreAProfile={this.props.getAndStoreAProfile}
+                    commentErrors={this.props.commentErrors}
+                    clearCommentErrors={this.props.clearCommentErrors}
+                    deletePost={this.props.deletePost}
+                    deleteComment={this.props.deleteComment}
+                    myProfile={this.props.myProfile}
+                    postDeleted={this.props.postDeleted}
+                    postAlreadyDeleted={this.props.postAlreadyDeleted}
+                    commentDeleted={this.props.commentDeleted}
+                    commentAlreadyDeleted={this.props.commentAlreadyDeleted}
+                  />
+                  {this.props.profilePosts !== null &&
+                  this.props.profilePosts.length === 0 ? null : (
+                    <LoadMorePosts
+                      posts={this.props.profilePosts}
+                      getAndStorePosts={this.props.getAndStoreProfilePosts}
+                      currentProfile={this.props.currentProfile}
+                      receivingPosts={this.props.receivingPosts}
+                      getReceivingPosts={this.props.getReceivingPosts}
+                    />
+                  )}
+                </React.Fragment>
               ) : null}
 
               {this.props.currentComponent === 1 ? (

@@ -26,14 +26,32 @@ class Post extends Component {
   deletePost = (postId, currentProfile) => {
     document.getElementById(postId).classList.toggle("postDeleted");
 
-    setTimeout(() => this.props.deletePost(postId, currentProfile), 1000);
+    setTimeout(
+      () =>
+        this.props.deletePost(
+          postId,
+          currentProfile,
+          this.props.allPosts.length,
+          this.props.friendsPosts.length,
+          this.props.profilePosts.length
+        ),
+      1000
+    );
   };
 
   deleteComment = (commentId, postId, currentProfile) => {
     document.getElementById(commentId).classList.toggle("commentDeleted");
 
     setTimeout(
-      () => this.props.deleteComment(commentId, postId, currentProfile),
+      () =>
+        this.props.deleteComment(
+          commentId,
+          postId,
+          currentProfile,
+          this.props.allPosts.length,
+          this.props.friendsPosts.length,
+          this.props.profilePosts.length
+        ),
       1000
     );
   };
@@ -195,6 +213,9 @@ class Post extends Component {
                       </i>
                     </div>
                     <CreateComment
+                      allPosts={this.props.allPosts}
+                      friendsPosts={this.props.friendsPosts}
+                      profilePosts={this.props.profilePosts}
                       currentProfile={this.props.currentProfile}
                       currentPost={this.props.currentPost}
                       changeCurrentFocusedPost={this.changeCurrentFocusedPost}
