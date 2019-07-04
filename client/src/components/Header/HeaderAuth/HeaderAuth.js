@@ -36,7 +36,7 @@ export const HeaderAuth = props => {
         <span>
           <Link to="/login">Login </Link>
         </span>
-        <span className="sign-up-text">
+        <span id="sign-up" className="sign-up-text">
           <Link to="/sign-up">Sign Up</Link>
         </span>
       </div>

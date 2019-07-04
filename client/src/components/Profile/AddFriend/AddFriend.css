@@ -1,11 +1,32 @@
 .AddFriend-container {
   position: absolute;
-  top: 17px;
-  right: 25px;
+  top: 5px;
+  left: calc(100% - 59px - 15px);
+  width: 55px;
   border: 1px solid var(--border-color-black);
   padding-left: 3px;
   padding-right: 3px;
   background-color: var(--secondary-bg-color);
   cursor: pointer;
   font-weight: 400;
+  font-size: 1rem;
+}
+
+@media screen and (min-width: 860px) {
+  .AddFriend-container {
+    left: calc(100% - 120px - 25px);
+    font-size: 1rem;
+    top: 17px;
+    width: 120px;
+  }
+
+  .AddFriend-friends::after {
+    display: inline;
+    content: "ete Friend";
+  }
+
+  .AddFriends-add_friends:after {
+    display: inline;
+    content: " Friend";
+  }
 }

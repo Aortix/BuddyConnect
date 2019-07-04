@@ -13,7 +13,7 @@
 
 .CreatePost-container textarea {
   vertical-align: bottom;
-  width: 300px;
+  min-width: 250px;
 }
 
 .CreatePost-submit_button {
@@ -57,4 +57,10 @@
   border-radius: 7px;
   color: var(--border-color-white);
   background-color: #1e90ff;
+}
+
+@media screen and (min-width: 860px) {
+  .CreatePost-container textarea {
+    width: 300px;
+  }
 }

@@ -26,10 +26,18 @@
   display: none;
 }
 
+#sign-up {
+  display: none;
+}
+
 @media screen and (min-width: 860px) {
   .HeaderAuth-name {
     display: inline-block;
     vertical-align: middle;
     margin-left: 5px;
   }
+
+  #sign-up {
+  display: initial;
+}
 }

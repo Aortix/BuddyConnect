@@ -14,7 +14,7 @@ export default function AddFriend(props) {
         }
       >
         <i className="fas fa-user-friends" />
-        <span>&nbsp;Friends</span>
+        <span className="AddFriend-friends">&nbsp;Del</span>
       </div>
     ) : (
       <div
@@ -24,7 +24,7 @@ export default function AddFriend(props) {
         }}
       >
         <i className="fas fa-user-friends" />
-        <span>&nbsp;Add Friend</span>
+        <span className="AddFriends-add_friends">&nbsp;Add</span>
       </div>
     );
   }
