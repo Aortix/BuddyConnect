@@ -45,7 +45,10 @@ export const getAndStoreAProfile = profileId => dispatch => {
   }
 };
 
-export const getAndStoreMyProfile = (profileId, profilePostsAmount) => dispatch => {
+export const getAndStoreMyProfile = (
+  profileId,
+  profilePostsAmount
+) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -95,7 +98,7 @@ export const showFriends = profileId => dispatch => {
   }
 };
 
-export const addFriend = profileId => dispatch => {
+export const addFriend = (profileId, friendsPostsAmount) => dispatch => {
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {
     return null;
@@ -109,6 +112,7 @@ export const addFriend = profileId => dispatch => {
       .put(`/api/profile/friends/add-friend/`, { profileId: profileId }, config)
       .then(data => {
         dispatch({ type: ADD_FRIEND, payload: 1 });
+        dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
       })
       .catch(err => {});
   }
@@ -145,7 +149,13 @@ export const reverseAddedFriend = () => dispatch => {
   dispatch({ type: REVERSE_ADDED_FRIEND, payload: 0 });
 };
 
-export const changeAvatar = (fileData, profileId, allPostsAmount, friendsPostsAmount, profilePostsAmount) => dispatch => {
+export const changeAvatar = (
+  fileData,
+  profileId,
+  allPostsAmount,
+  friendsPostsAmount,
+  profilePostsAmount
+) => dispatch => {
   dispatch({ type: AVATAR_UPLOADING, payload: 1 });
   let token = window.localStorage.getItem("token");
   if (token === undefined || token === null || token === "undefined") {

@@ -9,7 +9,9 @@ export default function AddFriend(props) {
     return props.isAFriend === 1 ? (
       <div
         className="AddFriend-container"
-        onClick={() => props.deleteFriend(props.currentProfile)}
+        onClick={() =>
+          props.deleteFriend(props.currentProfile, props.friendsPosts.length)
+        }
       >
         <i className="fas fa-user-friends" />
         <span>&nbsp;Friends</span>
@@ -18,7 +20,7 @@ export default function AddFriend(props) {
       <div
         className="AddFriend-container"
         onClick={() => {
-          props.addFriend(props.currentProfile);
+          props.addFriend(props.currentProfile, props.friendsPosts.length);
         }}
       >
         <i className="fas fa-user-friends" />

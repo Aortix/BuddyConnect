@@ -112,20 +112,33 @@ router.post(
         response.friends.forEach(friends => {
           returnArray.push(friends.toString());
         });
-        returnArray.push(response._id.toString());
-        postSchema
-          .find({})
-          .populate("comments")
+        returnArray.push(response._id);
+
+        profileSchema
+          .find({ _id: { $in: returnArray } })
           .limit(100)
-          .sort({ datePosted: "desc" })
-          .exec((err, response3) => {
+          .exec((err, response2) => {
             if (err) {
               return res.status(500).send("Error finding posts");
             } else {
-              let newArray = response3.filter(posts => {
-                return returnArray.includes(posts.p_id.toString());
+              let anotherArray = [];
+              response2.forEach(items => {
+                items.posts.forEach(individual => {
+                  anotherArray.push(individual);
+                });
               });
-              return res.send(newArray.slice(0, req.body.amount));
+              postSchema
+                .find({ _id: { $in: anotherArray } })
+                .populate("comments")
+                .limit(100)
+                .sort({ datePosted: "desc" })
+                .exec((err, response3) => {
+                  if (err) {
+                    return res.status(500).send("Error finding posts");
+                  } else {
+                    return res.send(response3.slice(0, req.body.amount));
+                  }
+                });
             }
           });
       }
@@ -156,7 +169,7 @@ router.post(
           returnArray.push(posts.toString());
         });
         postSchema
-          .find({})
+          .find({ _id: { $in: returnArray } })
           .populate("comments")
           .limit(100)
           .sort({ datePosted: "desc" })
@@ -164,10 +177,7 @@ router.post(
             if (err) {
               return res.status(500).send("Error finding posts.");
             } else {
-              let newArray = response.filter(posts => {
-                return returnArray.includes(posts._id.toString());
-              });
-              return res.send(newArray.slice(0, req.body.amount));
+              return res.send(response.slice(0, req.body.amount));
             }
           });
       }

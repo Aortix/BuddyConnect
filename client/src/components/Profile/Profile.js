@@ -49,6 +49,7 @@ class Profile extends Component {
       return (
         <div className="Profile-container">
           <HeaderImage
+            friendsPosts={this.props.friendsPosts}
             currentHeaderImage={this.props.currentProfileData.header}
             changeHeader={this.props.changeHeader}
             currentName={this.props.currentProfileData.name}

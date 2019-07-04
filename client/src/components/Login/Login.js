@@ -28,6 +28,7 @@ class Login extends Component {
             name="loginEmail"
             onChange={this.props.handleChange}
             value={this.props.loginEmail}
+            autoComplete="new-password"
           />
           {this.props.authErrors.email !== undefined ? (
             <div className="Login-errors">{this.props.authErrors.email}</div>
@@ -38,6 +39,7 @@ class Login extends Component {
             name="loginPassword"
             onChange={this.props.handleChange}
             value={this.props.loginPassword}
+            autoComplete="new-password"
           />
           {this.props.authErrors.password !== undefined ? (
             <div className="Login-errors">{this.props.authErrors.password}</div>

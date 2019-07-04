@@ -475,7 +475,7 @@ router.post(
           );
         }
       }),
-      limits: { fileSize: 1000000 },
+      limits: { fileSize: 1300000 },
       fileFilter: (req, file, cb) => {
         checkAvatarUpload(req, file, cb);
       }
@@ -483,10 +483,10 @@ router.post(
 
     upload(req, res, err => {
       if (err instanceof multer.MulterError) {
-        errors.misc = "Image is too big. 1MB max size.";
+        errors.avatar = "Image is too big. 1.3MB max size.";
         return res.status(400).send(errors);
       } else if (err) {
-        errors.misc =
+        errors.avatar =
           "Something went wrong with the image uploading. Try again.";
         return res.status(500).send(errors);
       } else if (req.avatarValidation) {
@@ -494,7 +494,7 @@ router.post(
       } else {
         userSchema.findById(req.user.id, (err, response) => {
           if (err) {
-            errors.misc = "Can't find user account to update. Try again.";
+            errors.avatar = "Can't find user account to update. Try again.";
             return res.status(500).send(errors);
           } else {
             if (response.avatar === "newstandard3.png") {
@@ -506,7 +506,7 @@ router.post(
                 },
                 (err, data) => {
                   if (err) {
-                    errors.misc = "Error deleting previous avatar.";
+                    errors.avatar = "Error deleting previous avatar.";
                     return res.status(500).send(errors);
                   } else {
                   }
@@ -521,7 +521,7 @@ router.post(
           { avatar: req.file.key },
           (err, response) => {
             if (err) {
-              errors.misc = "Can't find user account to update. Try again.";
+              errors.avatar = "Can't find user account to update. Try again.";
               return res.status(500).send(errors);
             } else {
             }
@@ -532,7 +532,7 @@ router.post(
           { avatar: req.file.key },
           (err, response) => {
             if (err) {
-              errors.misc = "Can't find profile to update. Try again.";
+              errors.avatar = "Can't find profile to update. Try again.";
               return res.status(500).send(errors);
             } else {
               postSchema.updateMany(
@@ -540,7 +540,7 @@ router.post(
                 { avatar: req.file.key },
                 (err, response2) => {
                   if (err) {
-                    errors.misc = "Can't update avatar on posts. Try again.";
+                    errors.avatar = "Can't update avatar on posts. Try again.";
                     return res.status(500).send(errors);
                   } else {
                   }
@@ -551,7 +551,8 @@ router.post(
                 { commenterAvatar: req.file.key },
                 (err, response3) => {
                   if (err) {
-                    errors.misc = "Can't update avatar on comments. Try again.";
+                    errors.avatar =
+                      "Can't update avatar on comments. Try again.";
                     return res.status(500).send(errors);
                   } else {
                   }

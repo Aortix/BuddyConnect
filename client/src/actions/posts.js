@@ -99,15 +99,19 @@ export const createPost = (
   axios
     .post("/api/post/create-post", requestBody, config)
     .then(data => {
-      dispatch(getAndStoreAllPosts(allPostsAmount));
-      if (friendsPostsAmount < 5) {
-        dispatch(getAndStoreFriendsPosts(5));
+      if (allPostsAmount < 15) {
+        dispatch(getAndStoreAllPosts(15));
+      } else {
+        dispatch(getAndStoreAllPosts(allPostsAmount));
+      }
+      if (friendsPostsAmount < 15) {
+        dispatch(getAndStoreFriendsPosts(15));
       } else {
         dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
       }
 
-      if (profilePostsAmount < 5) {
-        dispatch(getAndStoreProfilePosts(profileId, 5));
+      if (profilePostsAmount < 15) {
+        dispatch(getAndStoreProfilePosts(profileId, 15));
       } else {
         dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
       }
@@ -143,15 +147,19 @@ export const createPostOnDifferentProfile = (
   axios
     .post("/api/post/create-post-on-different-profile", requestBody, config)
     .then(data => {
-      dispatch(getAndStoreAllPosts(allPostsAmount));
-      if (friendsPostsAmount < 5) {
-        dispatch(getAndStoreFriendsPosts(5));
+      if (allPostsAmount < 15) {
+        dispatch(getAndStoreAllPosts(15));
+      } else {
+        dispatch(getAndStoreAllPosts(allPostsAmount));
+      }
+      if (friendsPostsAmount < 15) {
+        dispatch(getAndStoreFriendsPosts(15));
       } else {
         dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
       }
 
-      if (profilePostsAmount < 5) {
-        dispatch(getAndStoreProfilePosts(profileId, 5));
+      if (profilePostsAmount < 15) {
+        dispatch(getAndStoreProfilePosts(profileId, 15));
       } else {
         dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
       }
@@ -191,15 +199,19 @@ export const createComment = (
   axios
     .post("/api/post/create-comment", requestBody, config)
     .then(data => {
-      dispatch(getAndStoreAllPosts(allPostsAmount));
-      if (friendsPostsAmount < 5) {
-        dispatch(getAndStoreFriendsPosts(5));
+      if (allPostsAmount < 15) {
+        dispatch(getAndStoreAllPosts(15));
+      } else {
+        dispatch(getAndStoreAllPosts(allPostsAmount));
+      }
+      if (friendsPostsAmount < 15) {
+        dispatch(getAndStoreFriendsPosts(15));
       } else {
         dispatch(getAndStoreFriendsPosts(friendsPostsAmount));
       }
 
-      if (profilePostsAmount < 5) {
-        dispatch(getAndStoreProfilePosts(profileId, 5));
+      if (profilePostsAmount < 15) {
+        dispatch(getAndStoreProfilePosts(profileId, 15));
       } else {
         dispatch(getAndStoreProfilePosts(profileId, profilePostsAmount));
       }

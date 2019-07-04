@@ -60,6 +60,7 @@ class HeaderImage extends Component {
       ) : (
         <div className="HeaderImage-container" onClick={this.handleHeaderClick}>
           <AddFriend
+            friendsPosts={this.props.friendsPosts}
             isAFriend={this.props.isAFriend}
             addFriend={this.props.addFriend}
             currentProfile={this.props.currentProfile}
@@ -90,6 +91,7 @@ class HeaderImage extends Component {
             alt="header"
           />
           <AddFriend
+            friendsPosts={this.props.friendsPosts}
             isAFriend={this.props.isAFriend}
             addFriend={this.props.addFriend}
             currentProfile={this.props.currentProfile}
