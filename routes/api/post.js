@@ -292,46 +292,58 @@ router.post(
     if (errors.noErrors === false) {
       return res.status(400).send(errors);
     }
-    profileSchema.findOne({ user: req.user.id }, (err, response) => {
+
+    postSchema.findById(req.body.post, (err, postings) => {
       if (err) {
         errors.errors.misc =
-          "Cannot find profile for this comment on the server.";
+          "Cannot update the profile of the user who made this comment.";
         return res.status(500).send(errors);
+      } else if (postings.comments.length >= 15) {
+        errors.errors.misc = "Maximum comments reached on this post.";
+        return res.status(400).send(errors);
       } else {
-        userSchema.findById(req.user.id, (err, response2) => {
+        profileSchema.findOne({ user: req.user.id }, (err, response) => {
           if (err) {
             errors.errors.misc =
-              "Cannot find the user for this comment on the server.";
+              "Cannot find profile for this comment on the server.";
             return res.status(500).send(errors);
           } else {
-            const newComment = new commentSchema({
-              commenterP_id: response._id,
-              commenterName: response2.name,
-              commenterAvatar: response2.avatar,
-              commenterComment: req.body.comment,
-              datePosted: req.body.datePosted
-            });
-            postSchema.findByIdAndUpdate(
-              req.body.post,
-              { $push: { comments: newComment } },
-              err => {
-                if (err) {
-                  errors.errors.misc =
-                    "Cannot update the profile of the user who made this comment.";
-                  return res.status(500).send(errors);
-                } else {
-                  newComment.save((err, data) => {
+            userSchema.findById(req.user.id, (err, response2) => {
+              if (err) {
+                errors.errors.misc =
+                  "Cannot find the user for this comment on the server.";
+                return res.status(500).send(errors);
+              } else {
+                const newComment = new commentSchema({
+                  commenterP_id: response._id,
+                  commenterName: response2.name,
+                  commenterAvatar: response2.avatar,
+                  commenterComment: req.body.comment,
+                  datePosted: req.body.datePosted
+                });
+                postSchema.findByIdAndUpdate(
+                  req.body.post,
+                  { $push: { comments: newComment } },
+                  err => {
                     if (err) {
                       errors.errors.misc =
-                        "Cannot save the comment in the database.";
+                        "Cannot update the profile of the user who made this comment.";
                       return res.status(500).send(errors);
                     } else {
-                      return res.send(data);
+                      newComment.save((err, data) => {
+                        if (err) {
+                          errors.errors.misc =
+                            "Cannot save the comment in the database.";
+                          return res.status(500).send(errors);
+                        } else {
+                          return res.send(data);
+                        }
+                      });
                     }
-                  });
-                }
+                  }
+                );
               }
-            );
+            });
           }
         });
       }
