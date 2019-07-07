@@ -58,7 +58,9 @@ import {
   CURRENT_COMPONENT,
   NEW_POSTS,
   ATTEMPTS,
-  RECEIVING_POSTS
+  RECEIVING_POSTS,
+  ADD_POST_ID_TO_HIDE_COMMENTS,
+  REMOVE_POST_ID_TO_SHOW_COMMENTS
 } from "./actions/types";
 import { CLEAR_AUTH_ERRORS } from "./actions/types";
 import { CLEAR_POST_ERRORS } from "./actions/types";
@@ -92,7 +94,7 @@ class App extends Component {
       this.props.getAndStoreFriendsPosts(15);
       setTimeout(() => {
         this.props.getNewPosts(1);
-      }, 8000);
+      }, 3000);
 
       if (
         /^\/profile\//.test(window.localStorage.getItem("location")) === true
@@ -115,7 +117,7 @@ class App extends Component {
     ) {
       setTimeout(() => {
         this.props.getNewPosts(1);
-      }, 8000);
+      }, 3000);
     }
     //This will grab the necessary friend information and profile posts for the current user
     if (prevProps.currentProfile !== this.props.currentProfile) {
@@ -276,6 +278,9 @@ class App extends Component {
                   getNewPosts={this.props.getNewPosts}
                   receivingPosts={this.props.receivingPosts}
                   getReceivingPosts={this.props.getReceivingPosts}
+                  postIdsToHideComments={this.props.postIdsToHideComments}
+                  addPostIdToHideComments={this.props.addPostIdToHideComments}
+                  removePostIdToShowComments={this.props.removePostIdToShowComments}
                   {...props}
                 />
               )}
@@ -340,6 +345,9 @@ class App extends Component {
                   avatarUploading={this.props.avatarUploading}
                   receivingPosts={this.props.receivingPosts}
                   getReceivingPosts={this.props.getReceivingPosts}
+                  postIdsToHideComments={this.props.postIdsToHideComments}
+                  addPostIdToHideComments={this.props.addPostIdToHideComments}
+                  removePostIdToShowComments={this.props.removePostIdToShowComments}
                   {...props}
                 />
               )}
@@ -432,6 +440,7 @@ const mapStateToProps = state => ({
   friendsPosts: state.postsReducer.friendsPosts,
   profilePosts: state.postsReducer.profilePosts,
   currentPost: state.postsReducer.currentPost,
+  postIdsToHideComments: state.postsReducer.postIdsToHideComments,
   currentProfile: state.profileReducer.currentProfile,
   myProfile: state.profileReducer.myProfile,
   currentProfileData: state.profileReducer.currentProfileData,
@@ -699,6 +708,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getReceivingPosts: number => {
     dispatch({ type: RECEIVING_POSTS, payload: number });
+  },
+  addPostIdToHideComments: id => {
+    dispatch({ type: ADD_POST_ID_TO_HIDE_COMMENTS, payload: id });
+  },
+  removePostIdToShowComments: id => {
+    dispatch({ type: REMOVE_POST_ID_TO_SHOW_COMMENTS, payload: id });
   }
 });
 

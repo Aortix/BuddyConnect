@@ -317,17 +317,20 @@ class Profile extends Component {
                     postAlreadyDeleted={this.props.postAlreadyDeleted}
                     commentDeleted={this.props.commentDeleted}
                     commentAlreadyDeleted={this.props.commentAlreadyDeleted}
+                    postIdsToHideComments={this.props.postIdsToHideComments}
+                    addPostIdToHideComments={this.props.addPostIdToHideComments}
+                    removePostIdToShowComments={this.props.removePostIdToShowComments}
                   />
                   {this.props.profilePosts !== null &&
-                  this.props.profilePosts.length === 0 ? null : (
-                    <LoadMorePosts
-                      posts={this.props.profilePosts}
-                      getAndStorePosts={this.props.getAndStoreProfilePosts}
-                      currentProfile={this.props.currentProfile}
-                      receivingPosts={this.props.receivingPosts}
-                      getReceivingPosts={this.props.getReceivingPosts}
-                    />
-                  )}
+                    this.props.profilePosts.length === 0 ? null : (
+                      <LoadMorePosts
+                        posts={this.props.profilePosts}
+                        getAndStorePosts={this.props.getAndStoreProfilePosts}
+                        currentProfile={this.props.currentProfile}
+                        receivingPosts={this.props.receivingPosts}
+                        getReceivingPosts={this.props.getReceivingPosts}
+                      />
+                    )}
                 </React.Fragment>
               ) : null}
 

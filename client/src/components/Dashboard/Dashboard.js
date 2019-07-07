@@ -69,29 +69,29 @@ class Dashboard extends Component {
                 </button>
               </div>
             ) : (
-              <div className="post-buttons-container">
-                <button
-                  className="global-button-hidden"
-                  id="global-button"
-                  value="posts"
-                  onClick={() => {
-                    this.updatePostsToGlobal(0);
-                  }}
-                >
-                  Posts
+                <div className="post-buttons-container">
+                  <button
+                    className="global-button-hidden"
+                    id="global-button"
+                    value="posts"
+                    onClick={() => {
+                      this.updatePostsToGlobal(0);
+                    }}
+                  >
+                    Posts
                 </button>
-                <button
-                  id="posts-button"
-                  value="global"
-                  className="active"
-                  onClick={() => {
-                    this.updateToPostsTab();
-                  }}
-                >
-                  Global
+                  <button
+                    id="posts-button"
+                    value="global"
+                    className="active"
+                    onClick={() => {
+                      this.updateToPostsTab();
+                    }}
+                  >
+                    Global
                 </button>
-              </div>
-            )}
+                </div>
+              )}
             <CreatePost
               allPosts={this.props.allPosts}
               friendsPosts={this.props.friendsPosts}
@@ -148,52 +148,58 @@ class Dashboard extends Component {
               postAlreadyDeleted={this.props.postAlreadyDeleted}
               commentDeleted={this.props.commentDeleted}
               commentAlreadyDeleted={this.props.commentAlreadyDeleted}
+              postIdsToHideComments={this.props.postIdsToHideComments}
+              addPostIdToHideComments={this.props.addPostIdToHideComments}
+              removePostIdToShowComments={this.props.removePostIdToShowComments}
             />
             {this.props.friendsPosts !== null &&
-            this.props.friendsPosts.length === 0 ? null : (
-              <LoadMorePosts
-                getAndStorePosts={this.props.getAndStoreFriendsPosts}
-                posts={this.props.friendsPosts}
-                receivingPosts={this.props.receivingPosts}
-                getReceivingPosts={this.props.getReceivingPosts}
-              />
-            )}
+              this.props.friendsPosts.length === 0 ? null : (
+                <LoadMorePosts
+                  getAndStorePosts={this.props.getAndStoreFriendsPosts}
+                  posts={this.props.friendsPosts}
+                  receivingPosts={this.props.receivingPosts}
+                  getReceivingPosts={this.props.getReceivingPosts}
+                />
+              )}
           </div>
         ) : (
-          <div className="Dashboard-Post_component">
-            <Post
-              allPosts={this.props.allPosts}
-              friendsPosts={this.props.friendsPosts}
-              profilePosts={this.props.profilePosts}
-              posts={this.props.allPosts}
-              getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
-              currentProfile={this.props.currentProfile}
-              changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
-              changeLocation={this.props.changeLocation}
-              currentPost={this.props.currentPost}
-              createComment={this.props.createComment}
-              getAndStoreAProfile={this.props.getAndStoreAProfile}
-              commentErrors={this.props.commentErrors}
-              clearCommentErrors={this.props.clearCommentErrors}
-              deletePost={this.props.deletePost}
-              deleteComment={this.props.deleteComment}
-              myProfile={this.props.myProfile}
-              postDeleted={this.props.postDeleted}
-              postAlreadyDeleted={this.props.postAlreadyDeleted}
-              commentDeleted={this.props.commentDeleted}
-              commentAlreadyDeleted={this.props.commentAlreadyDeleted}
-            />
-            {(this.props.allPosts !== null) &
-            (this.props.allPosts.length === 0) ? null : (
-              <LoadMorePosts
-                getAndStorePosts={this.props.getAndStoreAllPosts}
+            <div className="Dashboard-Post_component">
+              <Post
+                allPosts={this.props.allPosts}
+                friendsPosts={this.props.friendsPosts}
+                profilePosts={this.props.profilePosts}
                 posts={this.props.allPosts}
-                receivingPosts={this.props.receivingPosts}
-                getReceivingPosts={this.props.getReceivingPosts}
+                getAndStoreProfilePosts={this.props.getAndStoreProfilePosts}
+                currentProfile={this.props.currentProfile}
+                changeCurrentFocusedPost={this.props.changeCurrentFocusedPost}
+                changeLocation={this.props.changeLocation}
+                currentPost={this.props.currentPost}
+                createComment={this.props.createComment}
+                getAndStoreAProfile={this.props.getAndStoreAProfile}
+                commentErrors={this.props.commentErrors}
+                clearCommentErrors={this.props.clearCommentErrors}
+                deletePost={this.props.deletePost}
+                deleteComment={this.props.deleteComment}
+                myProfile={this.props.myProfile}
+                postDeleted={this.props.postDeleted}
+                postAlreadyDeleted={this.props.postAlreadyDeleted}
+                commentDeleted={this.props.commentDeleted}
+                commentAlreadyDeleted={this.props.commentAlreadyDeleted}
+                postIdsToHideComments={this.props.postIdsToHideComments}
+                addPostIdToHideComments={this.props.addPostIdToHideComments}
+                removePostIdToShowComments={this.props.removePostIdToShowComments}
               />
-            )}
-          </div>
-        )}
+              {(this.props.allPosts !== null) &
+                (this.props.allPosts.length === 0) ? null : (
+                  <LoadMorePosts
+                    getAndStorePosts={this.props.getAndStoreAllPosts}
+                    posts={this.props.allPosts}
+                    receivingPosts={this.props.receivingPosts}
+                    getReceivingPosts={this.props.getReceivingPosts}
+                  />
+                )}
+            </div>
+          )}
       </div>
     );
   }

@@ -12,7 +12,9 @@ import {
   COMMENT_DELETED,
   UPDATE_POSTS_TO_SEE,
   NEW_POSTS,
-  RECEIVING_POSTS
+  RECEIVING_POSTS,
+  ADD_POST_ID_TO_HIDE_COMMENTS,
+  REMOVE_POST_ID_TO_SHOW_COMMENTS
 } from "./../actions/types";
 
 const initialState = {
@@ -28,7 +30,8 @@ const initialState = {
   postDeleted: 0,
   commentDeleted: 0,
   newPosts: 0,
-  receivingPosts: 0
+  receivingPosts: 0,
+  postIdsToHideComments: []
 };
 
 export const postsReducer = (state = initialState, action) => {
@@ -103,6 +106,18 @@ export const postsReducer = (state = initialState, action) => {
         ...state,
         receivingPosts: action.payload
       };
+    case ADD_POST_ID_TO_HIDE_COMMENTS:
+      return {
+        ...state,
+        postIdsToHideComments: [...state.postIdsToHideComments, action.payload]
+      };
+    case REMOVE_POST_ID_TO_SHOW_COMMENTS:
+      return {
+        ...state,
+        postIdsToHideComments: state.postIdsToHideComments.filter((id) => {
+          return action.payload !== id;
+        })
+      }
     default:
       return state;
   }

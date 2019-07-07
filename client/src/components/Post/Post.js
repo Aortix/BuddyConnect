@@ -126,108 +126,128 @@ class Post extends Component {
                         className="post-avatar_image"
                         src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
                           post.avatar
-                        }`}
+                          }`}
                         alt="avatar"
                       />
                       <h3 className="post-name">{post.name}</h3>
                     </div>
                   </div>
                   <p className="post-post_content">{post.post}</p>
-                </div>
-                {post.comments.map(comments => {
-                  return (
-                    <div
-                      id={comments._id}
-                      className="comment-specifics"
-                      key={comments._id}
-                    >
-                      <div className="comment-comment_information">
-                        <p className="comment-date">
-                          {moment(comments.datePosted).format(
-                            "MM/DD/YYYY hh:mmA"
-                          )}
-                        </p>
-                        {this.props.myProfile === comments.commenterP_id ? (
-                          <i
-                            id="post-delete_comment"
-                            className="fas fa-minus-circle fa-lg"
-                            onClick={() =>
-                              this.deleteComment(
-                                comments._id,
-                                post._id,
-                                this.props.currentProfile
-                              )
-                            }
-                          />
-                        ) : null}
-                        <div
-                          className="comment-image_comment-name"
-                          onClick={() => {
-                            this.props.changeLocation(comments.commenterP_id);
-                          }}
-                        >
-                          <img
-                            className="comment-avatar_image"
-                            src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
-                              comments.commenterAvatar
-                            }`}
-                            alt="avatar"
-                          />
-                          <h4 className="comment-name">
-                            {comments.commenterName}
-                          </h4>
-                        </div>
-                      </div>
-                      <p className="comment-comment_content">
-                        {comments.commenterComment}
-                      </p>
-                    </div>
-                  );
-                })}
-
-                {post._id !== this.props.currentPost ? (
-                  <div className="add-comment-button-container">
-                    <i
-                      className="fas fa-comment"
-                      onClick={() => {
-                        this.changeCurrentFocusedPost(post._id);
-                      }}
-                    >
-                      <span className="open_and_close-comment">
-                        &nbsp;Add Comment
-                      </span>
-                    </i>
+                  <div className="post-comment_section">
+                    {this.props.postIdsToHideComments.includes(post._id) === true ? <i className="fas fa-chevron-circle-right" onClick={() => {
+                      this.props.removePostIdToShowComments(post._id);
+                    }}></i> :
+                      <i className="fas fa-chevron-circle-down" onClick={() => {
+                        this.props.addPostIdToHideComments(post._id);
+                      }
+                      }></i>}
+                    <span className="post-comment_amount">{post.comments.length > 0 ? post.comments.length + " Comments" : "No Comments"}</span>
                   </div>
-                ) : (
-                  <div>
+                </div>
+                {this.props.postIdsToHideComments.includes(post._id) === true ? null :
+                  <div style={{ display: "block" }} className={"comment-all_comments" + post._id}>
+                    {
+                      post.comments.map(comments => {
+                        return (
+                          <div
+                            id={comments._id}
+                            className="comment-specifics"
+                            key={comments._id}
+                          >
+                            <div className="comment-comment_information">
+                              <p className="comment-date">
+                                {moment(comments.datePosted).format(
+                                  "MM/DD/YYYY hh:mmA"
+                                )}
+                              </p>
+                              {this.props.myProfile === comments.commenterP_id ? (
+                                <i
+                                  id="post-delete_comment"
+                                  className="fas fa-minus-circle fa-lg"
+                                  onClick={() =>
+                                    this.deleteComment(
+                                      comments._id,
+                                      post._id,
+                                      this.props.currentProfile
+                                    )
+                                  }
+                                />
+                              ) : null}
+                              <div
+                                className="comment-image_comment-name"
+                                onClick={() => {
+                                  this.props.changeLocation(comments.commenterP_id);
+                                }}
+                              >
+                                <img
+                                  className="comment-avatar_image"
+                                  src={`https://s3-us-west-2.amazonaws.com/buddyconnectbucket/${
+                                    comments.commenterAvatar
+                                    }`}
+                                  alt="avatar"
+                                />
+                                <h4 className="comment-name">
+                                  {comments.commenterName}
+                                </h4>
+                              </div>
+                            </div>
+                            <p className="comment-comment_content">
+                              {comments.commenterComment}
+                            </p>
+                          </div>
+                        );
+                      })
+                    }
+                  </div>
+                }
+                {
+                  post._id !== this.props.currentPost ? (
                     <div className="add-comment-button-container">
                       <i
                         className="fas fa-comment"
                         onClick={() => {
-                          this.changeCurrentFocusedPost("");
+                          this.changeCurrentFocusedPost(post._id);
                         }}
                       >
                         <span className="open_and_close-comment">
-                          &nbsp;Close Comment
-                        </span>
+                          &nbsp;Add Comment
+                      </span>
                       </i>
                     </div>
-                    <CreateComment
-                      allPosts={this.props.allPosts}
-                      friendsPosts={this.props.friendsPosts}
-                      profilePosts={this.props.profilePosts}
-                      currentProfile={this.props.currentProfile}
-                      currentPost={this.props.currentPost}
-                      changeCurrentFocusedPost={this.changeCurrentFocusedPost}
-                      getAndStoreProfilePosts={
-                        this.props.getAndStoreProfilePosts
-                      }
-                      createComment={this.props.createComment}
-                      commentErrors={this.props.commentErrors}
-                      clearCommentErrors={this.props.clearCommentErrors}
-                    />
-                  </div>
-                )}
+                  ) : (
+                      <div>
+                        <div className="add-comment-button-container">
+                          <i
+                            className="fas fa-comment"
+                            onClick={() => {
+                              this.changeCurrentFocusedPost("");
+                            }}
+                          >
+                            <span className="open_and_close-comment">
+                              &nbsp;Close Comment
+                        </span>
+                          </i>
+                        </div>
+                        <CreateComment
+                          allPosts={this.props.allPosts}
+                          friendsPosts={this.props.friendsPosts}
+                          profilePosts={this.props.profilePosts}
+                          currentProfile={this.props.currentProfile}
+                          currentPost={this.props.currentPost}
+                          changeCurrentFocusedPost={this.changeCurrentFocusedPost}
+                          getAndStoreProfilePosts={
+                            this.props.getAndStoreProfilePosts
+                          }
+                          createComment={this.props.createComment}
+                          commentErrors={this.props.commentErrors}
+                          clearCommentErrors={this.props.clearCommentErrors}
+                          postId={post._id}
+                          postIdsToHideComments={this.props.postIdsToHideComments}
+                          removePostIdToShowComments={this.props.removePostIdToShowComments}
+                        />
+                      </div>
+                    )
+                }
                 <br />
               </div>
             );

@@ -121,6 +121,27 @@
   word-wrap: break-word;
 }
 
+.post-comment_section {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  min-height: 25px;
+}
+
+.post-comment_amount {
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-right: 5px;
+}
+
+.fa-chevron-circle-right {
+  margin-left: 5px;
+}
+
+.fa-chevron-circle-down {
+  margin-left: 5px;
+}
+
 .comment-specifics {
   position: relative;
   text-align: left;

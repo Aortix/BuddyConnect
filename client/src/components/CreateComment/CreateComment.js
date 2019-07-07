@@ -38,6 +38,9 @@ class CreateComment extends Component {
   submitCommentForm = e => {
     e.preventDefault();
     if (this.props.currentProfile == null) {
+      if (this.props.postIdsToHideComments.includes(this.props.postId) === true) {
+        setTimeout(() => this.props.removePostIdToShowComments(this.props.postId), 1000);
+      }
       this.props.createComment(
         this.state.commentText,
         this.props.currentPost,
@@ -46,9 +49,11 @@ class CreateComment extends Component {
         this.props.friendsPosts.length,
         this.props.profilePosts.length
       );
-      //this.props.changeCurrentFocusedPost("");
       this.setState({ commentText: "" });
     } else {
+      if (this.props.postIdsToHideComments.includes(this.props.postId) === true) {
+        setTimeout(() => this.props.removePostIdToShowComments(this.props.postId), 1000);
+      }
       this.props.createComment(
         this.state.commentText,
         this.props.currentPost,
@@ -57,7 +62,6 @@ class CreateComment extends Component {
         this.props.friendsPosts.length,
         this.props.profilePosts.length
       );
-      //this.props.changeCurrentFocusedPost("");
       this.setState({ commentText: "" });
     }
   };
