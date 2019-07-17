@@ -33,7 +33,7 @@ export const HeaderAuth = props => {
   } else {
     return (
       <div className="HeaderAuth-container">
-        <span>
+        <span className="login-text">
           <Link to="/login">Login </Link>
         </span>
         <span id="sign-up" className="sign-up-text">

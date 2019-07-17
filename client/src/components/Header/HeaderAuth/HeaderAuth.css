@@ -1,6 +1,5 @@
 .HeaderAuth-container {
   margin-right: 15px;
-  color: var(--secondary-text-color);
 }
 
 .HeaderAuth-container img {
@@ -26,8 +25,12 @@
   display: none;
 }
 
+.login-text {
+  color: var(--secondary-text-color);
+}
 #sign-up {
   display: none;
+  color: var(--secondary-text-color);
 }
 
 @media screen and (min-width: 860px) {
@@ -35,9 +38,11 @@
     display: inline-block;
     vertical-align: middle;
     margin-left: 5px;
+    color: var(--secondary-text-color);
   }
 
   #sign-up {
   display: initial;
-}
+  color: var(--secondary-text-color);
+  }
 }

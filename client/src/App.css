@@ -41,7 +41,7 @@ h1 {
 
 a {
   text-decoration: none;
-  color: var(--main-text-color);
+  color: inherit;
 }
 
 a:hover {
