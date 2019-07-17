@@ -54,7 +54,7 @@ export default class DarkTheme extends Component {
       );
       document.documentElement.style.setProperty(
         "--secondary-text-color",
-        "#a9a9a9"
+        "#ffffff"
       );
       document.documentElement.style.setProperty(
         "--border-color-black",
@@ -77,8 +77,8 @@ export default class DarkTheme extends Component {
         {this.state.toggle === 0 ? (
           <i className="fas fa-toggle-off" />
         ) : (
-          <i className="fas fa-toggle-on" />
-        )}
+            <i className="fas fa-toggle-on" />
+          )}
         &nbsp;<span>Dark Mode</span>
       </div>
     );

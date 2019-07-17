@@ -8,7 +8,7 @@
   height: 100%;
   z-index: 2;
   font-size: 1.5rem;
-  background-color: var(--secondary-bg-color);
+  background-color: var(--main-overlay-color);
 }
 
 .SideBar-container-visible {
@@ -28,10 +28,11 @@
   font-weight: 400;
   text-align: left;
   padding-left: 13px;
+  color: var(--secondary-text-color);
 }
 
 .SideBar-container ul li:hover {
-  background-color: var(--main-bg-color);
+  text-decoration: underline;
 }
 
 .SideBar-container a:hover {

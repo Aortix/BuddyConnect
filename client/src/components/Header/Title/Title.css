@@ -7,8 +7,9 @@
 
 .Title {
   padding-left: 5px;
+  color: var(--secondary-text-color);
 }
 
 .fa-bars {
-  color: var(--font-awesome-color);
+  color: var(--secondary-text-color);
 }

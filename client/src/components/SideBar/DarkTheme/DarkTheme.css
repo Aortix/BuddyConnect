@@ -6,8 +6,9 @@
   font-weight: 400;
   text-align: left;
   padding-left: 13px;
+  color: var(--secondary-text-color);
 }
 
 .fa-toggle-on {
-  color: var(--font-awesome-color);
+  color: var(--secondary-text-color);
 }

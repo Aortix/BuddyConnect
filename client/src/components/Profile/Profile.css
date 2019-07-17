@@ -5,10 +5,10 @@
 .profile-tabs-container {
   margin-top: 0px;
   display: inline-block;
-  padding: 0;
+  padding: 0px;
   width: 100px;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .profile-tabs-container li {
@@ -74,6 +74,7 @@
     border-right: 1px solid var(--border-color-black);
     border-left: 1px solid var(--border-color-black);
     background-color: var(--main-bg-color);
+    box-shadow: 0px 0px 1px var(--border-color-black);
   }
 
   .profile-tabs-container {
@@ -136,6 +137,8 @@
   .Profile-active {
     visibility: visible;
     position: static;
+    background-color: var(--main-text-color) !important;
+    color: var(--main-bg-color) !important;
   }
 
   .Profile-not_active {

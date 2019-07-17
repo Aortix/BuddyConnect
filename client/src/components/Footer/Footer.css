@@ -6,5 +6,8 @@
   left: 0;
   right: 0;
   width: 100%;
+  margin-top: 5%;
   height: 6%;
+  background-color: var(--main-overlay-color);
+  color: var(--secondary-text-color);
 }
