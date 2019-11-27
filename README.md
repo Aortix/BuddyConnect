@@ -1,6 +1,6 @@
 # BuddyConnect
 
-https://protected-wildwood-18595.herokuapp.com/
+https://buddyconnecter.herokuapp.com/
 
 ## A Social Media Website
 #### Created using the MERN Stack (MongoDB, Express.js, React + Redux, Node.js)
