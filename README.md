@@ -15,4 +15,4 @@ BUCKET_NAME="the name of your bucket on AWS S3"
 RECAPTCHA_SECRET_KEY="secret key provided when using google reCAPTCHA", you will also need to change the sitekey to what google gives you for the ReCaptcha component on the front-end!
 ```
 
-You probably will also want to edit the footer!
+Licensed under the MIT License -> https://opensource.org/licenses/MIT
