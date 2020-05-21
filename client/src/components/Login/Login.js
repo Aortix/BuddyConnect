@@ -11,7 +11,7 @@ class Login extends Component {
     }
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     if (this.props.authenticated === true) {
       this.props.history.push("/dashboard");
     }
@@ -20,57 +20,73 @@ class Login extends Component {
   render() {
     return (
       <div className="Login-container">
-        <h1>Login</h1>
-        <form onSubmit={this.props.handleLoginSubmit}>
-          <p>Email:</p>
-          <input
-            type="email"
-            name="loginEmail"
-            onChange={this.props.handleChange}
-            value={this.props.loginEmail}
-            autoComplete="new-password"
-          />
-          {this.props.authErrors.email !== undefined ? (
-            <div className="Login-errors">{this.props.authErrors.email}</div>
-          ) : null}
-          <p>Password:</p>
-          <input
-            type="password"
-            name="loginPassword"
-            onChange={this.props.handleChange}
-            value={this.props.loginPassword}
-            autoComplete="new-password"
-          />
-          {this.props.authErrors.password !== undefined ? (
-            <div className="Login-errors">{this.props.authErrors.password}</div>
-          ) : null}
-          {this.props.userSignedUp === 1 ? (
-            <div className="Login-successes">User successfully registered!</div>
-          ) : null}
-          {this.props.attempts > 3 ? (
-            <React.Fragment>
-              <br />
-              <br />
-              <ReCaptcha
-                theme="dark"
-                sitekey="6Lc3YKsUAAAAAC7FT3QfUNx1AauT1wQelSw4NOxu"
-                onChange={this.props.captchaLoginChange}
-                style={{ display: "inline-block" }}
-              />
-            </React.Fragment>
-          ) : null}
-          <button type="submit" name="Submit" value="GO" formNoValidate>
-            Submit
-          </button>
-          {this.props.authErrors.misc !== undefined ? (
-            <div className="Login-errors">{this.props.authErrors.misc}</div>
-          ) : null}
-        </form>
-        <Link to="/sign-up">
-          <p className="Login-create_account">
-            Need to create an account? Click here.
+        <div className="Login-left-container">
+          <h1
+            style={{ margin: "0px", fontSize: "70px", fontFamily: "Helvetica" }}
+          >
+            BuddyConnect
+          </h1>
+          <p style={{ marginTop: "10px", fontFamily: "Arial" }}>
+            Where you connect with others online.
           </p>
-        </Link>
+        </div>
+        <div className="Login-right-container">
+          <h1>Login</h1>
+          <form onSubmit={this.props.handleLoginSubmit}>
+            <p>Email:</p>
+            <input
+              type="email"
+              name="loginEmail"
+              onChange={this.props.handleChange}
+              value={this.props.loginEmail}
+              autoComplete="new-password"
+            />
+            {this.props.authErrors.email !== undefined ? (
+              <div className="Login-errors">{this.props.authErrors.email}</div>
+            ) : null}
+            <p>Password:</p>
+            <input
+              type="password"
+              name="loginPassword"
+              onChange={this.props.handleChange}
+              value={this.props.loginPassword}
+              autoComplete="new-password"
+            />
+            {this.props.authErrors.password !== undefined ? (
+              <div className="Login-errors">
+                {this.props.authErrors.password}
+              </div>
+            ) : null}
+            {this.props.userSignedUp === 1 ? (
+              <div className="Login-successes">
+                User successfully registered!
+              </div>
+            ) : null}
+            {this.props.attempts > 3 ? (
+              <React.Fragment>
+                <br />
+                <br />
+                <ReCaptcha
+                  theme="dark"
+                  sitekey="6Lc3YKsUAAAAAC7FT3QfUNx1AauT1wQelSw4NOxu"
+                  onChange={this.props.captchaLoginChange}
+                  style={{ display: "inline-block" }}
+                />
+              </React.Fragment>
+            ) : null}
+            <button type="submit" name="Submit" value="GO" formNoValidate>
+              Submit
+            </button>
+            {this.props.authErrors.misc !== undefined ? (
+              <div className="Login-errors">{this.props.authErrors.misc}</div>
+            ) : null}
+          </form>
+          <Link to="/sign-up">
+            <p className="Login-create_account">
+              Need to create an account? Click here.
+            </p>
+          </Link>
+        </div>
       </div>
     );
   }

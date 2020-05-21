@@ -4,6 +4,10 @@
   margin-bottom: 50px;
 }
 
+.Login-left-container {
+  display: none;
+}
+
 .Login-container h1 {
   margin-bottom: 30px;
 }
@@ -88,7 +92,23 @@
 @media screen and (min-width: 860px) {
   .Login-container {
     margin-bottom: 0px;
+    display: grid;
+    grid-template-columns: 55% 45%;
+    padding-top: 0px;
+    align-items: center;
+    height: calc(100vh - 50px);
   }
+
+  .Login-left-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--main-overlay-color);
+    color: var(--secondary-text-color);
+    height: calc(100vh - 50px);
+    border-right: 1px solid black;
+  }
+
   .Login-container form input {
     background-color: var(--secondary-bg-color);
   }

@@ -1,13 +1,15 @@
 .Footer-container {
-  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  border-top: 1px solid var(--main-text-color);
+  border-top: 1px solid black;
+  box-shadow: 0px 0px 2px solid var(--main-text-color);
   bottom: 0;
   left: 0;
-  right: 0;
   width: 100%;
-  margin-top: 5%;
-  height: 6%;
+  margin-top: 0px;
+  height: 100px;
   background-color: var(--main-overlay-color);
   color: var(--secondary-text-color);
 }
